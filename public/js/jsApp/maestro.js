@@ -52,7 +52,7 @@ function load_table_master(state) {
             }
         },
         "order": [
-            [2, "desc"]
+        [2, "desc"]
         ],
         columns: [{
             data: 'IdTabla'
@@ -67,26 +67,26 @@ function load_table_master(state) {
             "render": function(data, type, full, meta) {
 
                 const btn_edicion = '<a class="btn btn-default btn_resize" data-toggle="tooltip" data-placement="bottom" title="Editar"' +
-                    'onclick="editar_tabla_cabecera(\'' + data.IdTabla + '\',\'' + data.Descripcion + '\',\'' + data.FlagActivo + '\')"style="cursor:pointer"> ' +
-                    '<span style="font-size:80%;" class=" text-success glyphicon glyphicon-edit"></span></a>' +
+                'onclick="editar_tabla_cabecera(\'' + data.IdTabla + '\',\'' + data.Descripcion + '\',\'' + data.FlagActivo + '\')"style="cursor:pointer"> ' +
+                '<span style="font-size:80%;" class=" text-success glyphicon glyphicon-edit"></span></a>' +
 
-                    '<a class="btn btn-default btn_resize" data-toggle="tooltip" data-placement="bottom" title="Ver Detalle"' +
-                    'onclick="ver_tabla_detalle(\'' + data.IdTabla + '\',\'' + data.Descripcion + '\')" ' +
-                    'style="cursor:pointer"><i style="font-size:80%;" class="text-primary fa fa-list"> ' +
-                    '</i></a>';
+                '<a class="btn btn-default btn_resize" data-toggle="tooltip" data-placement="bottom" title="Ver Detalle"' +
+                'onclick="ver_tabla_detalle(\'' + data.IdTabla + '\',\'' + data.Descripcion + '\')" ' +
+                'style="cursor:pointer"><i style="font-size:80%;" class="text-primary fa fa-list"> ' +
+                '</i></a>';
 
                 let btn_delete = '';
 
                 if (data.FlagActivo == 1) {
 
                     btn_delete = '<a class="btn btn-default btn_resize" data-toggle="tooltip" data-placement="bottom" title="Inactivar" ' +
-                        'onclick="prepare_delete_tabla(\'' + data.IdTabla + '\',\'' + data.Descripcion + '\',0)" ' +
-                        'style="cursor:pointer"><span  style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"> ' +
-                        '</span></a>';
+                    'onclick="prepare_delete_tabla(\'' + data.IdTabla + '\',\'' + data.Descripcion + '\',0)" ' +
+                    'style="cursor:pointer"><span  style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"> ' +
+                    '</span></a>';
                 }
 
                 return '<div class="btn-group btn-group-icon-md"> ' + btn_edicion +
-                    btn_delete + '</div>';
+                btn_delete + '</div>';
             }
         }],
         columnDefs: [{
@@ -323,22 +323,22 @@ function get_detalle_tabla(id_tabla) {
             "render": function(data, type, full, meta) {
 
                 const bnt_editar = '<a class="btn btn-default btn_resize" data-toggle="tooltip" data-placement="bottom" title="Editar"' +
-                    'onclick="get_inputs_details(\'' + data.IdTabla + '\',\'' + data.Valor + '\',\'' + data.IdColumna + '\',\'' + data.Descripcion + '\',\'' + data.FlagActivo + '\',\'' + data.ValorCadena + '\',\'' + data.ValorNumerico + '\',\'' + data.IdColumnaPadre + '\',\'' + data.ValorColumnaPadre + '\')"' +
-                    ' style="cursor:pointer"><span class="text-warning glyphicon glyphicon-pencil">' +
-                    '</span></a>';
+                'onclick="get_inputs_details(\'' + data.IdTabla + '\',\'' + data.Valor + '\',\'' + data.IdColumna + '\',\'' + data.Descripcion + '\',\'' + data.FlagActivo + '\',\'' + data.ValorCadena + '\',\'' + data.ValorNumerico + '\',\'' + data.IdColumnaPadre + '\',\'' + data.ValorColumnaPadre + '\')"' +
+                ' style="cursor:pointer"><span class="text-warning glyphicon glyphicon-pencil">' +
+                '</span></a>';
 
                 let btn_eliminar = '';
 
                 if (data.FlagActivo == 1) {
 
                     btn_eliminar = '<a class="btn btn-default btn_resize" data-toggle="tooltip" data-placement="bottom" title="Inactivar"' +
-                        ' onclick="prepare_delete_tabla(\'' + data.IdTabla + '\',\'' + data.Descripcion + '\',\'' + data.IdColumna + '\')"' +
-                        'style="cursor:pointer"><span class="text-danger glyphicon glyphicon-remove"> ' +
-                        '</span></a>';
+                    ' onclick="prepare_delete_tabla(\'' + data.IdTabla + '\',\'' + data.Descripcion + '\',\'' + data.IdColumna + '\')"' +
+                    'style="cursor:pointer"><span class="text-danger glyphicon glyphicon-remove"> ' +
+                    '</span></a>';
                 }
 
                 return '<div class="btn-group btn-group-icon-md">' + bnt_editar +
-                    btn_eliminar + '</div>';
+                btn_eliminar + '</div>';
 
 
             }
@@ -432,7 +432,7 @@ function save_master() {
     const checked = $("input[name='switch_estado']").prop('checked');
     const flag_activo = (checked) ? 1 : 0;
     const id_tabla = $("#id_tabla").val();
-
+    
 
     $.ajax({
         url: server + 'save_maestro',
@@ -448,10 +448,10 @@ function save_master() {
             valor_cadena: '',
             modo: 'C'
         },
-        before: function() {},
+        beforeSend: function() {$("#salva_maestro").attr("disabled", true);},
         success: function(response) {
 
-
+            
 
             if (response.status == "ok") {
 
@@ -467,10 +467,15 @@ function save_master() {
             $.unblockUI();
         },
         error: function(jqXHR, textStatus, errorThrown) {
+            
+
             ajaxError(jqXHR, textStatus, errorThrown);
 
             $.unblockUI();
 
+        }, complete : function(xhr, status) {
+
+            $("#salva_maestro").attr("disabled", false);
         }
     });
 }

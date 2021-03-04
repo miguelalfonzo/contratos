@@ -38,6 +38,8 @@ const host = "localhost";
 
 const server = "http://" + host + "/contratos/public/";
 
+
+
 function loadingUI(message, color) {
     $.blockUI({
         baseZ: 2000,

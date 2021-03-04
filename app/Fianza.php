@@ -265,6 +265,7 @@ class Fianza extends Model
 
         }
 
+
         $rpta  = DB::insert('call Carta_Fianza_Garantia_Insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($codigo_solicitud,$tipo_carta,$numero_carta,$monto_carta,$tipo_garantia,$numero_documento,$banco,$porcentaje,$moneda,$monto,$fecha_emision,$fecha_vencimiento,$estado,$observaciones,$id_user,$disponible));
 
 
@@ -503,13 +504,13 @@ class Fianza extends Model
       $id_user             = Auth::user()->id;
       
 
-      if(!empty($liberar)){
+      // if(!empty($liberar)){
 
-        $monto_garantia = round($monto_garantia-$liberar,2);
+      //   $monto_garantia = round($monto_garantia-$liberar,2);
 
-      }
+      // }
 
-
+      
       $rpta = DB::update('call Renovar_Garantia(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($id_carta_fianza_garantia,$fecha_garantia,$monto_fianza,$fecha_emision,$tipo_garantia,$numero_documento,$porcentaje,$moneda,$fecha_vencimiento,$banco,$monto_garantia,$fecha_cobro,$estado_garantia,$disponible,$observacion,$id_user));
        
        return $rpta ;

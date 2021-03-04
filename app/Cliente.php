@@ -227,21 +227,58 @@ protected static function get_combo_empresas_financieras($query){
 
 
       
+      
+
+      $id_consorcio = $request->cliente_id_consorcio;
+
+      $asociados = $request->empresas;
+
+      
+
+
+      if($id_cliente == 0){
+
+        $rpta  = DB::select('call Cliente_Insert (?,?,?,?,?,?,?,?,?,?,?,?,?,?,@res)', array($identificacion,$tipo_cliente,$moneda,$fecha_ingreso,$actividad,$razon_social,$direccion,$nombre,$ubigeo,$flag_activo,$user_creacion,$tipo_documento,$referencia,$localidad));
+
+        $results = DB::select('select @res as res');
+
+        $rpta_last_id = json_decode(json_encode($results), true);
+
+        $last_id = $rpta_last_id[0]["res"];
+
+        if(!is_null($last_id)){
+
+            $rpta  = 1 ;
+
+        }else{
+
+          $rpta  = 0 ;
+          
+        }
+
+        $new_id = $last_id;
+
+
+      }else{
+
+        $rpta  = DB::update('call Cliente_Update (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array($identificacion,$tipo_cliente,$moneda,$actividad,$razon_social,$direccion,$nombre,$ubigeo,$tipo_documento,$referencia,$flag_activo,$user_creacion,$id_cliente,$localidad));
+
+        $new_id = $id_cliente;
+
+      }
+
+
       if($contactos!="[]"){
 
         
-        DB::delete('call Cliente_Contacto_Delete (?)', array($id_cliente));
+        DB::delete('call Cliente_Contacto_Delete (?)', array($new_id));
 
-        $subquery= self::set_insert_masivo_contactos($contactos,$id_cliente);
+        $subquery= self::set_insert_masivo_contactos($contactos,$new_id);
 
         DB::insert('call Cliente_Contacto_InsertMasivo (?)', array($subquery));
 
       }
 
-
-      $id_consorcio = $request->cliente_id_consorcio;
-
-      $asociados = $request->empresas;
 
       if($tipo_cliente=="05"){
 
@@ -251,18 +288,7 @@ protected static function get_combo_empresas_financieras($query){
           
         }
 
-        self::inserta_nuevas_empresas_consorcio($id_cliente,$asociados);
-      }
-
-
-      if($id_cliente == 0){
-
-        $rpta  = DB::insert('call Cliente_Insert (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array($identificacion,$tipo_cliente,$moneda,$fecha_ingreso,$actividad,$razon_social,$direccion,$nombre,$ubigeo,$flag_activo,$user_creacion,$tipo_documento,$referencia,$localidad));
-
-      }else{
-
-        $rpta  = DB::update('call Cliente_Update (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array($identificacion,$tipo_cliente,$moneda,$actividad,$razon_social,$direccion,$nombre,$ubigeo,$tipo_documento,$referencia,$flag_activo,$user_creacion,$id_cliente,$localidad));
-
+        self::inserta_nuevas_empresas_consorcio($new_id,$asociados);
       }
 
       return $rpta ;

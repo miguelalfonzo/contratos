@@ -29,7 +29,7 @@ class UsuarioController extends Controller
 
         $estados = Maestro::get_combo(1);
 
-		return View('usuario.index',compact('roles','estados'));
+		return View('usuario.index',compact('estados'));
 		
 	}	
 	

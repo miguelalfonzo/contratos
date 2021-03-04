@@ -121,7 +121,7 @@ class Rol extends Model
         }
         $row = rtrim($row, ',');
 
-        $subquery ="INSERT INTO Rol_Menu VALUES ".$row;
+        $subquery ="INSERT INTO rol_menu VALUES ".$row;
 
         return $subquery ;
     }
@@ -131,7 +131,7 @@ class Rol extends Model
 
         $id_user= Auth::user()->id;
 
-        $list = DB::select("SELECT rm.IdMenu FROM users us INNER JOIN Rol_Menu rm ON rm.IdRol=us.IdRol WHERE us.Id=?",array($id_user));
+        $list = DB::select("SELECT rm.IdMenu FROM users us INNER JOIN rol_menu rm ON rm.IdRol=us.IdRol WHERE us.Id=?",array($id_user));
 
         $opciones =array();
         
