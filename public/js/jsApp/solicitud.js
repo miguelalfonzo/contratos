@@ -70,7 +70,7 @@ function get_list_documentos_solicitud(id_solicitud) {
                 if (id_solicitud != 0) {
 
                     const btn_subida = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Subir"' +
-                        'onclick="prepare_subida_file(\'' + data.valor + '\',\'' + data.descripcion + '\',\'' + data.IdSolicitudDocumento + '\',\'' + id_solicitud + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-cloud"></span></a>';
+                    'onclick="prepare_subida_file(\'' + data.valor + '\',\'' + data.descripcion + '\',\'' + data.IdSolicitudDocumento + '\',\'' + id_solicitud + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-cloud"></span></a>';
 
 
                     let btn_ver = '';
@@ -79,11 +79,11 @@ function get_list_documentos_solicitud(id_solicitud) {
                     if (data.ValorFile != null) {
 
                         btn_ver = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Ver"' +
-                            'onclick="ver_file(\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-eye-open"></span></a>';
+                        'onclick="ver_file(\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-eye-open"></span></a>';
 
 
                         btn_eliminar = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Eliminar"' +
-                            'onclick="prepare_delete_file(\'' + data.IdSolicitudDocumento + '\',\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
+                        'onclick="prepare_delete_file(\'' + data.IdSolicitudDocumento + '\',\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
                     }
 
 
@@ -94,12 +94,12 @@ function get_list_documentos_solicitud(id_solicitud) {
                 } else {
 
                     const btn_subida = '<a data-desdoc="' + data.descripcion + '" data-coddoc="' + data.valor + '" data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Subir"' +
-                        'onclick="prepare_subida_file_memoria(\'' + data.valor + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-cloud"></span></a>';
+                    'onclick="prepare_subida_file_memoria(\'' + data.valor + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-cloud"></span></a>';
                     const btn_ver = '<a data-file="" style="display:none" data-toggle="tooltip" data-placement="bottom" class="ver_file_memoria btn btn-default btn_resize" title="Ver"' +
-                        'onclick="" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-eye-open"></span></a>';
+                    'onclick="" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-eye-open"></span></a>';
 
                     const btn_eliminar = '<a data-coddoc="' + data.valor + '" data-file="" style="display:none" data-toggle="tooltip" data-placement="bottom" class="elimina_file_memoria btn btn-default btn_resize" title="Eliminar"' +
-                        'onclick="" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
+                    'onclick="" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
 
                     return '<div class="btn-group"> ' + btn_subida + btn_ver + btn_eliminar + '</div>';
                 }
@@ -487,11 +487,19 @@ $("#switch_cumplimiento").on('click', function() {
 
         $("#solicitud_cumplimiento").prop('readonly', false);
 
+        const valor_oculto = $("#solicitud_cumplimiento").attr('data-valor');
+
+        $("#solicitud_cumplimiento").val(valor_oculto);
+
     } else {
 
         $("#solicitud_cumplimiento").prop('readonly', true);
+
+        $("#solicitud_cumplimiento").val('');
+        
     }
 
+    recalcula_fianza();
 })
 
 $("#switch_directo").on('click', function() {
@@ -500,11 +508,18 @@ $("#switch_directo").on('click', function() {
 
         $("#solicitud_directo").prop('readonly', false);
 
+        const valor_oculto = $("#solicitud_directo").attr('data-valor');
+
+        $("#solicitud_directo").val(valor_oculto);
+
     } else {
 
         $("#solicitud_directo").prop('readonly', true);
+
+        $("#solicitud_directo").val('');
     }
 
+    recalcula_fianza();
 })
 
 $("#switch_materiales").on('click', function() {
@@ -513,10 +528,19 @@ $("#switch_materiales").on('click', function() {
 
         $("#solicitud_materiales").prop('readonly', false);
 
+        const valor_oculto = $("#solicitud_materiales").attr('data-valor');
+
+        $("#solicitud_materiales").val(valor_oculto);
+
+
     } else {
 
         $("#solicitud_materiales").prop('readonly', true);
+
+        $("#solicitud_materiales").val('');
     }
+
+    recalcula_fianza();
 
 })
 
@@ -592,63 +616,72 @@ $("#form_solicitud").submit(function(event) {
 
     if (rpta == '') {
 
-        let formData = new FormData(document.getElementById("form_solicitud"));
+
+        alertify.confirm("Confirmar Solicitud", "¿Está seguro de tramitar la solicitud ? ",
+            function() {
+
+                let formData = new FormData(document.getElementById("form_solicitud"));
 
 
-        const id_solicitud = $("#solicitud_id").val();
+                const id_solicitud = $("#solicitud_id").val();
 
-        if (id_solicitud == 0) {
+                if (id_solicitud == 0) {
 
-            const documentos = get_list_documentos_temporales();
+                    const documentos = get_list_documentos_temporales();
 
-            formData.append('documentos', JSON.stringify(documentos));
-
-
-        }
+                    formData.append('documentos', JSON.stringify(documentos));
 
 
-
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: server + 'save_solicitud',
-            type: "post",
-            dataType: "json",
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-
-            before: function() {
-
-            },
-            success: function(response) {
-
-
-                if (response.status == "ok") {
-
-                    alertify.success(set_sucess_message_alertify(response.description));
-
-                    const url = server + "obras";
-
-                    setTimeout($(location).attr('href', url), 10000);
-
-                } else {
-
-
-                    alertify.error(set_error_message_alertify(response.description));
                 }
 
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: server + 'save_solicitud',
+                    type: "post",
+                    dataType: "json",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    before: function() {
+
+                    },
+                    success: function(response) {
+
+
+                        if (response.status == "ok") {
+
+                            alertify.success(set_sucess_message_alertify(response.description));
+
+                            const url = server + "obras";
+
+                            setTimeout($(location).attr('href', url), 10000);
+
+                        } else {
+
+
+                            alertify.error(set_error_message_alertify(response.description));
+                        }
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+
+                        ajaxError(jqXHR, textStatus, errorThrown);
+
+
+                    }
+
+                });
+
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            function() {
 
-                ajaxError(jqXHR, textStatus, errorThrown);
+                alertify.error(set_error_message_alertify('Cancelado'));
 
-
-            }
-
-        });
+            });
 
 
     } else {

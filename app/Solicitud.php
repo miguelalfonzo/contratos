@@ -132,6 +132,20 @@ class Solicitud extends Model
 
    }
 
+  
+  protected static function rechazar_solicitud($request){
+
+      $id_obra    = $request->rechaza_solicitud_id;
+      $comentario = $request->rechaza_solicitud_form_coment;
+      $fecha      = Carbon::now()->format('Y-m-d H:m:s');
+      $user       = Auth::user()->id;
+      
+     $rpta = DB::insert("INSERT INTO solicitudes_rechazadas(IdObra,Comentario,FechaCreacion,IdUsuarioCreacion) VALUES(?,?,?,?)",array($id_obra,$comentario,$fecha,$user));
+
+     return $rpta ;
+
+
+   }
 
    protected static function save_solicitud($request){
 
@@ -212,7 +226,7 @@ class Solicitud extends Model
               $financiera  = $request->solicitud_id_financia;
               $solicitud_fecha = Carbon::parse($request->solicitud_fecha)->format('Y-m-d H:m:s');
 
-              $row.="('".$list['CODIGO']."','".$solicitud_fecha."','".$moneda."','".$list['MONTO']."','".$estado."',$nextId,$user,'".$hoy."',$cliente,$contratante,0,0),";
+              $row.="('".$list['CODIGO']."','".$solicitud_fecha."','".$moneda."','".$list['MONTO']."','".$estado."',$nextId,$user,'".$hoy."',$cliente,$contratante,$financiera,0),";
 
           }
           

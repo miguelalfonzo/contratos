@@ -122,7 +122,7 @@
                             <div class="input-group-prepend ">
                               <div class="input-group-text " style="height:31px"><i class="fa fa-home"></i></div>
                             </div>
-                            <input style=""type="text" class="form-control has-feedback-left form-control-sm"  placeholder="" id="cliente_rsocial" name="cliente_rsocial"  onkeypress="return validateAlfaNumerico(event);" autocomplete="off" maxlength="100"  value="{{$cliente->RazonSocial ?? ''}}">
+                            <input style=""type="text" class="form-control has-feedback-left form-control-sm"  placeholder="" id="cliente_rsocial" name="cliente_rsocial"  autocomplete="off" maxlength="100"  value="{{$cliente->RazonSocial ?? ''}}">
                           </div>
                         </div>
                      
@@ -138,7 +138,7 @@
                             <div class="input-group-prepend ">
                               <div class="input-group-text " style="height:31px"><i class="fa fa-user"></i></div>
                             </div>
-                            <input style=""type="text" class="form-control has-feedback-left form-control-sm"  placeholder="" id="cliente_ncomercial" name="cliente_ncomercial" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" maxlength="100"  value="{{$cliente->Nombre ?? ''}}">
+                            <input style=""type="text" class="form-control has-feedback-left form-control-sm"  placeholder="" id="cliente_ncomercial" name="cliente_ncomercial"  autocomplete="off" maxlength="100"  value="{{$cliente->Nombre ?? ''}}">
                           </div>
                         </div>
                      

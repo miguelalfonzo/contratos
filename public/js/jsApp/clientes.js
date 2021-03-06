@@ -205,7 +205,7 @@ function valida_inputs_cliente() {
 
     
 
-    let regex_nom_comercial = /[A-Za-z0-9]{5,100}/;
+    let regex_nom_comercial = /[A-Za-z0-9._%-@]{5,100}/;
     
 
     if(!regex_nom_comercial.test($('#cliente_ncomercial').val().trim())){

@@ -482,6 +482,9 @@ function get_detalle_carta_fianza(idCartaFianza) {
 
                 console.log(response);
 
+                
+                $("#mcf_name_obra").val(response[0].ObraFullName);
+                $("#mcf_tipo_carta").val(response[0].DescTipoCarta);
                 $("#tipo_carta_mcf_hidden").val(response[0].TipoCarta);
                 $("#id_mcf_id_solicitud").val(response[0].IdSolicitud);
                 $("#id_mcf_hidden").val(idCartaFianza);
@@ -942,8 +945,10 @@ $("#form_gestion_carta_fianza").submit(function(event) {
             contentType: false,
             processData: false,
 
-            before: function() {
+            beforeSend: function() {
 
+                $("#btn_save_modal_cf").attr("disabled",true);
+                
             },
             success: function(response) {
 
@@ -969,6 +974,9 @@ $("#form_gestion_carta_fianza").submit(function(event) {
                 ajaxError(jqXHR, textStatus, errorThrown);
 
 
+            },complete:function(){
+
+                $("#btn_save_modal_cf").attr("disabled",false);
             }
 
         });

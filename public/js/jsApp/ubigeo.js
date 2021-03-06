@@ -392,7 +392,10 @@ function save_Ubigeo() {
             modo: modo,
             tipo: tipo
         },
-        before: function() {},
+        beforeSend: function() {
+
+            loadingUI('guardando...');
+        },
         success: function(response) {
 
             console.log(response);
@@ -400,16 +403,20 @@ function save_Ubigeo() {
                 $("#modal-create-dist").modal("hide");
 
                 if (modo == 'S') {
-                    $("#table_dis" + id_tabla_update).DataTable().ajax.reload();
+                    //$("#table_dis" + id_tabla_update).DataTable().ajax.reload();
+
+                    $("#table_ubigeo").DataTable().ajax.reload();
+                    //$.unblockUI();
                 } else {
                     $("#table_ubigeo").DataTable().ajax.reload();
-                    $.unblockUI();
+                    //$.unblockUI();
                 }
 
                 alertify.success(response.description);
             } else {
                 alertify.error(response.description);
             }
+            $.unblockUI();
         },
         error: function(jqXHR, textStatus, errorThrown) {
             ajaxError(jqXHR, textStatus, errorThrown);

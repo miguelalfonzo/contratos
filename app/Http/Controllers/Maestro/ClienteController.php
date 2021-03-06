@@ -298,9 +298,39 @@ class ClienteController extends Controller
     }  
 
 
+    protected function elimina_representante(Request $request){
+
+        
+        $rpta = Cliente::elimina_representante($request);
+            
+        if($rpta == 1){
+
+            return $this->setRpta("ok","Se eliminó correctamente");
+
+        }
+          
+        return $this->setRpta("error","Ocurrió un error");
 
 
+    }
 
+
+     protected function elimina_accionista(Request $request){
+
+        
+        $rpta = Cliente::elimina_accionista($request);
+            
+        if($rpta == 1){
+
+            return $this->setRpta("ok","Se eliminó correctamente");
+
+        }
+          
+        return $this->setRpta("error","Ocurrió un error");
+
+
+    }
+    
     protected function salvar_representante(Request $request){
 
         DB::beginTransaction();

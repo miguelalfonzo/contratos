@@ -146,7 +146,7 @@
 
                                           <div class="col-md-12 col-sm-12 margin-top-10">
                                 
-                                            <button style="float:right;"class="btn btn-warning btn-sm resize-button"><i class="fa fa-save mr-2"></i>Aceptar</button>
+                                            <button style="float:right;"class="btn btn-warning btn-sm resize-button" id="btn_cerrar_carta_fianza"><i class="fa fa-save mr-2"></i>Aceptar</button>
           
                                           </div>
 

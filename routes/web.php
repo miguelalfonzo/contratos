@@ -83,9 +83,13 @@ Route::post('/save_cliente','Maestro\ClienteController@save_cliente');
 Route::get('/get_cliente_representantes','Maestro\ClienteController@get_cliente_representantes');
 Route::post('/salvar_representante','Maestro\ClienteController@salvar_representante');
 
+Route::post('/elimina_representante','Maestro\ClienteController@elimina_representante');
+
 //accionistas
 Route::get('/get_cliente_accionistas','Maestro\ClienteController@get_cliente_accionistas');
 Route::post('/salvar_accionista','Maestro\ClienteController@salvar_accionista');
+
+Route::post('/elimina_accionista','Maestro\ClienteController@elimina_accionista');
 
 //documento
 
@@ -128,6 +132,7 @@ Route::post('/load_file_solicitud_documento_memoria', 'Obra\SolicitudController@
 Route::post('/elimina_documento_solicitud_memoria', 'Obra\SolicitudController@elimina_documento_solicitud_memoria');
 Route::post('/save_solicitud', 'Obra\SolicitudController@save_solicitud');
 
+Route::post('/rechazar_solicitud', 'Obra\SolicitudController@rechazar_solicitud');
 
 //gestion carta fianza
 

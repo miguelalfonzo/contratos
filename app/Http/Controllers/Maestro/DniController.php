@@ -32,7 +32,7 @@ class DniController extends Controller
 
 		  if (!$person) {
     		
-    		  return $this->setRpta("error","Error al conectar");
+    		  return $this->setRpta("error","No se encontraron registros");
 		  }
 
 		

@@ -79,6 +79,20 @@ class SolicitudController extends Controller
 
     } 
 
+    protected function rechazar_solicitud(Request $request){
+
+    
+        $rpta = Solicitud::rechazar_solicitud($request);
+            
+        if($rpta == 1){
+
+            return $this->setRpta("ok","Se rechazó correctamente");
+
+        }
+        
+        return $this->setRpta("error","Ocurrió un error");
+    } 
+
 
     protected function load_file_solicitud_documento(Request $request){
 

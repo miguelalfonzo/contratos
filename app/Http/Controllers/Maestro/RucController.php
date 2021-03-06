@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DB;
 use Peru\Sunat\RucFactory;
 use App\Ubigeo;
+use App\Cliente;
 
 class RucController extends Controller
 {	
@@ -22,18 +23,46 @@ class RucController extends Controller
 
    		$ruc = $request->ruc;
 
-   		require '../vendor/autoload.php';
+   		$cliente = Cliente::where('Identificacion',$ruc)->first();
+
+   		
+
+   		if(!is_null($cliente)){
+
+   			$full_ubigeo = '';
+
+   			if(!empty($cliente->Ubigeo)){
+
+   				$ubigeo = Ubigeo::where('IdUbigeo',$cliente->Ubigeo)->first();
+
+   				$full_ubigeo = $ubigeo->DPTO.' '.$ubigeo->PROV.' '.$ubigeo->DIST;
+   			}
+
+   			$company_final = array( "razonSocial"=>$cliente->RazonSocial,
+   									"nombreComercial"=>$cliente->Nombre,
+   									"actEconomicas"=>array("bd-bd-".$cliente->Ocupacion),
+   									"direccion"=>$cliente->Direccion,
+   								    "ubigeo"=>$full_ubigeo,
+   									"id_ubigeo"=>$cliente->Ubigeo);
+
+   			return $this->setRpta("ok","Consulta Exitosa desde la BD",$company_final);
+
+   		}else{
+
+   			
+
+   			require '../vendor/autoload.php';
 
 	
-		$factory = new RucFactory();
-		$cs = $factory->create();
+			$factory = new RucFactory();
+			$cs = $factory->create();
 
-		$company = $cs->get($ruc);
+			$company = $cs->get($ruc);
 
-		if (!$company) {
+			if (!$company) {
 
-    		return $this->setRpta("error","Error al conectar");
-		}
+    			return $this->setRpta("error","No se encontraron registros");
+			}
 
 			$company_decode = json_decode(json_encode($company), true);
 
@@ -42,8 +71,9 @@ class RucController extends Controller
 			$company_final = array_merge($company_decode,$ubigeo);
 
 			return $this->setRpta("ok","Consulta Exitosa",$company_final);
-			
 
+   		}
+   		
         
     }
 

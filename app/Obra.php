@@ -22,8 +22,17 @@ class Obra extends Model
     
     protected static function get_obras_list($request){
 
+      $proceso    = $request->proceso ;
+      $condicion  = $request->condicion ;
+      $id_cliente = (!empty($request->id_cliente))?$request->id_cliente:0 ;
+      $id_obra    = (!empty($request->id_obra))?$request->id_obra:0 ;
+      
+      $inicio = (!empty($request->inicio))?Carbon::parse($request->inicio)->format('Y-m-d'):date('Y-01-01') ;
 
-    	$list  = DB::select('call Obra_List (?)', array($request->id_estado));
+      $fin = (!empty($request->fin))?Carbon::parse($request->fin)->format('Y-m-d'):date('Y-m-d') ;
+
+      
+    	$list  = DB::select('call Obra_List (?,?,?,?,?,?)', array($proceso,$condicion,$id_cliente,$id_obra,$inicio,$fin));
 
     	return $list;
     }
@@ -67,17 +76,18 @@ class Obra extends Model
         $descripcion = $request->Descripcion_documento_obra;
         $id_user       = Auth::user()->id;
 
+        $comentario = $request->Comentario_documento_obra;
 
       
         if($id_obra_documento=="null"){
 
-          $rpta  = DB::insert('call Obra_Documento_Insert (?,?,?,?,?)', array($id_obra,$valor,$descripcion,$file,$id_user));
+          $rpta  = DB::insert('call Obra_Documento_Insert (?,?,?,?,?,?)', array($id_obra,$valor,$descripcion,$file,$id_user,$comentario));
 
         }else{
 
           self::elimina_antiguo_documento($id_obra_documento);
 
-          $rpta  = DB::update('call Obra_Documento_Update (?,?,?)', array($file,$id_user,$id_obra_documento));
+          $rpta  = DB::update('call Obra_Documento_Update (?,?,?,?)', array($file,$id_user,$id_obra_documento,$comentario));
         }
        
         return $rpta;

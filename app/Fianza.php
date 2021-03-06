@@ -154,7 +154,7 @@ class Fianza extends Model
 
         //$new_estado = ($estado == 'PRO')?'VIG':$estado;
         
-
+        
         $rpta  = DB::update('call Carta_Fianza_Update(?,?,?,?,?,?,?,?,?,?,?,?,?)',array($moneda,$new_estado,$monto,$fecha_creacion,$fecha_inicio,$dias,$fecha_vencimiento,$numero_carta,$id_carta,$id_user,$financiera,$comentario,$carta_manual));
 
         return $rpta;

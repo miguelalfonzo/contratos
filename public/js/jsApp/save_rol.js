@@ -248,8 +248,9 @@
              id_rol: id_rol,
              opciones: opciones
          },
-         before: function() {
+         beforeSend: function() {
 
+            $("#salvar_rol").attr("disabled",true);
          },
          success: function(response) {
 
@@ -274,6 +275,10 @@
              ajaxError(jqXHR, textStatus, errorThrown);
 
              $.unblockUI();
+             
+         },complete: function() {
+
+           $("#salvar_rol").attr("disabled",false);
          }
 
      });

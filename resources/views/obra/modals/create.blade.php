@@ -29,7 +29,7 @@
              </div>
 
              <div class="col-lg-6 col-md-6 col-sm-4">
-               <button type="submit" class="btn btn-primary btn-sm resize-button float-right-button" ><i class="fa fa-save mr-1"></i>Guardar</button>
+               <button type="submit" id="btn_guardar_obra" class="btn btn-primary btn-sm resize-button float-right-button" ><i class="fa fa-save mr-1"></i>Guardar</button>
 
                     <a class="btn btn-danger btn-sm resize-button float-right-button" href={{url('/obras')}} ><i class="fa fa-chevron-circle-left mr-1"></i>Atras</a>
              </div>
@@ -78,7 +78,7 @@
                           <div class="input-group-prepend ">
                             <div class="input-group-text " style="height:31px"><i class="fa fa-home"></i></div>
                           </div>
-                          <input style=""type="text" class="form-control has-feedback-left form-control-sm"  placeholder="" id="obra_nombre" name="obra_nombre" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" maxlength="100"  value="{{$obra[0]['Descripcion'] ?? ''}}">
+                          <input style=""type="text" class="form-control has-feedback-left form-control-sm"  placeholder="" id="obra_nombre" name="obra_nombre" onkeypress="" autocomplete="off" maxlength="100"  value="{{$obra[0]['Descripcion'] ?? ''}}">
                         </div>
                       </div>
                    
@@ -179,8 +179,11 @@
                       <label class="control-label col-md-3 col-sm-3 ">Descripción</label>
                       <div class="col-md-9 col-sm-9 ">
                         
-                       <textarea  class="form-control has-feedback-left form-control-sm"  placeholder="" id="obra_descripcion"  name="obra_descripcion" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" style="height:100px;resize: none;padding-left: 5px !important;">{{$obra[0]['DescripcionLarga'] ?? ''}}
-                          </textarea>
+                       <!-- <textarea  class="text-left form-control has-feedback-left form-control-sm"  placeholder="" id="obra_descripcion"  name="obra_descripcion" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" style="height:100px;resize: none;padding-left: 5px !important;">{{$obra[0]['DescripcionLarga'] ?? ''}}
+                          </textarea> -->
+                          <textarea class="resizable_textarea form-control" id="obra_descripcion"  name="obra_descripcion" autocomplete="off" placeholder="" style="margin-top: 0px; margin-bottom: 0px; height: 89px;">{{$obra[0]['DescripcionLarga'] ?? ''}}</textarea>
+
+
                       </div>
                    
                   </div>
@@ -217,6 +220,7 @@
                         <label class="control-label col-md-3 col-sm-3 ">Moneda</label>
                         <div class="col-md-9 col-sm-9 ">
                           <select class="chosen" id="obra_moneda" name="obra_moneda">
+                            <option value="">Selecciona Moneda</option>
                             @foreach($monedas as $list)
 
                             <option value="{{$list->Valor}}" {{ $list->Valor == ($obra[0]['CodigoMoneda']??'') ? "selected":"" }}>{{$list->Descripcion}}</option>

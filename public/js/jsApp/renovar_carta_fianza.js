@@ -480,7 +480,9 @@ $("#form_renovar_carta").submit(function(event) {
             contentType: false,
             processData: false,
 
-            before: function() {
+            beforeSend: function() {
+
+                $("#mdr_guardar_renovar_cf").attr("disabled",true);
 
             },
             success: function(response) {
@@ -507,6 +509,9 @@ $("#form_renovar_carta").submit(function(event) {
                 ajaxError(jqXHR, textStatus, errorThrown);
 
 
+            },complete:function(){
+
+                $("#mdr_guardar_renovar_cf").attr("disabled",false);
             }
 
         });
@@ -847,8 +852,10 @@ $("#form_renovar_garantia").submit(function(event) {
             contentType: false,
             processData: false,
 
-            before: function() {
+            beforeSend: function() {
 
+                $("#btn_save_renovar_garantia").attr("disabled",true);
+                
             },
             success: function(response) {
 
@@ -875,6 +882,9 @@ $("#form_renovar_garantia").submit(function(event) {
                 ajaxError(jqXHR, textStatus, errorThrown);
 
 
+            },complete:function(){
+
+                $("#btn_save_renovar_garantia").attr("disabled",false);
             }
 
         });
@@ -1034,8 +1044,10 @@ $("#cerrar_fianza_form").submit(function(event) {
             contentType: false,
             processData: false,
 
-            before: function() {
+            beforeSend: function() {
 
+                $("#btn_cerrar_carta_fianza").attr("disabled",true);
+                
             },
             success: function(response) {
 
@@ -1060,6 +1072,10 @@ $("#cerrar_fianza_form").submit(function(event) {
 
                 ajaxError(jqXHR, textStatus, errorThrown);
 
+
+            },complete :function(){
+
+                $("#btn_cerrar_carta_fianza").attr("disabled",false);
 
             }
 

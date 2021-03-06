@@ -7,7 +7,7 @@
 
                           <div class="col-sm-9">
                             
-                            <h3 class="modal-title text-success" ><span class="badge badge-primary"><i class="fa fa-user icon-right"></i>Gestionar Carta Fianza</span></h3>
+                            <h3 class="modal-title text-success" ><span class="badge badge-primary"><i class="fa fa-user icon-right"></i>Gestionar Carta Fianza </span></h3>
 
                           </div>
                           

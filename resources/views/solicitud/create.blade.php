@@ -77,6 +77,7 @@
                            @foreach($estados as $list)
 
                               <option value="{{$list->Valor}}" {{ $list->Valor == ($solicitud[0]['EstadoSol']??'PND') ? "selected":"" }}>{{$list->Descripcion}}</option>
+                              
 
                               
                                     
@@ -157,41 +158,52 @@
                   <div class="x_content">
                     
                     
-                    <div class="form-group row ">
+                    
 
-  
-                        <label class="control-label col-md-3 col-sm-3 ">Solicitud</label>
-                        
+                     <div class="form-group row ">
 
-                       
-
-                        <div class="col-md-9 col-sm-9 ">
+                        <div class="col-md-6 col-sm-6 ">
                           
                          <div class="input-group mb-2 mr-sm-2 ">
                             <div class="input-group-prepend ">
-                              <div class="input-group-text " style="height:31px">#</div>
+                              <div class="input-group-text " style="height:31px">#Solicitud</div>
                             </div>
                             <input style=""type="text" class="disable-buton form-control has-feedback-left form-control-sm"  placeholder="" id="solicitud_solicitud_key" name="solicitud_solicitud_key" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" maxlength="100"  value="{{$solicitud[0]['CodigoSolicitud'] ?? ''}}" readonly>
                           </div>
                         </div>
-                     
-                     
-                    </div>
+                        
 
-                     <div class="form-group row resize-margin-top-12">
-
-  
-                        <label class="control-label col-md-3 col-sm-3 ">Código Obra</label>
-
-                        <div class="col-md-9 col-sm-9 ">
+                        <div class="col-md-6 col-sm-6 ">
                           
                          <div class="input-group mb-2 mr-sm-2 ">
                             <div class="input-group-prepend ">
-                              <div class="input-group-text " style="height:31px">#</div>
+                              <div class="input-group-text " style="height:31px">Cod.Obra</div>
                             </div>
                             <input style=""type="text" class="disable-buton form-control has-feedback-left form-control-sm"  placeholder="" id="solicitud_cod_obra" name="solicitud_cod_obra" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" value="{{$obra[0]['CodigoObra'] ?? ''}}" readonly>
                           </div>
                         </div>
+                     
+                    </div>
+
+
+                    <div class="form-group row resize-margin-top-12">
+
+                    <label class="control-label col-md-3 col-sm-3 ">Obra</label>
+                    <div class="col-md-9 col-sm-9 ">
+                          
+                         <div class="input-group mb-2 mr-sm-2 ">
+                            <div class="input-group-prepend ">
+                              <div class="input-group-text " style="height:31px"><i class="fa fa-home"></i></div>
+                            </div>
+                            <input style=""type="text" class="disable-buton form-control has-feedback-left form-control-sm"  placeholder="" id="solicitud_name_obra" name="solicitud_name_obra" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" maxlength="100"  value="{{$obra[0]['Descripcion'] ?? ''}}" readonly>
+                          </div>
+                        </div>
+                        
+
+                       
+
+                        
+                     
                      
                     </div>
 
@@ -263,12 +275,15 @@
                     <div class="form-group row ">
 
   
-                        <label class="control-label col-md-5 col-sm-3 "><button type="button" data-type="fc" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Fiel Cumplimiento</label>
+                        <label class="control-label col-md-5 col-sm-3 "><button style="display: none" type="button" data-type="fc" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Fiel Cumplimiento</label>
                         <div class="input-group col-md-7 col-sm-9 ">
                           <label>
                         <input class="js-switch" type="checkbox" id="switch_cumplimiento" name="switch_cumplimiento">&nbsp;&nbsp;
                          </label>
-                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_cumplimiento" name="solicitud_cumplimiento" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)' value="{{ $obra[0]['FielCumplimiento'] ?? ''}}" readonly>
+                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_cumplimiento" name="solicitud_cumplimiento" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)' value="" readonly autocomplete="off" data-valor="{{ $obra[0]['FielCumplimiento'] ?? ''}}">
+
+
+
                         
                          
                         </div>
@@ -278,13 +293,13 @@
                     <div class="form-group row resize-margin-top-12">
 
   
-                        <label class="control-label col-md-5 col-sm-3 "><button data-type="ad" type="button" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Adelanto Directo</label>
+                        <label class="control-label col-md-5 col-sm-3 "><button data-type="ad" style="display: none" type="button" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Adelanto Directo</label>
                         <div class="input-group col-md-7 col-sm-9 ">
                           <label>
                         <input class="js-switch" type="checkbox" id="switch_directo" name="switch_directo" >&nbsp;&nbsp;
                       </label>
                       
-                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2 "  placeholder="" id="solicitud_directo" name="solicitud_directo" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="{{$obra[0]['AdelantoDirecto'] ?? ''}}" readonly>
+                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2 "  placeholder="" id="solicitud_directo" name="solicitud_directo" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly autocomplete="off" data-valor="{{$obra[0]['AdelantoDirecto'] ?? ''}}">
                         
                         
                         </div>
@@ -294,12 +309,12 @@
                     <div class="form-group row resize-margin-top-12">
 
   
-                        <label class="control-label col-md-5 col-sm-3 "><button type="button" data-type="am" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Adelanto de Materiales</label>
+                        <label class="control-label col-md-5 col-sm-3 "><button style="display: none" type="button" data-type="am" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Adelanto de Materiales</label>
                         <div class="input-group col-md-7 col-sm-9 ">
                           <label>
                           <input class="js-switch" type="checkbox" id="switch_materiales" name="switch_materiales" >&nbsp;&nbsp;
                           </label>
-                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_materiales" name="solicitud_materiales" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="{{$obra[0]['AdelantoMateriales'] ?? '' }}" readonly="">
+                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_materiales" name="solicitud_materiales" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly="" autocomplete="off" data-valor="{{$obra[0]['AdelantoMateriales'] ?? '' }}">
                          
                         </div>
                      
@@ -318,7 +333,7 @@
 
 
                           ?>
-                         <input style="background: #60F87A" type="text" class="disable-buton form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="total_solicitud" name="total_solicitud" onkeypress="" autocomplete="off"  value="{{number_format($totalizado, 2, '.', ',')}}" readonly="">
+                         <input style="background: #60F87A" type="text" class="disable-buton form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="total_solicitud" name="total_solicitud" onkeypress="" autocomplete="off"  value="" readonly="" data-valor="{{number_format($totalizado, 2, '.', ',')}}">
                          
 
                          

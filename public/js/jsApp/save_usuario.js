@@ -130,7 +130,9 @@ $("#form_user").submit(function(event) {
             contentType: false,
             processData: false,
 
-            before: function() {
+            beforeSend: function() {
+
+                $('#salvar_user').attr('disabled',true);
 
             },
             success: function(response) {
@@ -154,6 +156,9 @@ $("#form_user").submit(function(event) {
                 ajaxError(jqXHR, textStatus, errorThrown);
                 $.unblockUI();
 
+            },complete :function(){
+
+                $('#salvar_user').attr('disabled',false);   
             }
 
         });

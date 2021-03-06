@@ -93,6 +93,34 @@
                                 
 
                           <!--   --------------  -->
+
+                          <!--   ------------- -->
+
+                                <label class="control-label col-md-2 col-sm-2 margin-top-10">Obra</label>
+
+                                <div class="col-md-4 col-sm-4 margin-top-10">
+
+
+                      
+                                
+                                  <div class="input-group mb-2 mr-sm-2 ">
+                                    <div class="input-group-prepend ">
+                                      <div class="input-group-text " style="height:28px"><i class="fa fa-home"></i></div>
+                                    </div>
+                                    <input type="text" class="disable-buton font-size-12  form-control has-feedback-left form-control-sm"   id="mcf_name_obra" name="mcf_name_obra" autocomplete="off" maxlength="100" value="" readonly>
+
+                                    
+
+                                  </div>
+
+
+
+                                </div>
+                                
+                                
+
+                          <!--   --------------  -->
+
                             </div>
 
                             </div>
@@ -110,6 +138,7 @@
                                
                               <div class="form-group row resize-margin-top-12 mb-0">
 
+                                  <div style="display: none">
                                   <label class="control-label col-xl-3 col-sm-2 margin-top-10">N° File (Cod Obra)</label>
                                   <div class="col-xl-3 col-sm-4 margin-top-10">
 
@@ -121,9 +150,19 @@
                                     </div>
 
                                   </div>
+                                  </div>
+
+
+                                  <label class="control-label col-xl-3 col-sm-2 margin-top-10">Tipo Carta</label>
+                                  <div class="col-xl-3 col-sm-4 margin-top-10">
+
+                                    <input type="text" class="font-size-11 disable-buton form-control has-feedback-left form-control-sm"  id="mcf_tipo_carta" name="mcf_tipo_carta"  autocomplete="off" maxlength="20" value="" readonly>
+
+                                  </div>
+
                                   <!----------------->
 
-                                  <label class="control-label col-xl-3 col-sm-2 margin-top-10">N° Fianza</label>
+                                  <label class="control-label col-xl-3 col-sm-2 margin-top-10">N° File</label>
                                   <div class="col-xl-3 col-sm-4 margin-top-10">
 
                                     <div class="input-group mb-2 mr-sm-2 ">
@@ -203,13 +242,26 @@
                                   </div>
 
                                 </div>
+
                                 <!----------------->
+
+                                <label class="control-label col-xl-3 col-sm-2 margin-top-10">N° de Carta F.</label>
+                                <div class="col-xl-3 col-sm-4 margin-top-10">
+                                  <input type="text" class=" form-control has-feedback-left form-control-sm"  placeholder="" id="mfc_carta_manual" name="mfc_carta_manual" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" maxlength="100" value="" >
+                                </div>
+
+                                  
+
+                            <!----------------->
+
+                              <!----------------->
 
                                 <label class="control-label col-xl-3 col-sm-2 margin-top-10">Fecha Inicio</label>
                                 <div class="col-xl-3 col-sm-4 margin-top-10">
                                    <input type="date" name="mfc_fecha_inicio" id="mfc_fecha_inicio" class="form-control form-control-sm" value="" required>
                                 </div>
                                 <!----------------->
+                                
 
                                 <label class="control-label col-xl-3 col-sm-2 margin-top-10">Dias</label>
                                 <div class="col-xl-3 col-sm-4 margin-top-10">
@@ -234,16 +286,7 @@
 
 
 
-                             <!----------------->
-
-                                <label class="control-label col-xl-3 col-sm-2 margin-top-10">Número de Carta</label>
-                                <div class="col-xl-3 col-sm-4 margin-top-10">
-                                  <input type="text" class=" form-control has-feedback-left form-control-sm"  placeholder="" id="mfc_carta_manual" name="mfc_carta_manual" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" maxlength="100" value="" >
-                                </div>
-
-                                  
-
-                            <!----------------->
+                             
                               </div>
 
                             </div>
@@ -304,7 +347,7 @@
                             </div>
                           </div>
                           <div style="margin-top: 10px">
-                          <button type="submit" class="btn btn-success resize-button btn-sm" style="float: right;"><i class="fa fa-save mr-2" ></i>Guardar</button>
+                          <button type="submit" class="btn btn-success resize-button btn-sm" style="float: right;" id="btn_save_modal_cf"><i class="fa fa-save mr-2" ></i>Guardar</button>
 
                           <button type="button" id="btn_close_modal_cf"class="btn btn-danger resize-button btn-sm" style="float: right;"><i class="fa fa-close mr-2" ></i>Cancelar</button>
                           </div>

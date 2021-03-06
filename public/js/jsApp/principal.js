@@ -316,3 +316,111 @@ function ajaxError(jqXHR, textStatus, errorThrown) {
     }
 
 }
+
+
+//fechas para el nuevo dateranger
+
+function to_string_data(datex){
+
+        var meses = [
+        "Enero", "Febrero", "Marzo",
+      "Abril", "Mayo", "Junio", "Julio",
+      "Agosto", "Septiembre", "Octubre",
+      "Noviembre", "Diciembre"
+      ]
+
+    var date = new Date(datex);
+
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset())
+
+    var dia = date.getDate();
+    var mes = date.getMonth();
+    var yyy = date.getFullYear();
+    var fecha_formateada = dia + ' de ' + meses[mes] + ' de ' + yyy;
+
+    return fecha_formateada;
+
+
+}
+
+
+function fecha_ayer(){
+
+      var hoy = new Date();
+    var DIA_EN_MILISEGUNDOS = 24 * 60 * 60 * 1000;
+    var ayer = new Date(hoy.getTime() - DIA_EN_MILISEGUNDOS);
+  
+    var date = new Date(ayer)
+
+    var day = date.getDate()
+    var month = date.getMonth() + 1
+    var year = date.getFullYear()
+
+    var format='';
+
+    if(day<10)
+    day='0'+day; 
+    
+    if(month<10)
+    month='0'+month 
+
+  return year+'-'+month+'-'+day;
+}
+
+function fecha_hoy_new_picker(){
+
+  var fecha = new Date(); 
+  var mes = fecha.getMonth()+1; 
+  var dia = fecha.getDate(); 
+  var ano = fecha.getFullYear(); 
+  if(dia<10)
+    dia='0'+dia; 
+  if(mes<10)
+    mes='0'+mes 
+
+  return ano+'-'+mes+'-'+dia;
+}
+
+
+function fecha_start_semana(){
+
+  
+ var dt = new Date();
+
+var diferencia = dt.setDate( dt.getDate() - 6 );
+
+ var fecha = new Date(diferencia); 
+  var mes = fecha.getMonth()+1; 
+  var dia = fecha.getDate(); 
+  var ano = fecha.getFullYear(); 
+  if(dia<10)
+    dia='0'+dia; 
+  if(mes<10)
+    mes='0'+mes 
+
+  return ano+'-'+mes+'-'+dia;
+
+}
+
+function rango_mes_actual(){
+
+  var date = new Date();
+var primerDia = new Date(date.getFullYear(), date.getMonth(), 1);
+var ultimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+ 
+
+  var mes = date.getMonth()+1; 
+  var dia = date.getDate(); 
+  var ano = date.getFullYear(); 
+
+ if(dia<10)
+    dia='0'+dia; 
+  if(mes<10)
+    mes='0'+mes 
+
+  var start = ano+'-'+mes+'-'+primerDia.getDate();
+
+  var fin = ano+'-'+mes+'-'+ultimoDia.getDate();
+
+return start+'|'+fin;
+}

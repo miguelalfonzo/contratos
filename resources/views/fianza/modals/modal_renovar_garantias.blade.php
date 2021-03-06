@@ -403,7 +403,7 @@
 
 
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary resize-button btn-sm"><i class="fa fa-refresh mr-2"></i>Renovar</button>
+                                <button type="submit" id="btn_save_renovar_garantia" class="btn btn-primary resize-button btn-sm"><i class="fa fa-refresh mr-2"></i>Renovar</button>
                                 <button onclick="cierra_modal_renovar_garantias()"type="button"class="btn btn-danger resize-button btn-sm"><i class="fa fa-trash mr-2"></i>Cancelar</button>
                              </div>
 

@@ -34,7 +34,26 @@ class Cliente extends Model
     
     }
 
+    protected static function elimina_representante($request){
+
+      $id_representante_cliente = $request->id_representante_cliente;
+
+      $rpta  = DB::delete('DELETE FROM cliente_representante WHERE IdClienteRepresentante=?', array($id_representante_cliente));
+
+      return $rpta;
     
+    }
+    
+    protected static function elimina_accionista($request){
+
+      $id_accionista_cliente = $request->id_accionista_cliente;
+
+      $rpta  = DB::delete('DELETE FROM cliente_accionista WHERE IdClienteAccionista=?', array($id_accionista_cliente));
+
+      return $rpta;
+    
+    }
+
     protected static function get_cliente($id){
 
       $cliente = Cliente::select('cliente.*', 'ubigeo.*','consorcio.IdConsorcio')

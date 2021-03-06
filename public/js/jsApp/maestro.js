@@ -168,8 +168,9 @@ function eliminar_tabla(idTabla, columna) {
             idTabla: idTabla,
             columna: columna
         },
-        before: function() {
+        beforeSend: function() {
 
+            loadingUI('eliminando...');
         },
 
         success: function(response) {
@@ -588,7 +589,9 @@ function save_master_detalle() {
             valor_cadena: valor_cadena,
             modo: 'D'
         },
-        before: function() {},
+        beforeSend: function() {
+            $("#btnSaveTablaDetalle").attr("disabled",true);
+        },
         success: function(response) {
 
 
@@ -616,6 +619,9 @@ function save_master_detalle() {
             ajaxError(jqXHR, textStatus, errorThrown);
             console.log(jqXHR);
 
+        }, complete : function(xhr, status) {
+
+            $("#btnSaveTablaDetalle").attr("disabled", false);
         }
     });
 }

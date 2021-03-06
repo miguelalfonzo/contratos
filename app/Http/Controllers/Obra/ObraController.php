@@ -26,7 +26,9 @@ class ObraController extends Controller
             return $this->redireccion_404();
         }
 
-    	return view('obra.index');
+        $condicion = Maestro::get_combo(82);
+
+    	return view('obra.index',compact('condicion'));
     }
 
     protected function new_obra(){

@@ -33,6 +33,7 @@
                     <tr>
                       <th>Documento</th>
                       <th>Fecha Modificación</th>
+                      <th>Comentario</th>
                       <th>Accion</th>   
                                                          
                    </tr>
@@ -81,8 +82,35 @@
                     </div>
                     <div class="modal-body">
                         <p>(*) solo se admiten archivos con extensión : <strong>jpeg , jpg , png ,pdf , docx ,xlsx</strong> y un máximo de 12 MB</p>
+                        
+
+
+                        <div class="form-group row ">
+
+
+                     
+                      <div class="col-12 ">
+                        
+                       <div class="input-group mb-2 mr-sm-2 ">
+                          <div class="input-group-prepend ">
+                            <div class="input-group-text " style="height:31px">Comentario</div>
+                          </div>
+                          <input style=""type="text" class="form-control  form-control-sm"  placeholder="" id="comentario_documento" name="comentario_documento" onkeypress="" autocomplete="off" maxlength="100"  value="" >
+                        </div>
+                      </div>
+                   
+                  </div>
+
+
+
+
+
                         <form method="POST" action="{{url('/load_file_obra_documento')}}" class="dropzone" id="dropzoneObraDoc" enctype="multipart/form-data">
                            @csrf
+
+
+                           
+
 
                            <input type="hidden" id="IdObra_documento" name="IdObra_documento"> 
 
@@ -91,6 +119,10 @@
                            <input type="hidden" id="Valor_documento_obra" name="Valor_documento_obra">
                            
                            <input type="hidden" id="Descripcion_documento_obra" name="Descripcion_documento_obra">
+
+                           <input type="hidden" id="Comentario_documento_obra" name="Comentario_documento_obra">
+
+
                         </form>
                           
                     </div>

@@ -124,16 +124,16 @@ function set_botones_tabla_cliente(data) {
     if (data.FlagActivo == 1) {
 
         btn_eliminar = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Eliminar"' +
-            'onclick="prepare_delete_cliente(\'' + data.IdCliente + '\')" style="cursor:pointer">' +
-            '<span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a> ';
+        'onclick="prepare_delete_cliente(\'' + data.IdCliente + '\')" style="cursor:pointer">' +
+        '<span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a> ';
     }
 
 
     if (data.IdTipoCliente == '05') {
 
         btn_clientes_asociados = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Ver empresas"' +
-            'onclick="prepare_ver_empresas(\'' + data.IdConsorcio + '\',\'' + data.IdCliente + '\')" style="cursor:pointer">' +
-            '<span style="font-size:80%;" class="text-primary glyphicon glyphicon-home"></span></a> ';
+        'onclick="prepare_ver_empresas(\'' + data.IdConsorcio + '\',\'' + data.IdCliente + '\')" style="cursor:pointer">' +
+        '<span style="font-size:80%;" class="text-primary glyphicon glyphicon-home"></span></a> ';
 
 
     }
@@ -328,8 +328,9 @@ function guardar_asociados(asociados, cliente_id_consorcio, id_cliente) {
             id_cliente: id_cliente
 
         },
-        before: function() {
+        beforeSend: function() {
 
+            $("#btn_salvar_modal_empresas").attr("disabled",true);
         },
         success: function(response) {
 
@@ -358,6 +359,9 @@ function guardar_asociados(asociados, cliente_id_consorcio, id_cliente) {
 
 
 
+        }, complete: function() {
+
+            $("#btn_salvar_modal_empresas").attr("disabled",false);  
         }
 
     });
@@ -434,7 +438,7 @@ function list_cliente_documento(id_cliente) {
             "render": function(data, type, full, meta) {
 
                 const btn_subida = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Subir"' +
-                    'onclick="prepare_subida_file(\'' + data.valor + '\',\'' + data.descripcion + '\',\'' + data.IdClienteDocumento + '\',\'' + id_cliente + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-cloud"></span></a>';
+                'onclick="prepare_subida_file(\'' + data.valor + '\',\'' + data.descripcion + '\',\'' + data.IdClienteDocumento + '\',\'' + id_cliente + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-cloud"></span></a>';
 
 
                 let btn_ver = '';
@@ -443,11 +447,11 @@ function list_cliente_documento(id_cliente) {
                 if (data.ValorFile != null) {
 
                     btn_ver = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Ver"' +
-                        'onclick="ver_file(\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-eye-open"></span></a>';
+                    'onclick="ver_file(\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-eye-open"></span></a>';
 
 
                     btn_eliminar = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Eliminar"' +
-                        'onclick="prepare_delete_file(\'' + data.IdClienteDocumento + '\',\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
+                    'onclick="prepare_delete_file(\'' + data.IdClienteDocumento + '\',\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
                 }
 
 
@@ -513,7 +517,11 @@ var dropzoneClienteDoc = new Dropzone('#dropzoneClienteDoc', {
     dictRemoveFile: "Remover archivo",
     dictMaxFilesExceeded: "Solo puede subir un archivo.",
     timeout: 5000,
+    sending:function(){
 
+        $('#btn_subir_file_cdocumento').attr("disabled",true);
+
+    },
     init: function() {
         this.on("processing", function(file) {
             this.options.url = server + 'load_file_cliente_documento';
@@ -540,6 +548,8 @@ var dropzoneClienteDoc = new Dropzone('#dropzoneClienteDoc', {
 
         $.unblockUI();
 
+        $('#btn_subir_file_cdocumento').attr("disabled",false);
+
     },
     error: function(file, response) {
 
@@ -549,6 +559,8 @@ var dropzoneClienteDoc = new Dropzone('#dropzoneClienteDoc', {
         dropzoneClienteDoc.removeAllFiles();
 
         $.unblockUI();
+
+        $('#btn_subir_file_cdocumento').attr("disabled",false);
     }
 })
 
@@ -715,9 +727,12 @@ function list_cliente_accionista(id_cliente) {
             "render": function(data, type, full, meta) {
 
                 const btn_edit = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Editar"' +
-                    'onclick="prepare_update_accionista(\'' + data.IdClienteAccionista + '\',\'' + data.Nombre + '\',\'' + data.ApePat + '\',\'' + data.ApeMat + '\',\'' + data.Cargo + '\',\'' + data.Participacion + '\',\'' + data.NumDoc + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-edit"></span></a>';
+                'onclick="prepare_update_accionista(\'' + data.IdClienteAccionista + '\',\'' + data.Nombre + '\',\'' + data.ApePat + '\',\'' + data.ApeMat + '\',\'' + data.Cargo + '\',\'' + data.Participacion + '\',\'' + data.NumDoc + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-edit"></span></a>';
 
-                return '<div class="btn-group"> ' + btn_edit + '</div>';
+                const btn_delete = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Eliminar"' +
+                'onclick="elimina_accionista(\'' + data.IdClienteAccionista + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
+
+                return '<div class="btn-group"> ' + btn_edit + btn_delete +'</div>';
             }
         }],
 
@@ -733,6 +748,54 @@ function list_cliente_accionista(id_cliente) {
 
 }
 
+function elimina_accionista(IdClienteAccionista){
+
+    $.ajax({
+        url: server + 'elimina_accionista',
+        type: "post",
+        dataType: 'json',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            id_accionista_cliente: IdClienteAccionista,
+            
+
+        },
+        beforeSend: function() {
+
+            loadingUI('eliminando...');
+            
+        },
+        success: function(response) {
+
+
+            if (response.status == "ok") {
+
+                $('#table-cliente-accionistas').DataTable().ajax.reload();
+                
+                alertify.success(set_sucess_message_alertify(response.description));
+
+            } else {
+
+                alertify.error(set_error_message_alertify(response.description));
+            }
+
+
+            $.unblockUI();
+
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+
+            ajaxError(jqXHR, textStatus, errorThrown);
+
+
+            $.unblockUI();
+
+        }
+
+    });
+
+
+}
 function prepare_update_accionista(idClienteAccionista, nombre, apepat, apemat, cargo, participacion, dni) {
 
 
@@ -837,8 +900,9 @@ function save_accionista() {
             id_cliente: id_cliente
 
         },
-        before: function() {
+        beforeSend: function() {
 
+            $("#salvar_accionista").attr("disabled",true);
         },
         success: function(response) {
 
@@ -864,6 +928,9 @@ function save_accionista() {
 
 
             $.unblockUI();
+        }, complete: function() {
+
+            $("#salvar_accionista").attr("disabled",false);
         }
 
     });
@@ -946,9 +1013,13 @@ function list_cliente_representante(id_cliente) {
             "render": function(data, type, full, meta) {
 
                 const btn_edit = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Editar"' +
-                    'onclick="prepare_update_representante(\'' + data.FechaNacimiento + '\',\'' + data.NumDocRepresentante + '\',\'' + data.IdClienteRepresentante + '\',\'' + data.NombreRepresentante + '\',\'' + data.ApePatRepresentante + '\',\'' + data.ApeMatRepresentante + '\',\'' + data.Cargo + '\',\'' + data.FechaInicio + '\',\'' + data.FechaFin + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-edit"></span></a>';
+                'onclick="prepare_update_representante(\'' + data.FechaNacimiento + '\',\'' + data.NumDocRepresentante + '\',\'' + data.IdClienteRepresentante + '\',\'' + data.NombreRepresentante + '\',\'' + data.ApePatRepresentante + '\',\'' + data.ApeMatRepresentante + '\',\'' + data.Cargo + '\',\'' + data.FechaInicio + '\',\'' + data.FechaFin + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-edit"></span></a>';
 
-                return '<div class="btn-group"> ' + btn_edit + '</div>';
+
+                const btn_eliminar = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Eliminar"' +
+                'onclick="elimina_representante(\'' + data.IdClienteRepresentante + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
+
+                return '<div class="btn-group"> ' + btn_edit + btn_eliminar +'</div>';
             }
         }],
 
@@ -961,6 +1032,54 @@ function list_cliente_representante(id_cliente) {
 
     });
 
+
+}
+
+function elimina_representante(IdClienteRepresentante){
+
+    $.ajax({
+        url: server + 'elimina_representante',
+        type: "post",
+        dataType: 'json',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            id_representante_cliente: IdClienteRepresentante,
+            
+
+        },
+        beforeSend: function() {
+
+            loadingUI('eliminando...');
+            
+        },
+        success: function(response) {
+
+
+            if (response.status == "ok") {
+
+                $('#table-cliente-representantes').DataTable().ajax.reload();
+                
+                alertify.success(set_sucess_message_alertify(response.description));
+
+            } else {
+
+                alertify.error(set_error_message_alertify(response.description));
+            }
+
+
+            $.unblockUI();
+
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+
+            ajaxError(jqXHR, textStatus, errorThrown);
+
+
+            $.unblockUI();
+
+        }
+
+    });
 
 }
 
@@ -1031,7 +1150,7 @@ function valida_inputs_representante() {
         return 'Ingrese un apellido materno';
     }
 
-     if ($("#representante_fe_nac").val().trim() == "") {
+    if ($("#representante_fe_nac").val().trim() == "") {
 
         return 'Ingrese una fecha de nacimiento';
     }
@@ -1089,8 +1208,9 @@ function save_representante() {
             fe_nacimiento:fe_nacimiento
 
         },
-        before: function() {
+        beforeSend: function() {
 
+            $("#salvar_representante").attr("disabled",true);
         },
         success: function(response) {
 
@@ -1116,6 +1236,10 @@ function save_representante() {
 
 
             $.unblockUI();
+
+        }, complete: function() {
+
+            $("#salvar_representante").attr("disabled",false);
         }
 
     });
@@ -1146,8 +1270,9 @@ function delete_cliente(identificador) {
             identificador: identificador
 
         },
-        before: function() {
+        beforeSend: function() {
 
+            loadingUI('eliminando...');
         },
         success: function(response) {
 
@@ -1172,6 +1297,9 @@ function delete_cliente(identificador) {
 
 
             $.unblockUI();
+        },complete: function() {
+
+
         }
 
     });
@@ -1206,7 +1334,7 @@ $(".span_find_ruc_representante").on('click',function(){
 
     if(tipo=="representante"){
 
-        
+
         dni = $("#representante_dni").val().trim();
 
     }else if(tipo=="accionista"){

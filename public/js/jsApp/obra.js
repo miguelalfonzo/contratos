@@ -63,6 +63,12 @@ function valida_inputs_obra() {
         return 'Ingrese un financiante para la obra';
     }
 
+    if ($("#obra_moneda").val() == "") {
+
+        return 'Seleccione una moneda';
+    }
+
+
     if ($("#obra_monto").val().trim() == "") {
 
         return 'Ingrese un monto para la obra';
@@ -286,48 +292,64 @@ $("#form_obra").submit(function(event) {
     if (rpta == '') {
 
 
-        let formData = new FormData(document.getElementById("form_obra"));
+        alertify.confirm("Confirmar Operación", "¿Está seguro de guardar la obra? " ,
+            function() {
 
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: server + 'salvar_obra',
-            type: "post",
-            dataType: "json",
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
+             let formData = new FormData(document.getElementById("form_obra"));
 
-            before: function() {
+             $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: server + 'salvar_obra',
+                type: "post",
+                dataType: "json",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
 
-            },
-            success: function(response) {
+                beforeSend: function() {
 
-
-
-                if (response.status == "ok") {
-
-                    alertify.success(set_sucess_message_alertify(response.description));
-
-                    const url = server + "obras";
-
-                    setTimeout($(location).attr('href', url), 10000);
-
-                } else {
+                    $("#btn_guardar_obra").attr("disabled",true);
+                    
+                },
+                success: function(response) {
 
 
-                    alertify.error(set_error_message_alertify(response.description));
+                    if (response.status == "ok") {
+
+                        alertify.success(set_sucess_message_alertify(response.description));
+
+                        const url = server + "obras";
+
+                        setTimeout($(location).attr('href', url), 10000);
+
+                    } else {
+
+
+                        alertify.error(set_error_message_alertify(response.description));
+                    }
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+
+                    ajaxError(jqXHR, textStatus, errorThrown);
+
+
+                },
+                complete:function(){
+
+                    $("#btn_guardar_obra").attr("disabled",false);
                 }
 
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
+            });
 
-                ajaxError(jqXHR, textStatus, errorThrown);
+         },
+         function() {
 
+            alertify.error(set_error_message_alertify('Cancelado'));
 
-            }
 
         });
 
