@@ -275,17 +275,22 @@
                     <div class="form-group row ">
 
   
-                        <label class="control-label col-md-5 col-sm-3 "><button style="display: none" type="button" data-type="fc" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Fiel Cumplimiento</label>
-                        <div class="input-group col-md-7 col-sm-9 ">
+                        <label class="control-label col-md-4 col-sm-3 "><button style="display: none" type="button" data-type="fc" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Fiel Cumplimiento</label>
+                        <div class="input-group col-md-6 col-sm-6 ">
                           <label>
                         <input class="js-switch" type="checkbox" id="switch_cumplimiento" name="switch_cumplimiento">&nbsp;&nbsp;
                          </label>
-                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_cumplimiento" name="solicitud_cumplimiento" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)' value="" readonly autocomplete="off" data-valor="{{ $obra[0]['FielCumplimiento'] ?? ''}}">
+                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_cumplimiento" name="solicitud_cumplimiento" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)' value="" readonly autocomplete="off" data-valor="{{ $obra[0]['FielCumplimiento'] ?? ''}}"><small class="mt-2 ml-1">%</small>
 
 
 
                         
                          
+                        </div>
+
+                        <div class=" col-md-2 col-sm-3 ">
+                            <input type="text"  class="form-control form-control-sm" maxlength="5" readonly id="input_por_solicitud_cumplimiento" name="input_por_solicitud_cumplimiento" data-valor="{{$obra[0]['FielCumplimientoPorcetaje'] ?? '' }}" oninput='limitDecimalPlaces(event, 2)'  onkeypress='return isNumberKey(event)'>
+
                         </div>
                      
                     </div>
@@ -293,29 +298,43 @@
                     <div class="form-group row resize-margin-top-12">
 
   
-                        <label class="control-label col-md-5 col-sm-3 "><button data-type="ad" style="display: none" type="button" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Adelanto Directo</label>
-                        <div class="input-group col-md-7 col-sm-9 ">
+                        <label class="control-label col-md-4 col-sm-3 "><button data-type="ad" style="display: none" type="button" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Adelanto Directo</label>
+                        <div class="input-group col-md-6 col-sm-6 ">
                           <label>
                         <input class="js-switch" type="checkbox" id="switch_directo" name="switch_directo" >&nbsp;&nbsp;
                       </label>
                       
-                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2 "  placeholder="" id="solicitud_directo" name="solicitud_directo" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly autocomplete="off" data-valor="{{$obra[0]['AdelantoDirecto'] ?? ''}}">
+                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2 "  placeholder="" id="solicitud_directo" name="solicitud_directo" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly autocomplete="off" data-valor="{{$obra[0]['AdelantoDirecto'] ?? ''}}"><small class="mt-2 ml-1">%</small>
                         
                         
                         </div>
+
+                        <div class=" col-md-2 col-sm-3 ">
+                            <input type="text"  class="form-control form-control-sm" maxlength="5" readonly id="input_por_solicitud_directo" name="input_por_solicitud_directo" data-valor="{{$obra[0]['AdelantoDirectoPorcetaje'] ?? '' }}" oninput='limitDecimalPlaces(event, 2)'  onkeypress='return isNumberKey(event)'>
+
+                        </div>
+
                      
                     </div>
 
                     <div class="form-group row resize-margin-top-12">
 
   
-                        <label class="control-label col-md-5 col-sm-3 "><button style="display: none" type="button" data-type="am" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Adelanto de Materiales</label>
-                        <div class="input-group col-md-7 col-sm-9 ">
+                        <label class="control-label col-md-4 col-sm-3 "><button style="display: none" type="button" data-type="am" class="EliminaFianzaBtn btn btn-danger btn-sm resize-button px-1">x</button>&nbsp;Adelanto de Materiales</label>
+                        <div class="input-group col-md-6 col-sm-6 ">
                           <label>
                           <input class="js-switch" type="checkbox" id="switch_materiales" name="switch_materiales" >&nbsp;&nbsp;
                           </label>
-                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_materiales" name="solicitud_materiales" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly="" autocomplete="off" data-valor="{{$obra[0]['AdelantoMateriales'] ?? '' }}">
+
+                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_materiales" name="solicitud_materiales" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly="" autocomplete="off" data-valor="{{$obra[0]['AdelantoMateriales'] ?? '' }}"> <small class="mt-2 ml-1">%</small>
+
+
                          
+                        </div>
+
+                        <div class=" col-md-2 col-sm-3 ">
+                            <input type="text"  class="form-control form-control-sm" maxlength="5" readonly id="input_por_solicitud_materiales" name="input_por_solicitud_materiales" data-valor="{{$obra[0]['AdelantoMaterialesPorcetaje'] ?? '' }}" oninput='limitDecimalPlaces(event, 2)'  onkeypress='return isNumberKey(event)'>
+
                         </div>
                      
                     </div>
@@ -324,8 +343,8 @@
                     <div class="form-group row resize-margin-top-12">
 
   
-                        <label class="control-label col-md-5 col-sm-3 ">Total Fianza </label>
-                        <div class="input-group col-md-7 col-sm-9 " style="padding-left:50px">
+                        <label class="control-label col-md-4 col-sm-3 ">Total Fianza </label>
+                        <div class="input-group col-md-8 col-sm-9 " style="padding-left:50px">
                           
                           <?php
 

@@ -215,6 +215,10 @@ class FianzaController extends Controller
 
             return $this->setRpta("error","En esta etapa no se puede cerrar la carta ");
 
+        }elseif($request->mcf_estado=="ANL"){
+
+            return $this->setRpta("error","En esta etapa no se puede anular la carta ");
+
         }else{
 
             return $this->setRpta("ok","valido correctamente");

@@ -35,7 +35,7 @@ class WelcomeUser extends Mailable
     public function build()
     {
          return $this->view("mails/welcome")
-            ->from("these08@gmail.com",'TRANSCAPITAL')
+            ->from("alertastranscapital@gmail.com",'TRANSCAPITAL')
             ->subject("Bienvenido a TRANSCAPITAL - ".$this->nombre);
 
     }

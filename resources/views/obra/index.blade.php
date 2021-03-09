@@ -26,7 +26,7 @@
           <div class="x_title ">
 
 
-            <div class="col-sm-4 col-md-4 col-lg-4 padding-5">
+            <div class="col-sm-4 col-md-3  padding-5">
 
 
 
@@ -45,9 +45,23 @@
           </div>
 
 
-          <div class="col-sm-3 col-md-3 col-lg-3 padding-5"  >
+          <div class="col-sm-3 col-md-4 col-lg-3 padding-5"  >
 
-            <a href="{{url('/obra')}}" class="m-0 p-0 px-2 btn btn-primary float-right"><i class="fa fa-plus"></i> Nueva Obra</a>
+            <div class="col-sm-12 col-md-6 col-lg-6 padding-5">
+              
+              <button  id="btn_exportar_obras" class=" m-0 p-0 px-2 btn btn-success float-right"><i class="fa fa-file-excel-o mr-2"></i>Exportar</button>
+
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-6 padding-5">
+              
+              <a href="{{url('/obra')}}" class="m-0 p-0 px-2 btn btn-primary float-right"><i class="fa fa-plus mr-2"></i>Obra</a>
+
+            </div>
+
+            
+
+
           </div>
 
 
@@ -100,6 +114,7 @@
                     <th>Beneficiario</th>
                     <th>Financiera</th>
                     <th>Localidad</th>
+                    <th>Monto</th>
                     <th>Condición</th>
                     <th>Acciones</th>
                   </tr>

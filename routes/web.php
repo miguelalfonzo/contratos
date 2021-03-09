@@ -122,6 +122,8 @@ Route::post('/elimina_documento_obra', 'Obra\ObraController@elimina_documento_ob
 
 Route::get('/get_obras_combo_autocompletar', 'Obra\ObraController@get_obras_combo_autocompletar');
 
+Route::get('/export_obras', 'Obra\ObraController@export_obras');
+
 //solicitud 
 
 Route::get('/solicitud/{id}','Obra\SolicitudController@solicitud');

@@ -491,11 +491,28 @@ $("#switch_cumplimiento").on('click', function() {
 
         $("#solicitud_cumplimiento").val(valor_oculto);
 
+        //para el porcentaje
+
+        $("#input_por_solicitud_cumplimiento").prop('readonly', false);
+
+        const porcentaje_oculto = $("#input_por_solicitud_cumplimiento").attr('data-valor');
+
+        $("#input_por_solicitud_cumplimiento").val(porcentaje_oculto);
+
+
+
+
     } else {
 
         $("#solicitud_cumplimiento").prop('readonly', true);
 
         $("#solicitud_cumplimiento").val('');
+
+        //para el porcentaje
+
+        $("#input_por_solicitud_cumplimiento").prop('readonly', true);
+
+        $("#input_por_solicitud_cumplimiento").val('');
         
     }
 
@@ -512,11 +529,26 @@ $("#switch_directo").on('click', function() {
 
         $("#solicitud_directo").val(valor_oculto);
 
+        //para el porcentaje
+
+        $("#input_por_solicitud_directo").prop('readonly', false);
+
+        const porcentaje_oculto = $("#input_por_solicitud_directo").attr('data-valor');
+
+        $("#input_por_solicitud_directo").val(porcentaje_oculto);
+
+
     } else {
 
         $("#solicitud_directo").prop('readonly', true);
 
         $("#solicitud_directo").val('');
+
+        //para el porcentaje
+
+        $("#input_por_solicitud_directo").prop('readonly', true);
+
+        $("#input_por_solicitud_directo").val('');
     }
 
     recalcula_fianza();
@@ -532,12 +564,26 @@ $("#switch_materiales").on('click', function() {
 
         $("#solicitud_materiales").val(valor_oculto);
 
+        //para el porcentaje
+
+        $("#input_por_solicitud_materiales").prop('readonly', false);
+
+        const porcentaje_oculto = $("#input_por_solicitud_materiales").attr('data-valor');
+
+        $("#input_por_solicitud_materiales").val(porcentaje_oculto);
+
 
     } else {
 
         $("#solicitud_materiales").prop('readonly', true);
 
         $("#solicitud_materiales").val('');
+
+        //para el porcentaje
+
+        $("#input_por_solicitud_materiales").prop('readonly', true);
+
+        $("#input_por_solicitud_materiales").val('');
     }
 
     recalcula_fianza();
@@ -558,6 +604,101 @@ function recalcula_fianza() {
     $("#total_solicitud").val(numero_a_formato_numerico(suma_total.toFixed(2)));
 
 }
+
+
+$("#input_por_solicitud_materiales").keyup(function(){
+  
+
+  const value = $(this).val();
+
+  const valor_obra = $("#solicitud_monto").val();
+
+  const valor_obra_numero = formato_numerico_a_numero(valor_obra);
+
+  const nuevo_valor = parseFloat(valor_obra_numero*value/100).toFixed(2);
+
+  $("#solicitud_materiales").val(nuevo_valor);
+  
+  recalcula_fianza();
+
+});
+
+$("#input_por_solicitud_directo").keyup(function(){
+  
+
+  const value = $(this).val();
+
+  const valor_obra = $("#solicitud_monto").val();
+
+  const valor_obra_numero = formato_numerico_a_numero(valor_obra);
+
+  const nuevo_valor = parseFloat(valor_obra_numero*value/100).toFixed(2);
+
+  $("#solicitud_directo").val(nuevo_valor);
+  
+  recalcula_fianza();
+
+});
+
+$("#input_por_solicitud_cumplimiento").keyup(function(){
+  
+
+  const value = $(this).val();
+
+  const valor_obra = $("#solicitud_monto").val();
+
+  const valor_obra_numero = formato_numerico_a_numero(valor_obra);
+
+  const nuevo_valor = parseFloat(valor_obra_numero*value/100).toFixed(2);
+
+  $("#solicitud_cumplimiento").val(nuevo_valor);
+  
+  recalcula_fianza();
+
+});
+
+
+$("#solicitud_materiales").keyup(function(){
+  
+
+  const value = $(this).val();
+
+  const valor_solicitud = formato_numerico_a_numero($("#solicitud_monto").val());
+
+  const nuevo_porcentaje = parseFloat(value*100/valor_solicitud).toFixed(2);
+
+  $("#input_por_solicitud_materiales").val(nuevo_porcentaje);
+  
+
+});
+
+$("#solicitud_cumplimiento").keyup(function(){
+  
+
+  const value = $(this).val();
+
+  const valor_solicitud = formato_numerico_a_numero($("#solicitud_monto").val());
+
+  const nuevo_porcentaje = parseFloat(value*100/valor_solicitud).toFixed(2);
+
+  $("#input_por_solicitud_cumplimiento").val(nuevo_porcentaje);
+  
+
+});
+
+$("#solicitud_directo").keyup(function(){
+  
+
+  const value = $(this).val();
+
+  const valor_solicitud = formato_numerico_a_numero($("#solicitud_monto").val());
+
+  const nuevo_porcentaje = parseFloat(value*100/valor_solicitud).toFixed(2);
+
+  $("#input_por_solicitud_directo").val(nuevo_porcentaje);
+  
+
+});
 
 
 function get_list_documentos_temporales() {

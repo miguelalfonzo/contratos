@@ -114,7 +114,32 @@
                                           <!--  -->
 
                                          
+                                          <!--   -->
+                                          <label class="control-label col-md-2 col-sm-2 margin-top-10">Fianzas</label>
 
+                                          <div class="col-md-10 col-sm-10 margin-top-10">
+                                
+                                  
+                              
+                                          <div class="input-group mb-2 mr-sm-2 ">
+                                          
+
+                                            <select class="chosen" id="filtrar_modal_vence" name="filtrar_modal_vence">
+                                              
+                                              <option value="TO">TODOS</option>
+                                              <option value="VH">Que Vencen Hoy</option>
+                                              <option value="VE">Vencidas</option>
+                                              <option value="PV">Por Vencer</option>
+                                            </select>
+
+
+                                            
+                                          </div>
+
+          
+                                          </div>
+
+                                          <!--  -->
 
 
                                           

@@ -146,28 +146,35 @@ $("#buscar_fianzas_filtro").on('click', function() {
     
     const obra = $('#filtrar_modal_id_obra').val();
     
-    load_list_fianzas(documento,cliente,obra);
+    const fianza_vencimiento = $('#filtrar_modal_vence').val();
+
+    load_list_fianzas(documento,cliente,obra,fianza_vencimiento);
 
     $("#modal_filtrar_cartas").modal('hide');
 
     //setea cabecera de filtros
 
-     
-     const label_cliente = (cliente == 0)?' ':$("#filtrar_modal_cliente").val();
 
-     const label_obra = (obra == 0)?' ':$("#filtrar_modal_obra").val();
+    const label_cliente = (cliente == 0)?' ':$("#filtrar_modal_cliente").val();
 
-     const label_carta = $("#filtrar_modal_carta option:selected").text();
+    const label_obra = (obra == 0)?' ':$("#filtrar_modal_obra").val();
 
-     $('#filtro_cabecera_cliente').text(label_cliente.trim());
+    const label_carta = $("#filtrar_modal_carta option:selected").text();
 
-     $('#filtro_cabecera_obra').text(label_obra.trim());
+    const label_vence = $("#filtrar_modal_vence option:selected").text();
+
+    $('#filtro_cabecera_cliente').text(label_cliente.trim());
+
+    $('#filtro_cabecera_obra').text(label_obra.trim());
     
-     $('#filtro_cabecera_fianza').text(label_carta.trim());
+    $('#filtro_cabecera_fianza').text(label_carta.trim());
+
+    $('#filtro_cabecera_vence').text(label_vence.trim());
+
 
 });
 
-function load_list_fianzas(documento,cliente,obra) {
+function load_list_fianzas(documento,cliente,obra,fianza_vencimiento) {
 
     destroy_data_table('tabla-fianza');
 
@@ -180,7 +187,8 @@ function load_list_fianzas(documento,cliente,obra) {
             data: {
                 documento: documento,
                 cliente:cliente,
-                obra:obra
+                obra:obra,
+                fianza_vencimiento:fianza_vencimiento
 
             },
             dataSrc: '',
@@ -263,14 +271,39 @@ function load_list_fianzas(documento,cliente,obra) {
 
 
 
-// $("#gestion_tipo_doc").on('change', function() {
 
-//     destroy_data_table('tabla-fianza');
-//     const value = $(this).val();
-//     load_list_fianzas(value);
-//     $("#buscador_general").val("");
 
-// });
+$(".filter-label-vencimiento").on('click', function() {
+
+ const fianza_vencimiento = $(this).attr('data-tipo');
+
+ load_list_fianzas('',0,0,fianza_vencimiento);
+
+ let label_vencimiento = '' ;
+
+ if( fianza_vencimiento == 'VH'){
+
+    label_vencimiento = 'Vencen Hoy';
+
+ }else if( fianza_vencimiento == 'VE'){
+
+    label_vencimiento = 'Vencidas';
+
+ }else if( fianza_vencimiento == 'PV'){
+
+    label_vencimiento = 'Por Vencer';
+ }
+
+ $('#filtro_cabecera_cliente').text('TODOS');
+
+ $('#filtro_cabecera_obra').text('TODOS');
+
+ $('#filtro_cabecera_fianza').text('TODOS');
+
+ $('#filtro_cabecera_vence').text(label_vencimiento);
+
+});
+
 
 function set_botones_tabla_fianza(data) {
 

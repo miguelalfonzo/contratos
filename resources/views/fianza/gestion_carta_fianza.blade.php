@@ -28,8 +28,18 @@
                     <div class="col-sm-6 col-md-5  padding-5" >
                         
 
-                           <button id="btn_filtro_especial_fianzas" type="button" class="btn btn-sm resize-button btn-primary"><i class="fa fa-search mr-2"></i>Filtrar</button> 
-                                       
+                           
+
+                           <a data-tipo='VH' class="filter-label-vencimiento btn btn-sm btn-success resize-button text-white" style="cursor: pointer"><small><i class="fa fa-calendar mr-1" ></i>Vencen Hoy</small></a> 
+                           
+
+                           <a data-tipo='VE' class="filter-label-vencimiento btn btn-sm btn-success resize-button text-white" style="cursor: pointer"><small><i class="fa fa-calendar mr-1"></i>Vencidas</small></a> 
+                           
+
+                           <a data-tipo='PV' class="filter-label-vencimiento btn btn-sm btn-success resize-button text-white" style="cursor: pointer"><small><i class="fa fa-calendar mr-1"></i>Por Vencer</small></a>
+
+
+                           <button id="btn_filtro_especial_fianzas" type="button" class="btn btn-sm resize-button btn-primary"><i class="fa fa-search mr-2"></i>Filtrar</button>                                       
                     </div>
                     
                     <div class="col-sm-9 col-md-3 padding-5">
@@ -49,18 +59,24 @@
                           
                            <div class="col-12">
                                
-                               <div class="col-lg-4">
+                               <div class="col-lg-3">
                                 <label class="control-label ">Cliente : </label> <strong><span id="filtro_cabecera_cliente" class="resize-span text-primary"></span></strong>
                                </div>
 
-                               <div class="col-lg-4">
+                               <div class="col-lg-3">
                                    <label class="control-label col-lg-4">Obra : </label> <strong><span id="filtro_cabecera_obra" class="resize-span text-primary"></span></strong>
 
                                </div>
                                
-                               <div class="col-lg-4">
+                               <div class="col-lg-3">
 
-                                    <label class="control-label col-lg-4">Documento : </label> <strong><span id="filtro_cabecera_fianza" class="resize-span text-primary"></span></strong>
+                                    <label class="control-label col-lg-4">Carta : </label> <strong><span id="filtro_cabecera_fianza" class="resize-span text-primary"></span></strong>
+
+                               </div>
+
+                               <div class="col-lg-3">
+
+                                    <label class="control-label col-lg-4">Fianza : </label> <strong><span id="filtro_cabecera_vence" class="resize-span text-primary"></span></strong>
 
                                </div>
 
@@ -82,23 +98,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  {{-- <tr >
-                                        <td >423423423</td>
-                                        <td>234</td>
-                                        <td>Tipo Documento</td>
-                                        <td >Cliente</td>
-                                        <td>Obra</td>
-                                        <td>Descripción</td>    
-                                        <td>Moneda</td>  
-                                        <td>Monto</td>  
-                                        <td>Estado</td>  
-                                        <td>
-                                          <div class="row justify-content-around w-100">
-                                            <a  onclick="carta_fianza()"  data-toggle="tooltip" data-placement="bottom" title="Datos Carta Fianza"><i class="text-primary fa fa-list" ></i></a>
-                                            <a  onclick="datos_garantia()"  data-toggle="tooltip" data-placement="bottom" title="Datos Garantia"><i class="text-success fa fa-list"></i></a>
-                                          </div>
-                                        </td>  
-                                    </tr> --}}
+                                  
                                                 
                                 </tbody>
                                 

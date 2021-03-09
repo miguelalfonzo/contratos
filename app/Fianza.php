@@ -18,7 +18,11 @@ class Fianza extends Model
 
         $obra  = (!empty($request->obra))?$request->obra:0;
 
-        $list  = DB::select('call Fianza_Get_List (?,?,?)',array($documento,$cliente,$obra));
+        $vencimiento = $request->fianza_vencimiento;
+
+     
+
+        $list  = DB::select('call Fianza_Get_List (?,?,?,?)',array($documento,$cliente,$obra,$vencimiento));
 
         return $list;
     

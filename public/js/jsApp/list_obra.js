@@ -9,6 +9,8 @@ function list_obras(proceso,condicion,id_cliente,id_obra,inicio,fin) {
 
     destroy_data_table('table_obra');
 
+    $("#buscador_general").val('');
+
     var dataTable = $('#table_obra').DataTable({
         ajax: {
             url: server + 'get_obras_list',
@@ -55,7 +57,9 @@ function list_obras(proceso,condicion,id_cliente,id_obra,inicio,fin) {
                 "next": "Siguiente",
                 "previous": "Anterior"
             }
-        },
+        }, "order": [
+            [0, "desc"]
+        ],
         columns: [{
             data: 'CodigoObra'
         }, {
@@ -68,6 +72,8 @@ function list_obras(proceso,condicion,id_cliente,id_obra,inicio,fin) {
             data: 'FullNameFinanciera'
         }, {
             data: 'Localidad'
+        },{
+            data: 'MontoMoneda'
         }, {
             data: 'Condicion'
         }, {
@@ -77,8 +83,19 @@ function list_obras(proceso,condicion,id_cliente,id_obra,inicio,fin) {
                 return set_botones_tabla_obras(data);
 
             }
-        }],
+        }]
+        ,
+        rowCallback: function(row, data) {
 
+            if (data.CondicionBit == 'P') {
+
+                $($(row).find("td")[7]).html('<div class="resize-margin-top"><span class="cursor-pointer text-primary" data-toggle="tooltip" data-placement="bottom" title="' + data.Condicion + ' "><strong>' + data.CondicionBit + '</strong></span></div>');
+
+            } else {
+
+                $($(row).find("td")[7]).html('<div class="resize-margin-top"><span class="cursor-pointer text-danger" data-toggle="tooltip" data-placement="bottom" title="' + data.Condicion + ' "><strong>' + data.CondicionBit + '</strong></span></div>');
+            }
+        },
         "drawCallback": function(settings) {
 
             $('[data-toggle="tooltip"]').tooltip();
@@ -150,7 +167,7 @@ function set_botones_tabla_obras(data) {
             btn_solicitud = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize"  style="cursor:pointer" title="Solicitud Rechazada"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-info-sign"></span></a>';
 
         }
-    
+
     }else if(data.IdCondicion == 2){
 
         //boton informativo
@@ -166,11 +183,25 @@ function set_botones_tabla_obras(data) {
 }
 
 
+$('#btn_exportar_obras').on('click', function() {
+
+ const proceso =  $('#filter_obra_proceso').val();
+ const condicion =  $('#filter_obra_condicion').val();
+ const id_cliente =  $('#filter_obra_id_cliente').val();
+ const id_obra =  $('#filter_obra_idobra').val();
+ const inicio = $('#fecha_inicio_filter_obra').val();
+ const fin = $('#fecha_fin_filter_obra').val();
+
+ window.location.href = server + "export_obras?proceso="+proceso+'&&condicion='+condicion+'&&id_cliente='+id_cliente+'&&id_obra='+id_obra+'&&inicio='+inicio+'&&fin='+fin;
+
+})
+
+
 
 //modal de filtro
 $('#btn_filtrar_obra').on('click', function() {
 
-   $("#modal-filtrar-obras").modal("show");
+ $("#modal-filtrar-obras").modal("show");
 
 })
 
@@ -283,14 +314,14 @@ $(document).on('click', '#obras_list ul li', function() {
 
 $('#aplica_filtro_obras').on('click', function() {
 
-   const proceso =  $('#filter_obra_proceso').val();
-   const condicion =  $('#filter_obra_condicion').val();
-   const id_cliente =  $('#filter_obra_id_cliente').val();
-   const id_obra =  $('#filter_obra_idobra').val();
-   const fe_inicio = $('#fecha_inicio_filter_obra').val();
-   const fe_fin = $('#fecha_fin_filter_obra').val();
+ const proceso =  $('#filter_obra_proceso').val();
+ const condicion =  $('#filter_obra_condicion').val();
+ const id_cliente =  $('#filter_obra_id_cliente').val();
+ const id_obra =  $('#filter_obra_idobra').val();
+ const fe_inicio = $('#fecha_inicio_filter_obra').val();
+ const fe_fin = $('#fecha_fin_filter_obra').val();
 
-   list_obras(proceso,condicion,id_cliente,id_obra,fe_inicio,fe_fin);
+ list_obras(proceso,condicion,id_cliente,id_obra,fe_inicio,fe_fin);
 
    //labels
 
@@ -306,6 +337,8 @@ $('#aplica_filtro_obras').on('click', function() {
    $('#lblInicioFilter').text(fe_inicio);
    $('#lblFinFilter').text(fe_fin);
 
+   $('#modal-filtrar-obras').modal('hide');
+
 })
 
 //fin de la modal de filtro
@@ -317,12 +350,12 @@ $('#aplica_filtro_obras').on('click', function() {
 function get_modal_rechazar_solicitud(IdObra,CodObra,Descripcion){
 
 
-$("#modal-rechazar-solicitud").modal("show");
+    $("#modal-rechazar-solicitud").modal("show");
 
-$("#rechaza_solicitud_form_coment").val('');
-$("#rechaza_solicitud_id").val(IdObra);
-$("#rechaza_solicitud_form_cod").val(CodObra);
-$("#rechaza_solicitud_form_name").val(Descripcion);
+    $("#rechaza_solicitud_form_coment").val('');
+    $("#rechaza_solicitud_id").val(IdObra);
+    $("#rechaza_solicitud_form_cod").val(CodObra);
+    $("#rechaza_solicitud_form_name").val(Descripcion);
 
 }
 
@@ -395,7 +428,7 @@ function list_obras_documento(IdObra) {
             "render": function(data, type, full, meta) {
 
                 const btn_subida = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Subir"' +
-                    'onclick="prepare_subida_file(\'' + data.valor + '\',\'' + data.descripcion + '\',\'' + data.IdObraDocumento + '\',\'' + IdObra + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-cloud"></span></a>';
+                'onclick="prepare_subida_file(\'' + data.valor + '\',\'' + data.descripcion + '\',\'' + data.IdObraDocumento + '\',\'' + IdObra + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-cloud"></span></a>';
 
 
                 let btn_ver = '';
@@ -404,11 +437,11 @@ function list_obras_documento(IdObra) {
                 if (data.ValorFile != null) {
 
                     btn_ver = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Ver"' +
-                        'onclick="ver_file(\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-eye-open"></span></a>';
+                    'onclick="ver_file(\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-success glyphicon glyphicon-eye-open"></span></a>';
 
 
                     btn_eliminar = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Eliminar"' +
-                        'onclick="prepare_delete_file(\'' + data.IdObraDocumento + '\',\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
+                    'onclick="prepare_delete_file(\'' + data.IdObraDocumento + '\',\'' + data.ValorFile + '\')" style="cursor:pointer"><span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a>';
                 }
 
 

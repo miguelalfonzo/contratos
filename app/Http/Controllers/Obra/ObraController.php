@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Maestro;
 use App\Obra;
 use DB;
+use App\Exports\ExportGeneral;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ObraController extends Controller
 {
@@ -202,6 +204,56 @@ class ObraController extends Controller
           
           echo $output;
         }
+    }
+
+
+
+
+    public function export_obras(Request $request){
+
+    
+        $list = Obra::get_obras_list($request);
+
+        $excel = $this->set_filas_excel_detalle($list);
+
+        $export = new ExportGeneral([
+            
+            $excel
+
+         ]); 
+
+      
+        return Excel::download($export, 'Todas_Obras_'.date('Y-m').'.xlsx');
+    }
+
+    public function set_filas_excel_detalle($list){
+
+        $sub_array =array();
+
+        $i=1;
+
+        $sub_array[0]=array("CODIGO","DESCRIPCION","CLIENTE","BENEFICIARIO","FINANCIERA","LOCALIDAD","MONEDA","MONTO","CONDICION");
+
+        foreach ($list as $value) {
+            
+            $codigo           = $value->CodigoObra;
+            $descripcion      = $value->Descripcion;
+            $cliente          = $value->FullNameCliente;
+            $beneficiario     = $value->FullNameBeneficiario;
+            $financiera       = $value->FullNameFinanciera;
+            $localidad        = $value->Localidad;
+            $moneda           = $value->CodigoMoneda;
+            $monto            = $value->Monto;
+            $condicion        = $value->Condicion;
+
+
+            $sub_array[$i]=array($codigo,$descripcion,$cliente,$beneficiario,$financiera,$localidad,$moneda,$monto,$condicion);
+
+            $i++;
+        }
+
+        return $sub_array;
+
     }
  
 }
