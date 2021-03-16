@@ -526,7 +526,11 @@ class Fianza extends Model
       $id_carta_fianza  = $request->cerrar_cf_idcarta;
       $comentario       = $request->cerrar_cf_comentario;
 
-      $estado = 'CER';
+      //$estado = 'CER';
+
+      $estado = $request->cerrar_estado_carta_fianza;
+
+      
       $id_user = Auth::user()->id;
 
       $monto = 0;

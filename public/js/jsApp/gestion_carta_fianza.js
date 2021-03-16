@@ -285,22 +285,22 @@ $(".filter-label-vencimiento").on('click', function() {
 
     label_vencimiento = 'Vencen Hoy';
 
- }else if( fianza_vencimiento == 'VE'){
+}else if( fianza_vencimiento == 'VE'){
 
     label_vencimiento = 'Vencidas';
 
- }else if( fianza_vencimiento == 'PV'){
+}else if( fianza_vencimiento == 'PV'){
 
     label_vencimiento = 'Por Vencer';
- }
+}
 
- $('#filtro_cabecera_cliente').text('TODOS');
+$('#filtro_cabecera_cliente').text('TODOS');
 
- $('#filtro_cabecera_obra').text('TODOS');
+$('#filtro_cabecera_obra').text('TODOS');
 
- $('#filtro_cabecera_fianza').text('TODOS');
+$('#filtro_cabecera_fianza').text('TODOS');
 
- $('#filtro_cabecera_vence').text(label_vencimiento);
+$('#filtro_cabecera_vence').text(label_vencimiento);
 
 });
 
@@ -333,6 +333,8 @@ function set_botones_tabla_fianza(data) {
 
     let btn_cerrar_carta;
 
+    let btn_anular_carta;
+
     let btn_historial;
 
 
@@ -343,6 +345,8 @@ function set_botones_tabla_fianza(data) {
         btn_renovar_garantia = '';
 
         btn_cerrar_carta = '';
+
+        btn_anular_carta = '';
 
         btn_historial='';
 
@@ -362,6 +366,9 @@ function set_botones_tabla_fianza(data) {
 
             btn_historial = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_ver_historial(\'' + data.IdCartaFianzaDetalle + '\')" style="cursor:pointer" title="Historial"><span style="font-size:80%;" class="text-warning  glyphicon glyphicon-eye-open"></span></a>';
 
+            btn_anular_carta = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_anular_fianza(\'' + data.IdCartaFianzaDetalle + '\',\'' + data.NombreCliente + '\',\'' + data.NombreFinanciera + '\',\'' + data.NombreBeneficiario + '\',\'' + data.Moneda + '\',\'' + data.MontoCarta + '\')" style="cursor:pointer" title="Anular Carta Fianza"><span style="font-size:80%;" class="text-danger  glyphicon glyphicon-remove"></span></a>';
+
+
         } else {
 
             btn_renovar_cf = '';
@@ -370,11 +377,18 @@ function set_botones_tabla_fianza(data) {
 
             btn_cerrar_carta = '';
 
+            btn_anular_carta = '';
+
             btn_historial ='';
 
         }
 
-        if(data.Estado == "CERRADA"){
+        // if(data.Estado == "ANULADA"){
+
+        //     btn_gestionar = '';
+        // }
+
+        if(data.Estado == "CERRADA" || data.Estado == "ANULADA"){
 
             btn_historial = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_ver_historial(\'' + data.IdCartaFianzaDetalle + '\')" style="cursor:pointer" title="Historial"><span style="font-size:80%;" class="text-warning  glyphicon glyphicon-eye-open"></span></a>';
 
@@ -387,9 +401,67 @@ function set_botones_tabla_fianza(data) {
 
 
 
-    return '<div class="btn-group"> ' + btn_gestionar + btn_renovar_cf + btn_renovar_garantia + btn_cerrar_carta+btn_historial+'</div>';
+    return '<div class="btn-group"> ' + btn_gestionar + btn_renovar_cf + btn_renovar_garantia + btn_cerrar_carta+btn_historial+btn_anular_carta+'</div>';
 }
 
+function prepare_modal_anular_fianza(IdCartaFianza,p2,p3,p4,p5,p6){
+
+
+    alertify.confirm("Confirmar Consulta", "¿Está seguro de anular la carta?  " ,
+        function() {
+
+          confirma_anulacion_carta_fianza(IdCartaFianza);
+
+      },
+      function() {
+
+        alertify.error(set_error_message_alertify('Cancelado'));
+
+    });
+
+}
+
+function confirma_anulacion_carta_fianza(IdCartaFianza){
+
+
+    $.ajax({
+        url: server + 'cerrar_carta_fianza',
+        type: "post",
+        dataType: 'json',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            cerrar_cf_idcarta: IdCartaFianza,
+            cerrar_cf_comentario: 'Carta Fianza Anulada',
+            cerrar_estado_carta_fianza: 'ANL'
+        },
+        success: function(response) {
+
+            if (response.status == "ok") {
+
+                alertify.success(set_sucess_message_alertify(response.description));
+
+                const url = server + "gestion_carta_fianza";
+
+                setTimeout($(location).attr('href', url), 10000);
+
+            } else {
+
+                alertify.error(set_error_message_alertify(response.description));
+
+            }
+            
+            $.unblockUI();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+
+            ajaxError(jqXHR, textStatus, errorThrown);
+            
+            $.unblockUI();
+        }
+
+    })
+
+}
 
 
 function prepare_modal_gestionar(idCartaFianza) {

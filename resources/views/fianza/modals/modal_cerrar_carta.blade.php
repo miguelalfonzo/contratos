@@ -35,6 +35,8 @@
                                       <div class="form-group row resize-margin-top-12 mb-0 ">
                                           <input type="hidden" id="cerrar_cf_idcarta" name="cerrar_cf_idcarta">
                                           
+                                          <input type="hidden" id="cerrar_estado_carta_fianza" name="cerrar_estado_carta_fianza" value="CER">
+
                                           <!--   -->
                                           <label class="control-label col-md-2 col-sm-2 margin-top-10">Cliente</label>
 

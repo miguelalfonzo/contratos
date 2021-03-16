@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Obra;
+use App\Cliente;
 use App\Rol;
 class Controller extends BaseController
 {
@@ -52,6 +53,21 @@ class Controller extends BaseController
         }
 
         return $this->setRpta('ok','existe codigo');
+    }
+
+    public function valida_id_cliente($id_cliente){
+
+
+        $cliente = Cliente::where('IdCliente',$id_cliente)->first();
+
+        if(is_null($cliente)){
+
+            return $this->setRpta('error','pagina no encontrada');
+        }
+
+        return $this->setRpta('ok','existe codigo');
+
+
     }
 
 

@@ -121,11 +121,17 @@ function set_botones_tabla_cliente(data) {
 
     let btn_clientes_asociados = '';
 
+    let btn_multi_report = '';
+
     if (data.FlagActivo == 1) {
 
         btn_eliminar = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Eliminar"' +
         'onclick="prepare_delete_cliente(\'' + data.IdCliente + '\')" style="cursor:pointer">' +
         '<span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a> ';
+    
+
+        btn_multi_report='<div class="btn-group"><button type="button" class="btn btn-info dropdown-toggle btn-sm resize-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-print"></i></button><div class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -185px, 0px);"><a class="dropdown-item" href="" onclick="reporte_pdf_estado_cuenta(\'' + data.IdCliente + '\')">Estado Cuenta</a><a class="dropdown-item" href="#">Estado Cuenta - Garantías</a></div></div>';
+
     }
 
 
@@ -138,9 +144,24 @@ function set_botones_tabla_cliente(data) {
 
     }
 
-    return '<div class="btn-group"> ' + btn_edit + btn_clientes_asociados + btn_representantes + btn_accionistas + btn_documentos + btn_eliminar + '</div>';
+        
+
+    return '<div class="btn-group"> ' + btn_edit + btn_clientes_asociados + btn_representantes + btn_accionistas + btn_documentos + btn_eliminar + btn_multi_report+'</div>';
 
 }
+
+
+
+function reporte_pdf_estado_cuenta(codigo_cliente){
+
+    const url= server+'reporte_estado_cuenta/'+codigo_cliente;
+    
+    window.open(url, '_blank');
+    
+    return false;
+}
+
+
 
 //funciones empresas - consorcio
 
