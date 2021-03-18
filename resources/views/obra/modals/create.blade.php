@@ -290,7 +290,7 @@
                         <div class="col-md-9 col-sm-9 ">
                           <select class="chosen" id="obra_condicion" name="obra_condicion">
                            
-
+                            <option value="">Selecciona Condición</option>
                             @foreach($condicion as $list)
 
                             <option value="{{$list->Valor}}" {{ $list->Valor == ($obra[0]['IdCondicion']??'') ? "selected":"" }}>{{$list->Descripcion}}</option>

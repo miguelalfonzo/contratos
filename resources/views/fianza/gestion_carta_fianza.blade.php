@@ -19,14 +19,16 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <div class="col-sm-6 col-md-4 padding-5" >
+                    <div class="col-sm-6 col-md-3 padding-5" >
                     <span class="badge badge-dark text-white badge-resize-font">Gestión</span>&nbsp<small class="badge badge-info font-size-12"><i class="fa fa-sort-amount-asc icon-right"></i>Cartas Fianza</small>
                     </div>
                     
                     <input type="hidden"  id="DiasCobroChequeParamGral" value="{{$parametros_generales[0]->DiasCobroCheque}}">
 
-                    <div class="col-sm-6 col-md-5  padding-5" >
+                    <div class="col-sm-6 col-md-6  padding-5" >
                         
+
+                          <a data-tipo='PE' class="filter-label-vencimiento btn btn-sm btn-success resize-button text-white" style="cursor: pointer"><small><i class="fa fa-calendar mr-1" ></i>Pendientes</small></a>
 
                            
 
@@ -91,7 +93,7 @@
                                         <th style="width: 10%">Cliente</th>
                                         <th style="width: 5%">Obra</th>
                                         <th style="width: 25%">Descripción</th>    
-                                        <th style="width: 5%">Moneda</th>  
+                                          
                                         <th style="width: 5%">Monto</th>  
                                         <th style="width: 5%">Estado</th>  
                                         <th style="width: 5%">Acción</th>  

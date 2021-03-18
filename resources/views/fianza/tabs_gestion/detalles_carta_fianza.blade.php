@@ -247,7 +247,7 @@
 
                                 <label class="control-label col-xl-3 col-sm-2 margin-top-10">N° de Carta F.</label>
                                 <div class="col-xl-3 col-sm-4 margin-top-10">
-                                  <input type="text" class=" form-control has-feedback-left form-control-sm"  placeholder="" id="mfc_carta_manual" name="mfc_carta_manual" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" maxlength="100" value="" >
+                                  <input type="text" class=" form-control has-feedback-left form-control-sm"  placeholder="" id="mfc_carta_manual" name="mfc_carta_manual"  autocomplete="off" maxlength="100" value="" >
                                 </div>
 
                                   

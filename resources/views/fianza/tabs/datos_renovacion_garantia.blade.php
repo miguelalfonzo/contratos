@@ -19,8 +19,9 @@
                                     <th>Monto</th> 
                                     <th>Emisión</th> 
                                     <th>Vence</th> 
-                                    <th>Cobro</th>                                   
-                                    <th>Disponible</th>
+                                    <th>Cobro</th> 
+                                    <th>Requerido</th>                                  
+                                    <th>Liberable</th> <!-- este es el disponible (old labl) -->
                                     <th>Estado</th>    
                                 </tr>
                               </thead>

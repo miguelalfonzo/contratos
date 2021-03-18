@@ -237,10 +237,7 @@ function load_list_fianzas(documento,cliente,obra,fianza_vencimiento) {
         }, {
             data: 'NombreObra'
         }, {
-            data: 'Moneda'
-        }, {
-            data: 'MontoCarta',
-            render: $.fn.dataTable.render.number(',', '.', 2, '')
+            data: 'MontoMoneda'
         }, {
             data: 'Estado'
         }, {
@@ -292,6 +289,10 @@ $(".filter-label-vencimiento").on('click', function() {
 }else if( fianza_vencimiento == 'PV'){
 
     label_vencimiento = 'Por Vencer';
+
+}else if( fianza_vencimiento == 'PE'){
+
+    label_vencimiento = 'Pendientes';
 }
 
 $('#filtro_cabecera_cliente').text('TODOS');
@@ -611,7 +612,7 @@ function get_detalle_carta_fianza(idCartaFianza) {
                 $("#mfc_fecha_inicio").val(response[0].FechaInicio);
                 $("#mfc_vencimiento").val(response[0].FechaVence);
                 $("#mfc_dias").val(response[0].Dias);
-                $("#mfc_renovacion").val(response[0].NumeroRenovacion);
+                $("#mfc_renovacion").val(response[0].CartaAnterior);
 
                 $("#mfc_observacion").val(response[0].Comentario);
                 $("#mfc_carta_manual").val(response[0].CodigoCarta);

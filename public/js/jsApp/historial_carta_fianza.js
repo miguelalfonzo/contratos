@@ -162,8 +162,8 @@ function get_list_garantias_relacionadas_historial(codigoSolicitud, TipoFianza){
 
 					const fecha_cobro = (response[i].FechaCobro==null)?'':response[i].FechaCobro;
 					const disponible = (response[i].Disponible==null)?'':response[i].Disponible; 
-
-					$('#table-historial-grel tbody').append("<tr><td>"+response[i].FechaSistemaCreacion+"</td><td>"+response[i].GarantiaDescripcion+"</td><td>"+response[i].NumeroDocumento+"</td><td>"+response[i].MontoCarta+"</td><td>"+response[i].Porcentaje+"</td><td>"+response[i].Monto+"</td><td>"+response[i].FechaEmision+"</td><td>"+response[i].FechaVencimiento+"</td><td>"+fecha_cobro+"</td><td>"+disponible+"</td><td>"+response[i].Estado+"</td></tr>");
+					const requerido = (response[i].Requerido==null)?'':response[i].Requerido;
+					$('#table-historial-grel tbody').append("<tr><td>"+response[i].FechaSistemaCreacion+"</td><td>"+response[i].GarantiaDescripcion+"</td><td>"+response[i].NumeroDocumento+"</td><td>"+response[i].MontoCarta+"</td><td>"+response[i].Porcentaje+"</td><td>"+response[i].Monto+"</td><td>"+response[i].FechaEmision+"</td><td>"+response[i].FechaVencimiento+"</td><td>"+fecha_cobro+"</td><td>"+requerido+"</td><td>"+disponible+"</td><td>"+response[i].Estado+"</td></tr>");
 
 				}
 
@@ -221,7 +221,7 @@ function get_list_fianzas_relacionadas_historial(codigoSolicitud, TipoFianza){
 					const cf_anterior = (response[i].CFAnterior==null)?'':response[i].CFAnterior;
 
 
-					$('#table-historial-frel tbody').append("<tr><td>"+codigo_carta+"</td><td>"+response[i].TipoCarta+"</td><td>"+response[i].CodigoMoneda+"</td><td>"+response[i].Monto+"</td><td>"+cf_anterior+"</td><td>"+response[i].FechaInicio+"</td><td>"+response[i].FechaVence+"</td><td>"+renovacion+"</td><td>"+response[i].EstadoCF+"</td></tr>");
+					$('#table-historial-frel tbody').append("<tr><td>"+cf_anterior+"</td><td>"+codigo_carta+"</td><td>"+response[i].TipoCarta+"</td><td>"+response[i].CodigoMoneda+"</td><td>"+response[i].Monto+"</td><td>"+response[i].FechaInicio+"</td><td>"+response[i].FechaVence+"</td><td>"+renovacion+"</td><td>"+response[i].EstadoCF+"</td></tr>");
 
 				}
 

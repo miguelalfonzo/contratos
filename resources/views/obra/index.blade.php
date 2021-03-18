@@ -112,7 +112,7 @@
                     <th>Obra</th>
                     <th>Cliente</th>
                     <th>Beneficiario</th>
-                    <th>Financiera</th>
+                    
                     <th>Localidad</th>
                     <th>Monto</th>
                     <th>Condición</th>

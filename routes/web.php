@@ -197,6 +197,7 @@ Route::get('/get_alertas_garantias','Reporte\AlertaController@get_alertas_garant
 Route::get('/get_alertas_cumpleanos','Reporte\AlertaController@get_alertas_cumpleanos');
 Route::get('/export_todos_cumpleanos','Reporte\AlertaController@export_todos_cumpleanos');
 
+Route::get('/export_alertas_fianzas/{tipo}','Reporte\AlertaController@export_alertas_fianzas');
 
 //parametros
 

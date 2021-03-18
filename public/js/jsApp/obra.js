@@ -58,15 +58,18 @@ function valida_inputs_obra() {
         return 'Ingrese un beneficiario para la obra';
     }
 
-    if ($("#hidden_obra_idfinanciero").val().trim() == 0) {
+    // if ($("#hidden_obra_idfinanciero").val().trim() == 0) {
 
-        return 'Ingrese un financiante para la obra';
-    }
+    //     return 'Ingrese un financiante para la obra';
+    // }
 
     if ($("#obra_moneda").val() == "") {
 
         return 'Seleccione una moneda';
     }
+
+
+    
 
 
     if ($("#obra_monto").val().trim() == "") {
@@ -77,6 +80,11 @@ function valida_inputs_obra() {
     if ($("#obra_dias").val().trim() == "") {
 
         return 'Ingrese un número de dias para la obra';
+    }
+
+    if ($("#obra_condicion").val() == "") {
+
+        return 'Seleccione una condición';
     }
     return msj;
 }

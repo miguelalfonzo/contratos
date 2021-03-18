@@ -44,7 +44,7 @@
                       <th>Porcentaje</th>
                       <th>Monto Garantía</th>
                       <th>Fecha Emisión</th>
-                      <th>Fecha Venciminto</th>
+                      <th>Fecha Vencimiento</th>
                       <th>Fecha Cobro</th>
                       <th>Estado</th>                                       
                    </tr>

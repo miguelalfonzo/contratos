@@ -44,7 +44,7 @@ class AlertaController extends Controller
 		
 	}
 	
-	//exportar 
+	//exportar todos cumpleaños
 
 	public function export_todos_cumpleanos(){
 
@@ -83,6 +83,57 @@ class AlertaController extends Controller
             $cumpleaños       = $value->FechaCumpleanos;
         
             $sub_array[$i]=array($empresa,$representante,$telefono,$email,$cumpleaños);
+            $i++;
+        }
+
+        return $sub_array;
+
+    }
+
+
+    //exportar alertas fianzas
+
+
+    public function export_alertas_fianzas($tipo){
+
+		
+		$request = new \Illuminate\Http\Request();
+
+		$request->tipo = $tipo;
+
+        $list = Alerta::get_alertas_fianzas($request);
+
+        $excel = $this->set_filas_excel_detalle_fianzas($list);
+
+        $export = new ExportGeneral([
+            
+            $excel
+
+         ]); 
+
+      
+        return Excel::download($export, 'Alertas_Fianzas_'.$tipo.'_'.date('Y-m').'.xlsx');
+    }
+
+    public function set_filas_excel_detalle_fianzas($list){
+
+        $sub_array =array();
+
+        $i=1;
+
+        $sub_array[0]=array("CLIENTE","BENEFICIARIO","FINANCIERA","CARTA","NUMERO","MONTO","VENCE");
+
+        foreach ($list as $value) {
+            
+            $cliente      = $value->NameCliente;
+            $beneficiario = $value->NameBeneficiario;
+            $financiera   = $value->NameFinanciera;
+            $carta 		  = $value->CartaFianza;
+            $numero       = $value->CodigoCarta;
+        	$monto        = $value->Monto;
+        	$vence        = $value->FechaVence;
+
+            $sub_array[$i]=array($cliente,$beneficiario,$financiera,$carta,$numero,$monto,$vence );
             $i++;
         }
 

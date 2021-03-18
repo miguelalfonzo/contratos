@@ -224,7 +224,8 @@ protected static function get_combo_empresas_financieras($query){
       $referencia     = $request->cliente_referencia;
       $ubigeo         = $request->cliente_id_ubigeo;
       $fecha_ingreso  = $request->cliente_ingreso;
-      $moneda         = $request->cliente_moneda;
+      //$moneda         = $request->cliente_moneda;
+      $moneda         = '';
       $flag_activo    = $request->cliente_estado;
       $tipo_cliente   = $request->tipo_cliente;
       $actividad      = $request->cliente_actividad;

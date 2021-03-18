@@ -418,7 +418,7 @@ class Fianza extends Model
 
     $request->mdg_estado  ='REN';
 
-    $request->mdg_obs  = 'SE RENOVO NEW REQUIEST';
+    $request->mdg_obs  = 'SE RENOVO';
 
     $request->disponible ='';
 
@@ -431,6 +431,7 @@ class Fianza extends Model
 
    protected static function renovar_carta_fianza($request){
 
+     
 
         $cliente         = $request->mdr_hidden_cliente;
         $benficiario     = $request->mdr_hidden_beneficiario;

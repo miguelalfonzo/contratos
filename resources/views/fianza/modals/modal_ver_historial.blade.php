@@ -358,12 +358,12 @@
 
                                 <thead>
                                    <tr>
-                          
+                          <th>CF Anterior</th> 
                           <th>Nro Carta Fza</th>
                           <th>Tipo Carta Fza</th>  
                           <th>Moneda</th> 
                           <th>Monto</th> 
-                          <th>CF Anterior</th> 
+                          
                           <th>Inicio</th> 
                           <th>Vence</th> 
                           <th>Renovación</th>  
@@ -408,8 +408,9 @@
                                     <th>Monto</th> 
                                     <th>Emisión</th> 
                                     <th>Vence</th> 
-                                    <th>Cobro</th>                                   
-                                    <th>Disponible</th>
+                                    <th>Cobro</th>
+                                    <th>Requerido</th>                                   
+                                    <th>Liberable</th> <!-- antes disponible -->
                                     <th>Estado</th>    
                                 </tr>
                               </thead>

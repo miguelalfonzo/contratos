@@ -232,7 +232,7 @@
                      
                     </div>
 
-                     <div class="form-group row ">
+                     <!-- <div class="form-group row ">
 
   
                         <label class="control-label col-md-3 col-sm-3 ">Moneda</label>
@@ -247,7 +247,7 @@
                          
                         </div>
                      
-                    </div>
+                    </div> -->
 
                     <div class="form-group row ">
 

@@ -130,6 +130,7 @@
                                               <option value="VH">Que Vencen Hoy</option>
                                               <option value="VE">Vencidas</option>
                                               <option value="PV">Por Vencer</option>
+                                              <option value="PE">Pendientes</option>
                                             </select>
 
 

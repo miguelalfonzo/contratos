@@ -42,7 +42,7 @@ function set_datos_renovacion_carta_fianza(idCartaFianza) {
 
             if (response.length > 0) {
 
-
+                console.log(response)
                 $("#mdr_hidden_cliente").val(response[0].IdCliente);
                 $("#mdr_hidden_beneficiario").val(response[0].IdBeneficiario);
                 $("#mdr_hidden_financiera").val(response[0].IdFinanciera);
@@ -57,7 +57,33 @@ function set_datos_renovacion_carta_fianza(idCartaFianza) {
                 $("#mdr_moneda_cf_old").val(numero_a_formato_numerico(response[0].Monto));
 
 
+                $('#mdr_cmbtipo_fianza option[value="AD"]').attr("disabled", false);
+                $('#mdr_cmbtipo_fianza option[value="AM"]').attr("disabled", false);
+                $('#mdr_cmbtipo_fianza option[value="FC"]').attr("disabled", false);
+
                 $("#mdr_cmbtipo_fianza option[value=" + response[0].TipoCarta + "]").prop("selected", true);
+
+               
+
+
+                if(response[0].TipoCarta == 'FC'){
+
+                    $('#mdr_cmbtipo_fianza option[value="AD"]').attr("disabled", true);
+                    $('#mdr_cmbtipo_fianza option[value="AM"]').attr("disabled", true);
+                }
+
+                if(response[0].TipoCarta == 'AD'){
+
+                    $('#mdr_cmbtipo_fianza option[value="FC"]').attr("disabled", true);
+                    $('#mdr_cmbtipo_fianza option[value="AM"]').attr("disabled", true);
+                }
+
+                if(response[0].TipoCarta == 'AM'){
+
+                    $('#mdr_cmbtipo_fianza option[value="AD"]').attr("disabled", true);
+                    $('#mdr_cmbtipo_fianza option[value="FC"]').attr("disabled", true);
+                }
+
 
                 $('#mdr_cmbtipo_fianza').trigger("chosen:updated");
 
@@ -76,7 +102,13 @@ function set_datos_renovacion_carta_fianza(idCartaFianza) {
 
                 $("#mdr_interno").val(response[0].CodigoObra);
 
-                $("#mdr_renovacion").val(response[0].NumeroRenovacion);
+                $("#mdr_renovacion").val(response[0].CartaAnterior);
+
+                
+                $("#mdr_monto").val(response[0].Monto);
+
+                $("#mdr_fianza").val(response[0].CodigoCarta);
+                
 
 
                 $('#table-renovacion-carta tbody tr').find("td").next("td").find("a").attr("data-file", "");
@@ -172,8 +204,12 @@ function get_list_garantias_relacionadas(codigoSolicitud, TipoFianza) {
             data: 'FechaVencimiento'
         }, {
             data: 'FechaCobro'
+        },{
+            data: 'Requerido',
+            render: $.fn.dataTable.render.number(',', '.', 2, '')
         }, {
-            data: 'Disponible'
+            data: 'Disponible',
+            render: $.fn.dataTable.render.number(',', '.', 2, '')
         }, {
             data: 'Estado'
         }]
@@ -232,6 +268,8 @@ function get_list_fianzas_relacionadas(codigoSolicitud, TipoFianza) {
             }
         },
         columns: [{
+            data: 'CFAnterior'
+        },{
             data: 'CodigoCarta'
         }, {
             data: 'TipoCarta'
@@ -240,9 +278,7 @@ function get_list_fianzas_relacionadas(codigoSolicitud, TipoFianza) {
         }, {
             data: 'Monto',
             render: $.fn.dataTable.render.number(',', '.', 2, '')
-        }, {
-            data: 'CFAnterior'
-        }, {
+        },{
             data: 'FechaInicio'
         }, {
             data: 'FechaVence'
@@ -424,6 +460,10 @@ function valida_inputs_renovar_carta() {
     if ($('#mdr_monto').val().trim() == "" || $('#mdr_monto').val() == 0) {
 
         return 'Ingrese un monto para la renovación';
+
+    }else if($('#mdr_monto').val() > formato_numerico_a_numero($('#mdr_moneda_cf_old').val())){
+
+        return 'El monto a renovar no puede exeder al monto anterior';
 
     }
 

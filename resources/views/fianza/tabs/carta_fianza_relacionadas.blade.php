@@ -12,12 +12,12 @@
 
                                 <thead>
                                    <tr>
-                          
+                          <th>CF Anterior</th>
                           <th>Nro Carta Fza</th>
                           <th>Tipo Carta Fza</th>  
                           <th>Moneda</th> 
                           <th>Monto</th> 
-                          <th>CF Anterior</th> 
+                           
                           <th>Inicio</th> 
                           <th>Vence</th> 
                           <th>Renovación</th>  

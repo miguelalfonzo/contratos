@@ -22,9 +22,15 @@
                         
                         
 
-                      <div class="col-lg-6 col-md-12">
+                      <div class="col-lg-6 col-8">
 
                         <input type="text" id="buscador_alertas_fianzas"  class="form-control resize-input btn-round" placeholder="Buscar..." autocomplete="off">
+
+                      </div> 
+
+                      <div class="col-lg-6 col-4">
+
+                        <button id="btn_exportar_fianzas_alertas" data-exp="" class="btn btn-sm btn-success resize-button"><i class="fa fa-file-excel-o mr-2"></i>Exportar</button>
 
                       </div>                      
 
@@ -39,14 +45,15 @@
                     <tr>
                      
                         <th>Cliente</th>
-                      <th>Fianza</th>
-                      <th>Número</th>  
-                      <th>Moneda</th>
+                        <th>Beneficiario</th>
+                        <th>Financiera</th>
+                        <th>Fianza</th>
+                        <th>Número</th>
+                        
                       <th>Monto</th>
-                      <th>Fecha Creación</th>
                       <th>Vence</th>
                       
-                      <th>Estado</th>                                             
+                                                                
                    </tr>
                   </thead>
                   

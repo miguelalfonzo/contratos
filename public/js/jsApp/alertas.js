@@ -15,8 +15,18 @@ $(".alerta-cartas-fianzas").on("click",function(event){
     $('#modal-alertas-fianzas').modal('show');
 
 
+    $('#btn_exportar_fianzas_alertas').attr('data-exp',tipo);
+
 });
 
+$('#btn_exportar_fianzas_alertas').on('click',function(){
+
+
+    const tipo = $(this).attr('data-exp');
+
+    window.location.href = server + "export_alertas_fianzas/"+tipo;
+
+})
 
 
 $(".alerta-garantias").on("click",function(event){
@@ -107,20 +117,17 @@ function set_table_alertas_fianzas(tipo){
         columns: [{
             data: 'NameCliente'
         }, {
-            data: 'CartaFianza'
+            data: 'NameBeneficiario'
         }, {
+            data: 'NameFinanciera'
+        }, {
+            data: 'CartaFianza'
+        },{
             data: 'CodigoCarta'
         }, {
-            data: 'CodigoMoneda'
-        }, {
-            data: 'Monto', 
-            render: $.fn.dataTable.render.number(',', '.', 2, '')
-        }, {
-            data: 'FechaCreacion'
+            data: 'MontoMoneda'
         }, {
             data: 'FechaVence'
-        },{
-            data: 'Estado'
         }]
 
     });

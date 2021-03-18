@@ -69,8 +69,6 @@ function list_obras(proceso,condicion,id_cliente,id_obra,inicio,fin) {
         }, {
             data: 'FullNameBeneficiario'
         }, {
-            data: 'FullNameFinanciera'
-        }, {
             data: 'Localidad'
         },{
             data: 'MontoMoneda'
@@ -89,11 +87,11 @@ function list_obras(proceso,condicion,id_cliente,id_obra,inicio,fin) {
 
             if (data.CondicionBit == 'P') {
 
-                $($(row).find("td")[7]).html('<div class="resize-margin-top"><span class="cursor-pointer text-primary" data-toggle="tooltip" data-placement="bottom" title="' + data.Condicion + ' "><strong>' + data.CondicionBit + '</strong></span></div>');
+                $($(row).find("td")[6]).html('<div class="resize-margin-top"><span class="cursor-pointer text-primary" data-toggle="tooltip" data-placement="bottom" title="' + data.Condicion + ' "><strong>' + data.CondicionBit + '</strong></span></div>');
 
             } else {
 
-                $($(row).find("td")[7]).html('<div class="resize-margin-top"><span class="cursor-pointer text-danger" data-toggle="tooltip" data-placement="bottom" title="' + data.Condicion + ' "><strong>' + data.CondicionBit + '</strong></span></div>');
+                $($(row).find("td")[6]).html('<div class="resize-margin-top"><span class="cursor-pointer text-danger" data-toggle="tooltip" data-placement="bottom" title="' + data.Condicion + ' "><strong>' + data.CondicionBit + '</strong></span></div>');
             }
         },
         "drawCallback": function(settings) {

@@ -214,10 +214,10 @@ function valida_inputs_cliente() {
 
     }
 
-    if ($("#cliente_moneda").val() == "") {
+    // if ($("#cliente_moneda").val() == "") {
 
-        return 'Seleccione una moneda';
-    }
+    //     return 'Seleccione una moneda';
+    // }
 
     if ($("#tipo_cliente").val() == "") {
 
