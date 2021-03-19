@@ -89,8 +89,23 @@ function set_datos_renovacion_carta_fianza(idCartaFianza) {
 
                 $("#mdr_solicitud").val(response[0].CodigoSolicitud);
 
+                //solo estado vigente habilitado
+
+                $('#mdr_estado option[value="PRO"]').attr("disabled", false);
+                $('#mdr_estado option[value="VIG"]').attr("disabled", false);
+                $('#mdr_estado option[value="VEN"]').attr("disabled", false);
+                $('#mdr_estado option[value="ANL"]').attr("disabled", false);
+                $('#mdr_estado option[value="REN"]').attr("disabled", false);
+                $('#mdr_estado option[value="CER"]').attr("disabled", false);
 
                 $("#mdr_estado option[value=" + response[0].EstadoCF + "]").prop("selected", true);
+
+
+                $('#mdr_estado option[value="PRO"]').attr("disabled", true);
+                $('#mdr_estado option[value="VEN"]').attr("disabled", true);
+                $('#mdr_estado option[value="ANL"]').attr("disabled", true);
+                $('#mdr_estado option[value="REN"]').attr("disabled", true);
+                $('#mdr_estado option[value="CER"]').attr("disabled", true);
 
                 $('#mdr_estado').trigger("chosen:updated");
 

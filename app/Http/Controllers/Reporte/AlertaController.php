@@ -141,5 +141,59 @@ class AlertaController extends Controller
 
     }
 
+    //exportas garantias alertas
+
+
+
+    public function export_alertas_garantias($tipo){
+
+        
+        $request = new \Illuminate\Http\Request();
+
+        $request->tipo = $tipo;
+
+        $list = Alerta::get_alertas_garantias($request);
+
+        $excel = $this->set_filas_excel_detalle_garantias($list);
+
+        $export = new ExportGeneral([
+            
+            $excel
+
+         ]); 
+
+      
+        return Excel::download($export, 'Alertas_Garantias_'.$tipo.'_'.date('Y-m').'.xlsx');
+    }
+
+    public function set_filas_excel_detalle_garantias($list){
+
+        $sub_array =array();
+
+        $i=1;
+
+        $sub_array[0]=array("GARANTIA","NUMERO","MONEDA","MONTO_FIANZA","PORCENTAJE","MONTO_GARANTIA","EMISION","VENCE","COBRO","ESTADO");
+
+        foreach ($list as $value) {
+            
+            $garantia      = $value->Garantia;
+            $numero        = $value->NumeroDocumento;
+            $moneda        = $value->Moneda;
+            $monto_fianza  = $value->MontoCarta;
+            $porcentaje    = $value->Porcentaje;
+            $monto_garantia = $value->Monto;
+            $emision        = $value->FechaEmision;
+            $vence          = $value->FechaVencimiento;
+            $cobro          = $value->FechaCobro;
+            $estado         = $value->Estado;
+
+            $sub_array[$i]=array($garantia,$numero,$moneda,$monto_fianza,$porcentaje,$monto_garantia,$emision,$vence,$cobro,$estado);
+            
+            $i++;
+        }
+
+        return $sub_array;
+
+    }
 }
 

@@ -8,7 +8,9 @@ $(".alerta-cartas-fianzas").on("click",function(event){
 
     const label = retorna_label_alerta(tipo);
 
-    $('#span_alerta_fianza_label').text('Fianzas '+label);
+    const dias = (tipo=='por-vencer')?' (30 dias)':'';
+
+    $('#span_alerta_fianza_label').text('Fianzas '+label + dias);
 
     set_table_alertas_fianzas(tipo);
 
@@ -37,14 +39,31 @@ $(".alerta-garantias").on("click",function(event){
 
     const label = retorna_label_alerta(tipo);
 
-    $('#span_alerta_garantia_label').text('Garantias '+label);
+
+    const dias = (tipo=='por-vencer')?' (20 dias)':'';
+
+
+    $('#span_alerta_garantia_label').text('Garantias '+label + dias);
 
     set_table_alertas_garantias(tipo);
 
     $('#modal-alertas-garantias').modal('show');
 
 
+     $('#btn_exportar_garantias_alertas').attr('data-exp',tipo);
+
 });
+
+
+$('#btn_exportar_garantias_alertas').on('click',function(){
+
+
+    const tipo = $(this).attr('data-exp');
+
+    window.location.href = server + "export_alertas_garantias/"+tipo;
+
+})
+
 
 function retorna_label_alerta(tipo){
 
@@ -128,7 +147,51 @@ function set_table_alertas_fianzas(tipo){
             data: 'MontoMoneda'
         }, {
             data: 'FechaVence'
-        }]
+        },{
+            data: 'DiasRestantes'
+        }, {
+            data: null,
+            "render": function(data, type, full, meta) {
+
+                const id_cliente = data.IdCliente;
+                const id_obra = data.IdObra;
+                const carta = data.TipoCarta;
+                const fianza = data.labelVence;
+
+
+                const url ="?cliente="+id_cliente+"&obra="+id_obra+"&carta="+carta+"&fianza="+fianza;
+
+                const btn_ver = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize"  target="_blank" href="../public/gestion_carta_fianza' + url + '" title="Ver"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-arrow-right"></span></a>';
+
+
+                return '<div class="btn-group"> ' + btn_ver + '</div>';
+
+            }
+        }],
+
+        rowCallback: function(row, data) {
+                
+             if (data.DiasRestantes <= 5) {
+                $('td', row).css('background-color', '#FFBCA2');
+                
+
+            }else if (data.DiasRestantes <=20) {
+
+                $('td', row).css('background-color', '#F9F765');
+
+            }else if (data.DiasRestantes <=30) {
+
+                $('td', row).css('background-color', '#9CFF7F');
+
+            }
+                
+        },
+        "drawCallback": function(settings) {
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+
+        }
 
     });
 
@@ -213,7 +276,27 @@ function set_table_alertas_garantias(tipo){
             data: 'FechaCobro'
         },{
             data: 'Estado'
-        }]
+        },{
+            data: 'DiasRestantes'
+        }],
+
+        rowCallback: function(row, data) {
+                
+             if (data.DiasRestantes <= 5) {
+                $('td', row).css('background-color', '#FFBCA2');
+                
+
+            }else if (data.DiasRestantes <=10) {
+
+                $('td', row).css('background-color', '#F9F765');
+
+            }else if (data.DiasRestantes <=20) {
+
+                $('td', row).css('background-color', '#9CFF7F');
+
+            }
+                
+        }
 
     });
 

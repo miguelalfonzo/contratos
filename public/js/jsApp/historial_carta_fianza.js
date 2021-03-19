@@ -58,7 +58,7 @@ function set_datos_detalle_historial_carta(IdCartaFianzaDetalle){
 
 				$("#hist_num_interno").val(response[0].CodigoObra);
 
-				$("#hist_n_renovacion").val(response[0].NumeroRenovacion);
+				$("#hist_n_renovacion").val(response[0].CartaAnterior);
 
 
 				$("#hist_fe_creacion").val(response[0].FechaCreacion);
@@ -67,7 +67,9 @@ function set_datos_detalle_historial_carta(IdCartaFianzaDetalle){
 
 
 				$("#hist_dias").val(response[0].Dias);
-				$("#hist_n_renovacion").val(response[0].NumeroRenovacion);
+				
+				//$("#hist_n_renovacion").val(response[0].NumeroRenovacion);
+				
 				$("#hist_observacion").val(response[0].Comentario);
 
 				$("#hist_numero_carta").val(response[0].CodigoCarta);

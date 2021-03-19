@@ -416,12 +416,18 @@ class Fianza extends Model
     $request->mdg_vencimiento =Carbon::parse($json[0]["FechaVencimiento"])->format('d/m/Y');
 
 
-    $request->mdg_estado  ='REN';
+    //$request->mdg_estado  ='REN';
 
-    $request->mdg_obs  = 'SE RENOVO';
+    $request->mdg_estado  ='PND';
+
+    $request->mdg_obs  = 'SE RENOVÓ GARANTIA**';
 
     $request->disponible ='';
 
+    //actualizamos la garantia anterior
+  
+    DB::update("UPDATE carta_fianza_garantia  SET Estado ='REN' WHERE NumeroCarta =(
+                         SELECT NumeroCarta FROM carta_fianza_detalle WHERE IdCartaFianzaDetalle=?);",array($idcarta));
 
     return $request;
 

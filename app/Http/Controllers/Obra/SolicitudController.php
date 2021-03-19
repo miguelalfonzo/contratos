@@ -255,24 +255,28 @@ class SolicitudController extends Controller
                     if(in_array($list['CODIGO'], $array_unico)){
 
 
-                        //si es anulada o cerrada no valida
+                        //verifico si hay cartas anuladas o cerradas de ese tipo
 
                         $result_anulado  = DB::select("SELECT count(*) as TOTAL FROM carta_fianza_detalle WHERE IdSolicitud=? AND TipoCarta=? AND EstadoCF IN('CER','ANL')",array($solicitud,$list['CODIGO']));
 
                         $result_anulado_rpta = json_decode(json_encode($result_anulado), true);
 
-                        
+                        //en caso exista anulados o cerradas valido las anteriores cartas
+
                         if($result_anulado_rpta[0]['TOTAL'] > 0){
 
+                            //se quito estado vencido y renovada
 
-                            $sub_result_anulado  = DB::select("SELECT count(*) as TOTAL2 FROM carta_fianza_detalle WHERE IdSolicitud=? AND TipoCarta=? AND EstadoCF IN('PRO','VIG','VEN','REN')",array($solicitud,$list['CODIGO']));
+                            // en caso existan cartas en proceso o vigentes del mismo tipo
+                        
+                            $sub_result_anulado  = DB::select("SELECT count(*) as TOTAL2 FROM carta_fianza_detalle WHERE IdSolicitud=? AND TipoCarta=? AND EstadoCF IN('PRO','VIG')",array($solicitud,$list['CODIGO']));
 
 
                             $sub_result_anulado_json = json_decode(json_encode($sub_result_anulado), true);
 
                            if($sub_result_anulado_json[0]['TOTAL2'] > 0){
 
-                                return $this->setRpta("error","La carta ".$list["DESCRIPTION"]." ya se encuentra en proceso , finalice la carta para poder registrar nuevamente.");
+                                return $this->setRpta("error","La carta ".$list["DESCRIPTION"]." ya se encuentra en proceso  o vigente, finalice la carta para poder registrar nuevamente.");
 
                            }else{
 
@@ -281,7 +285,7 @@ class SolicitudController extends Controller
                             
                         }else{
 
-                            return $this->setRpta("error","La carta ".$list["DESCRIPTION"]." ya se encuentra en proceso , finalice la carta para poder registrar nuevamente.");
+                            return $this->setRpta("error","La carta ".$list["DESCRIPTION"]." ya se encuentra habilitada , finalice la carta para poder registrar nuevamente.");
 
                         }
 

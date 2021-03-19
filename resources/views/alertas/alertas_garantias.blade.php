@@ -22,9 +22,15 @@
                         
                        
 
-                      <div class="col-lg-6 col-md-12">
+                      <div class="col-lg-6 col-8">
 
                         <input type="text" id="buscador_alertas_garantias"  class="form-control resize-input btn-round" placeholder="Buscar..." autocomplete="off">
+
+                      </div> 
+
+                      <div class="col-lg-6 col-4">
+
+                        <button id="btn_exportar_garantias_alertas" data-exp="" class="btn btn-sm btn-success resize-button"><i class="fa fa-file-excel-o mr-2"></i>Exportar</button>
 
                       </div>                      
 
@@ -46,7 +52,8 @@
                       <th>Fecha Emisión</th>
                       <th>Fecha Vencimiento</th>
                       <th>Fecha Cobro</th>
-                      <th>Estado</th>                                       
+                      <th>Estado</th>
+                      <th>Dias</th>                                       
                    </tr>
                   </thead>
                   

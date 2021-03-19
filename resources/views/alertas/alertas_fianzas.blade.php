@@ -52,6 +52,8 @@
                         
                       <th>Monto</th>
                       <th>Vence</th>
+                      <th>Dias</th>
+                      <th><i class="fa fa-eye"></i></th>
                       
                                                                 
                    </tr>

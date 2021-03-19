@@ -16,7 +16,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/sql', function () {
 
-	
+	return Hash::make('12345678');
 
 });
 
@@ -198,6 +198,7 @@ Route::get('/get_alertas_cumpleanos','Reporte\AlertaController@get_alertas_cumpl
 Route::get('/export_todos_cumpleanos','Reporte\AlertaController@export_todos_cumpleanos');
 
 Route::get('/export_alertas_fianzas/{tipo}','Reporte\AlertaController@export_alertas_fianzas');
+Route::get('/export_alertas_garantias/{tipo}','Reporte\AlertaController@export_alertas_garantias');
 
 //parametros
 

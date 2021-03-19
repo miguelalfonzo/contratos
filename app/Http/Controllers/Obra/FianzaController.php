@@ -217,7 +217,94 @@ class FianzaController extends Controller
 
         }elseif($request->mcf_estado=="ANL"){
 
-            return $this->setRpta("error","En esta etapa no se puede anular la carta ");
+            $id  = $request->id_mcf_hidden;
+
+            $query =  DB::select("SELECT FlagGestionCarta FROM carta_fianza_detalle WHERE IdCartaFianzaDetalle=? ",array($id));
+
+            $json = json_decode(json_encode($query), true); 
+
+            $gestionada = $json[0]["FlagGestionCarta"];
+
+            if($gestionada == 1){
+
+                return $this->setRpta("error","En esta etapa no se puede anular la carta ");
+
+            }else {
+
+                $monto = $request->mcf_monto;
+
+                if($monto == 0){
+
+                    return $this->setRpta("ok","");
+
+                }else{
+
+                    return $this->setRpta("error","Para la anulación ingrese un monto 0");
+                }
+                
+
+            }
+
+
+
+        }elseif($request->mcf_estado=="PRO"){
+
+            $solicitud = $request->id_mcf_id_solicitud;
+            $carta  = $request->tipo_carta_mcf_hidden;
+            $id  = $request->id_mcf_hidden;
+
+
+            $query =  DB::select("SELECT COUNT(*) AS TOTAL FROM carta_fianza_detalle WHERE IdSolicitud=? AND TipoCarta=? AND EstadoCF='PRO' ",array($solicitud,$carta));
+
+            $json = json_decode(json_encode($query), true); 
+
+            $total = $json[0]["TOTAL"];
+
+            if($total>0){
+
+        
+                $sub_query =  DB::select("SELECT IdCartaFianzaDetalle FROM carta_fianza_detalle WHERE IdSolicitud=? AND TipoCarta=? AND EstadoCF='PRO' ",array($solicitud,$carta));
+
+                $json2 = json_decode(json_encode($sub_query), true); 
+
+                $id_sql = $json2[0]["IdCartaFianzaDetalle"];
+
+
+                if($id == $id_sql ){
+
+                    return $this->setRpta("ok","valido correctamente");
+
+                }else{
+
+                    return $this->setRpta("error","Para esta Carta ya existe una en PROCESO ");
+                }
+
+            }
+
+            return $this->setRpta("ok","");
+
+        }elseif($request->mcf_estado=="REN"){
+
+            $id  = $request->id_mcf_hidden;
+
+            $query =  DB::select("SELECT FlagGestionCarta FROM carta_fianza_detalle WHERE IdCartaFianzaDetalle=? ",array($id));
+
+            $json = json_decode(json_encode($query), true); 
+
+            $gestionada = $json[0]["FlagGestionCarta"];
+
+            if($gestionada == 1){
+
+                return $this->setRpta("ok","");
+                
+
+            }else {
+
+               return $this->setRpta("error","En esta etapa no se puede renovar la carta ");
+                
+
+            }
+
 
         }else{
 
