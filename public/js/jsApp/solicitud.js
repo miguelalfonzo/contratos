@@ -649,6 +649,8 @@ $("#input_por_solicitud_cumplimiento").keyup(function(){
 
   const valor_obra_numero = formato_numerico_a_numero(valor_obra);
 
+  
+
   const nuevo_valor = parseFloat(valor_obra_numero*value/100).toFixed(2);
 
   $("#solicitud_cumplimiento").val(nuevo_valor);

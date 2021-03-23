@@ -253,7 +253,7 @@ function get_periodo_actual() {
 
 function formato_numerico_a_numero(str_number) {
 
-    let str_numero = str_number.replace(",", "");
+    let str_numero = str_number.replace(/,/g, "");
 
     return Number(parseFloat(str_numero).toFixed(2));
 }
