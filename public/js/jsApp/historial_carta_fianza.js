@@ -95,6 +95,8 @@ function set_datos_detalle_historial_carta(IdCartaFianzaDetalle){
 				$("#hist_doc_electronico").attr("data-file",response[0].DocumentoElectronico);
 
 
+				
+
 				get_list_garantias_relacionadas_historial(response[0].IdSolicitud, response[0].TipoCarta);
 
 				get_list_fianzas_relacionadas_historial(response[0].IdSolicitud, response[0].TipoCarta);
@@ -137,7 +139,7 @@ function ver_file_historial(tipo_enlace){
 }
 
 
-function get_list_garantias_relacionadas_historial(codigoSolicitud, TipoFianza){
+function get_list_garantias_relacionadas_historial(IdSolicitud, TipoFianza){
 
 	$('#table-historial-grel tbody tr').empty();
 
@@ -148,7 +150,7 @@ function get_list_garantias_relacionadas_historial(codigoSolicitud, TipoFianza){
 		dataType: 'json',
 		data: {
 			_token: '{{ csrf_token() }}',
-			codigoSolicitud: codigoSolicitud,
+			IdSolicitud: IdSolicitud,
 			TipoFianza: TipoFianza
 		},
 		before: function() {
@@ -222,8 +224,11 @@ function get_list_fianzas_relacionadas_historial(codigoSolicitud, TipoFianza){
 
 					const cf_anterior = (response[i].CFAnterior==null)?'':response[i].CFAnterior;
 
+					const fecha_inicio = (response[i].FechaInicio==null)?'':response[i].FechaInicio;
 
-					$('#table-historial-frel tbody').append("<tr><td>"+cf_anterior+"</td><td>"+codigo_carta+"</td><td>"+response[i].TipoCarta+"</td><td>"+response[i].CodigoMoneda+"</td><td>"+response[i].Monto+"</td><td>"+response[i].FechaInicio+"</td><td>"+response[i].FechaVence+"</td><td>"+renovacion+"</td><td>"+response[i].EstadoCF+"</td></tr>");
+					const fecha_vence = (response[i].FechaVence==null)?'':response[i].FechaVence;
+
+					$('#table-historial-frel tbody').append("<tr><td>"+cf_anterior+"</td><td>"+codigo_carta+"</td><td>"+response[i].TipoCarta+"</td><td>"+response[i].CodigoMoneda+"</td><td>"+response[i].Monto+"</td><td>"+fecha_inicio+"</td><td>"+fecha_vence+"</td><td>"+renovacion+"</td><td>"+response[i].EstadoCF+"</td></tr>");
 
 				}
 

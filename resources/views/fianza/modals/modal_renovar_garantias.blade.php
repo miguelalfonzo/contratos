@@ -77,20 +77,37 @@
                              
                             <div class="form-group row  mb-0 ">
 
-                               <label class="control-label col-md-1 col-sm-2 ">Fecha</label>
-
-                                <div class="col-md-3 col-sm-4 ">
-                                
                                   <input type="hidden" name="ren_car_gar_idgarantia" id="ren_car_gar_idgarantia" value="0">
 
+
+                                  <input type="hidden" name="ren_car_gar_codigo_sol" id="ren_car_gar_codigo_sol" value="0">
+                                  <input type="hidden" name="ren_car_gar_num_ca" id="ren_car_gar_num_ca" value="0">
+                                  <input type="hidden" name="ren_car_gar_tipo_carta" id="ren_car_gar_tipo_carta" value="0">
+
+
+                                <label class="control-label col-md-1 col-sm-2 ">Estado</label>
+
+                                <div class="col-md-3 col-sm-4 ">
+
+                                
                                   <div class=" mb-2 mr-sm-2 ">
                                     
+                                    <select class="chosen" name="ren_car_gar_estados_gar" id="ren_car_gar_estados_gar">
+                                      
+                                      @foreach($estados_garantias as $list)
 
-                                    <input type="date" class="font-size-12  form-control has-feedback-left form-control-sm" id="ren_car_gar_fecha" name="ren_car_gar_fecha" autocomplete="off" >
+                                        <option value="{{$list->Valor}}">{{$list->Descripcion}}</option>
+                                    
+                                        @endforeach
+                                    </select>
                                   </div>
 
-          
+
+
                                 </div>
+
+
+                               
                                 
                                 
                                 <label class="control-label col-md-1 col-sm-2">Monto Fianza</label>
@@ -108,14 +125,14 @@
 
                               <!--   ------------- -->
 
-                                <label class="control-label col-md-1 col-sm-2 ">Emision</label>
+                                <label class="control-label col-md-1 col-sm-2 ">Emisión</label>
 
                                 <div class="col-md-3 col-sm-4 ">
 
                                 
                                   <div class=" mb-2 mr-sm-2 ">
                                     
-                                    <input type="date" class="font-size-12  form-control has-feedback-left form-control-sm" id="ren_car_gar_emision" name="ren_car_gar_emision" autocomplete="off" >
+                                    <input type="date" class="font-size-12  form-control has-feedback-left form-control-sm" id="ren_car_gar_emision" name="ren_car_gar_emision" autocomplete="off" required>
                                   </div>
 
 
@@ -229,7 +246,7 @@
                                 
                                   <div class=" mb-2 mr-sm-2 ">
                                     
-                                    <input type="date" class="font-size-12  form-control has-feedback-left form-control-sm" id="ren_car_gar_vencimiento" name="ren_car_gar_vencimiento" autocomplete="off" >
+                                    <input type="date" class="font-size-12  form-control has-feedback-left form-control-sm" id="ren_car_gar_vencimiento" name="ren_car_gar_vencimiento" autocomplete="off" required>
                                   </div>
 
 
@@ -309,7 +326,7 @@
 
                           <!--   ------------- -->
 
-                                <label class="control-label col-md-1 col-sm-2 ">Estado</label>
+                                <!-- <label class="control-label col-md-1 col-sm-2 ">Estado</label>
 
                                 <div class="col-md-3 col-sm-4 ">
 
@@ -328,9 +345,23 @@
 
 
 
-                                </div>
+                                </div> -->
                               
+                                <label class="control-label col-md-1 col-sm-2 ">F.Creación</label>
+
+                                <div class="col-md-3 col-sm-4 ">
                                 
+                                  
+
+
+                                  <div class=" mb-2 mr-sm-2 ">
+                                    
+
+                                    <input type="date" class="font-size-12  form-control has-feedback-left form-control-sm" id="ren_car_gar_fecha" name="ren_car_gar_fecha" autocomplete="off" readonly>
+                                  </div>
+
+          
+                                </div>
                               
                           <!--   --------------  -->
 

@@ -7,17 +7,17 @@ $(document).ready(function() {
 
 function valida_parametros_get(){
 
-   const cliente = obten_parametro_get_url('cliente');
-   const obra = obten_parametro_get_url('obra');
-   const carta = obten_parametro_get_url('carta');
-   const fianza = obten_parametro_get_url('fianza');
+ const cliente = obten_parametro_get_url('cliente');
+ const obra = obten_parametro_get_url('obra');
+ const carta = obten_parametro_get_url('carta');
+ const fianza = obten_parametro_get_url('fianza');
 
-   if(cliente!=""&&obra!=""&&carta!=""&&fianza!=""){
+ if(cliente!=""&&obra!=""&&carta!=""&&fianza!=""){
 
         //mostrara listado al cargar pagina
         load_list_fianzas(carta,cliente,obra,fianza);
 
-   }
+    }
 
 }
 
@@ -26,7 +26,7 @@ function obten_parametro_get_url(name) {
 
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
+    results = regex.exec(location.search);
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 
 
@@ -294,13 +294,13 @@ function load_list_fianzas(documento,cliente,obra,fianza_vencimiento) {
 
 $(".filter-label-vencimiento").on('click', function() {
 
- const fianza_vencimiento = $(this).attr('data-tipo');
+   const fianza_vencimiento = $(this).attr('data-tipo');
 
- load_list_fianzas('',0,0,fianza_vencimiento);
+   load_list_fianzas('',0,0,fianza_vencimiento);
 
- let label_vencimiento = '' ;
+   let label_vencimiento = '' ;
 
- if( fianza_vencimiento == 'VH'){
+   if( fianza_vencimiento == 'VH'){
 
     label_vencimiento = 'Vencen Hoy';
 
@@ -360,6 +360,7 @@ function set_botones_tabla_fianza(data) {
 
     let btn_historial;
 
+    let btn_post_ver_garantias = '';
 
     if (data.FlagGestionCarta == 0) {
 
@@ -416,6 +417,15 @@ function set_botones_tabla_fianza(data) {
             btn_historial = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_ver_historial(\'' + data.IdCartaFianzaDetalle + '\')" style="cursor:pointer" title="Historial"><span style="font-size:80%;" class="text-warning  glyphicon glyphicon-eye-open"></span></a>';
 
             btn_gestionar = '';
+
+            //si es mayor a cero entonces ya existe una vigente y NO mostraremos el boton postgarantia
+            //si NO traer resultados entoces mostraremos el boton postgarantia
+            if(data.flagRenuevaPostGarantia == 0){
+
+                btn_post_ver_garantias = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_renovar_garantia_det(\'' + data.IdCartaFianzaDetalle + '\')" style="cursor:pointer" title="Renovar Garantia"><span style="font-size:80%;" class="text-warning  glyphicon glyphicon-retweet"></span></a>';
+
+            }
+            
         }
 
     }
@@ -424,7 +434,7 @@ function set_botones_tabla_fianza(data) {
 
 
 
-    return '<div class="btn-group"> ' + btn_gestionar + btn_renovar_cf + btn_renovar_garantia + btn_cerrar_carta+btn_historial+btn_anular_carta+'</div>';
+    return '<div class="btn-group"> ' + btn_gestionar + btn_renovar_cf + btn_renovar_garantia + btn_cerrar_carta+btn_historial+btn_anular_carta+btn_post_ver_garantias+'</div>';
 }
 
 function prepare_modal_anular_fianza(IdCartaFianza,p2,p3,p4,p5,p6){
@@ -522,41 +532,63 @@ function get_detalle_carta_fianza_garantia(numCarta) {
 
             $.unblockUI();
 
+            console.log(response);
 
             if (response.length > 0) {
 
+                //se agregaran lineas para deshabilitar algunos inputs
+
+                
+
+                $("#hidden_id_garantia_last").val(response[0].IdCartaFianzaGarantia);
                 $("#mdg_porcentaje").val(response[0].Porcentaje);
+                // se desahilitara
+                $("#mdg_porcentaje").attr("readonly",true);
                 $("#mdg_monto_fianza").val(response[0].MontoCarta);
                 $("#mdg_monto_garantia").val(response[0].Monto);
 
                 $("#mdg_n_tipo_garantia").val(response[0].NumeroDocumento);
+                // se desahilitara
+                $("#mdg_n_tipo_garantia").attr("readonly",true);
 
                 $("#mdg_fecha_emision").val(response[0].FechaEmision);
+                // se desahilitara
+                $("#mdg_fecha_emision").attr("readonly",true);
                 $("#mdg_vencimiento").val(response[0].FechaVencimiento);
 
                 $("#mdg_obs").val(response[0].Observaciones);
-
+                 // se desahilitara
+                 $("#mdg_obs").attr("readonly",true);
+                //
                 $("#mdg_tipo_garantia option[value=" + response[0].TipoGarantia + "]").prop("selected", true);
 
+                //se deshabilitara el tipo de pago garantia
+
+                $('#mdg_tipo_garantia').prop("disabled",true);
+                //
                 $('#mdg_tipo_garantia').trigger("chosen:updated");
 
 
                 $("#mdg_moneda option[value=" + response[0].Moneda + "]").prop("selected", true);
 
+                //se desjanilitara
+                $('#mdg_moneda').prop("disabled",true);
                 $('#mdg_moneda').trigger("chosen:updated");
 
                 $("#mdg_banco option[value=" + response[0].CodigoBanco + "]").prop("selected", true);
+                //se desjanilitara
+                $('#mdg_banco').prop("disabled",true);
                 $('#mdg_banco').trigger("chosen:updated");
 
 
 
-                 let sub_arreglo = ["PRO","PND","LIT","LIP","COB","REN","POS"];
+                let sub_arreglo = ["PRO","PND","LIT","LIP","COB","REN","POS"];
 
 
                 for(let j=0;j<sub_arreglo.length;j++){
 
                     $('#mdg_estado option[value="'+sub_arreglo[j]+'"]').attr("disabled", false); 
-                        
+
                 }
 
                 const estado_seleccionado_garantia = response[0].Estado;
@@ -571,15 +603,18 @@ function get_detalle_carta_fianza_garantia(numCarta) {
                         $('#mdg_estado option[value="'+sub_arreglo[i]+'"]').attr("disabled", true); 
                     }
                     
-                        
-                }
 
+                }
+                //se deshabilitar
+                $('#mdg_estado').prop("disabled",true);
                 $('#mdg_estado').trigger("chosen:updated");
 
 
 
 
             } else {
+
+                $("#hidden_id_garantia_last").val(0);
 
                 $("#mdg_porcentaje").val("");
                 $("#mdg_monto_fianza").val("");
@@ -680,6 +715,14 @@ function get_detalle_carta_fianza(idCartaFianza) {
 
                 const carta_gestionada = response[0].FlagGestionCarta;
 
+                if(carta_gestionada == 1){
+
+                    $("#mcf_monto").attr("data-gestion",1);
+
+                }else{
+
+                    $("#mcf_monto").attr("data-gestion",0);
+                }
 
                 let sub_arreglo = ["PRO","VIG","VEN","ANL","REN","CER"];
 
@@ -687,7 +730,7 @@ function get_detalle_carta_fianza(idCartaFianza) {
                 for(let j=0;j<sub_arreglo.length;j++){
 
                     $('#mcf_estado option[value="'+sub_arreglo[j]+'"]').attr("disabled", false); 
-                        
+
                 }
 
                 $("#mcf_estado option[value=" + response[0].EstadoCF + "]").prop("selected", true);
@@ -698,32 +741,41 @@ function get_detalle_carta_fianza(idCartaFianza) {
 
                     for(let i=0;i<sub_arreglo.length;i++){
 
-                       if(sub_arreglo[i] != estado_seleccionado_carta){
+                     if(sub_arreglo[i] != estado_seleccionado_carta){
 
-                            $('#mcf_estado option[value="'+sub_arreglo[i]+'"]').attr("disabled", true);
-                       }
-                        
+                        $('#mcf_estado option[value="'+sub_arreglo[i]+'"]').attr("disabled", true);
                     }
-                    
+
                 }
 
-                $('#mcf_estado').trigger("chosen:updated");
+            }
 
-                if (response[0].NumeroCarta != null) {
+            $('#mcf_estado').trigger("chosen:updated");
 
+            if (response[0].NumeroCarta != null) {
+                    //si ya fue gestionada y existe garantia
                     get_detalle_carta_fianza_garantia(response[0].NumeroCarta);
 
                 } else {
 
+                    //sin gestionar y no tiene garantia
                     $("#mdg_porcentaje").val(response[0].GarantiaCheque);
+                    //habilitamos
+                    $("#mdg_porcentaje").attr("readonly",false);
                     $("#mdg_monto_fianza").val(response[0].Monto);
                     $("#mdg_monto_garantia").val(response[0].GarantiaMonto);
 
-
+                    $("#hidden_id_garantia_last").val(0);
                     $("#mdg_n_tipo_garantia").val("");
+                    //habilitamos
+                    $("#mdg_n_tipo_garantia").attr("readonly",false);
                     $("#mdg_fecha_emision").val("");
+                    //habilitamos
+                    $("#mdg_fecha_emision").attr("readonly",false);
                     $("#mdg_vencimiento").val("");
                     $("#mdg_obs").val("");
+                    //habilitamos
+                    $("#mdg_obs").attr("readonly",false);
 
 
 
@@ -745,22 +797,28 @@ function get_detalle_carta_fianza(idCartaFianza) {
 
                             $('#mdg_estado option[value="'+est_garantias[i]+'"]').attr("disabled", true);
                         }
-                         
+
                         
                     }
 
 
-
-
+                    //habilitamos
+                    $('#mdg_estado').prop("disabled",false);
                     $('#mdg_estado').trigger("chosen:updated");
 
                     $("#mdg_tipo_garantia option[value='CD']").prop("selected", true);
+                    //habilitamos
+                    $('#mdg_tipo_garantia').prop("disabled",false);
                     $('#mdg_tipo_garantia').trigger("chosen:updated");
 
                     $("#mdg_banco option[value='01']").prop("selected", true);
+                    //habilitamos
+                    $('#mdg_banco').prop("disabled",false);
                     $('#mdg_banco').trigger("chosen:updated");
 
                     $("#mdg_moneda option[value='SOL']").prop("selected", true);
+                    //habilitamos
+                    $('#mdg_moneda').prop("disabled",false);
                     $('#mdg_moneda').trigger("chosen:updated");
                 }
             }
@@ -934,13 +992,21 @@ $('#mcf_monto').on('keyup', function() {
 
     const value = $(this).val();
 
-    $('#mdg_monto_fianza').val(parseFloat(value).toFixed(2));
+    const data_gestion = $(this).attr("data-gestion");
 
-    const porcentaje = $('#mdg_porcentaje').val();
+    if(data_gestion == 0){
 
-    const monto_garantia = (porcentaje / 100) * value;
+        $('#mdg_monto_fianza').val(parseFloat(value).toFixed(2));
 
-    $('#mdg_monto_garantia').val(parseFloat(monto_garantia).toFixed(2));
+        const porcentaje = $('#mdg_porcentaje').val();
+
+        const monto_garantia = (porcentaje / 100) * value;
+
+        $('#mdg_monto_garantia').val(parseFloat(monto_garantia).toFixed(2));
+
+    }
+
+    
 
 
 })
@@ -1018,64 +1084,90 @@ function valida_formulario_gestion_carta() {
 
     let msj = '';
 
-    if ($('#hidden_carta_idfinanciero').val() == 0) {
+    const gestionada = $('#mcf_monto').attr('data-gestion');
 
-        return 'Ingrese una financiera';
+    const estado = $('#mcf_estado').val();
+
+    if(gestionada == 0 && estado =='ANL'){
+
+        //solo valida monto y numero de carta
+
+        if ($('#mcf_monto').val().trim() == "") {
+
+            return 'Ingrese un monto';
+
+        }
+
+
+        if ($('#mfc_carta_manual').val().trim() == "") {
+
+            return 'Ingrese número para la carta';
+
+        }
+
+        return msj;
+
+
+    }else{
+
+
+        if ($('#hidden_carta_idfinanciero').val() == 0) {
+
+            return 'Ingrese una financiera';
+
+        }
+
+        if ($('#mcf_monto').val().trim() == "") {
+
+            return 'Ingrese un monto';
+
+        }
+
+        if ($('#mfc_carta_manual').val().trim() == "") {
+
+            return 'Ingrese número para la carta';
+
+        }
+        
+        if ($('#mfc_fecha_inicio').val().trim() == "") {
+
+            return 'Ingrese una fecha de inicio';
+
+        }
+
+        if ($('#mfc_dias').val().trim() == "") {
+
+            return 'Ingrese número de dias';
+
+        }
+
+        //validacion para garantia
+
+        if ($('#mdg_n_tipo_garantia').val().trim() == "") {
+
+            return 'Ingrese número para la garantía';
+
+        }
+
+        if ($('#mdg_porcentaje').val().trim() == "" || $('#mdg_porcentaje').val() == 0) {
+
+            return 'Ingrese un % válido para la garantía';
+
+        }
+
+        if ($('#mdg_fecha_emision').val().trim() == "") {
+
+            return 'Ingrese una fecha de emisión para la garantía';
+
+        }
+
+        return msj;
+
+
+
 
     }
 
-    if ($('#mcf_monto').val().trim() == "") {
-
-        return 'Ingrese un monto';
-
-    }
-
-    if ($('#mfc_fecha_inicio').val().trim() == "") {
-
-        return 'Ingrese una fecha de inicio';
-
-    }
-
-    if ($('#mfc_dias').val().trim() == "") {
-
-        return 'Ingrese número de dias';
-
-    }
-
-    //validacion para garantia
-
-
-
-
-    if ($('#mdg_n_tipo_garantia').val().trim() == "") {
-
-        return 'Ingrese número para la garantía';
-
-    }
-
-    if ($('#mdg_porcentaje').val().trim() == "" || $('#mdg_porcentaje').val() == 0) {
-
-        return 'Ingrese un % válido para la garantía';
-
-    }
-
-
-
-    if ($('#mdg_fecha_emision').val().trim() == "") {
-
-        return 'Ingrese una fecha de emisión para la garantía';
-
-    }
-
-
-
-    
-
-
-
-
-
-    return msj;
 }
 
 
@@ -1111,6 +1203,8 @@ $("#form_gestion_carta_fianza").submit(function(event) {
 
         const mdg_obs = $('#mdg_obs').val();
 
+        const mdg_id_registro_garantia = $("#hidden_id_garantia_last").val();
+
         formData.append('mdg_monto_fianza', mdg_monto_fianza);
 
         formData.append('mdg_monto_garantia', mdg_monto_garantia);
@@ -1132,6 +1226,8 @@ $("#form_gestion_carta_fianza").submit(function(event) {
         formData.append('mdg_estado', mdg_estado);
 
         formData.append('mdg_obs', mdg_obs);
+
+        formData.append('mdg_id_registro_garantia', mdg_id_registro_garantia);
 
         $.ajax({
             headers: {
@@ -1361,4 +1457,6 @@ function prepare_modal_renovar_garantia_det(idCartaFianza) {
     set_datos_renovacion_garantia(idCartaFianza);
 
     reseta_inputs_renovacion_garantias();
+
+    bloquea_inputs_renovar_garantia();
 }

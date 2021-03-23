@@ -106,7 +106,7 @@
                         </th>
                         <th style="width:70%;text-align: center;">
                             <h4 style="text-decoration: underline;">Historial de Obra</h4>
-                            <h5 style="margin-top: -5px">"{{$cliente_cabecera}}"</h5>
+                            <h5 style="margin-top: -5px">"{{$cliente_name}}"</h5>
                         
                         </th>
                        
@@ -125,7 +125,7 @@
       <tr>
         <td>
             <p class="izq">
-              Historial de Obra - {{$cliente_cabecera}}
+              Historial de Obra - {{$cliente_name}}
             </p>
         </td>
         <td>
@@ -141,10 +141,9 @@
                     
             
         
-            @foreach($array_final as $list)
-                
-                <h6>Financiera : <span style="color:red;">{{$list['Financiera']}}</span></h6>
-                <h6 style="margin-top: -15px">Obra : <span style="color:blue;">{{strtoupper($list['Obra'])}}</span></h6>
+          
+                <h6>Financiera : <span style="color:red;">{{$financiera_name}}</span></h6>
+                <h6 style="margin-top: -15px">Obra : <span style="color:blue;">{{strtoupper($obra_name)}}</span></h6>
                 
                 <h6 style="margin-top: -15px">Impresión : <span style="">{{date('d/m/Y')}}</span></h6>
 
@@ -163,17 +162,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($list['cartas'] as $list2)
+                    @foreach($array_cartas as $list)
 
                         <tr>
-                        <td>{{$list2['tipo']}}</td>
-                        <td>{{$list2['codigo_carta']}}</td>
-                        <td>{{$list2['inicio']}}</td>
-                        <td>{{$list2['vence']}}</td>
-                        <td>{{$list2['renovada']}}</td>
-                        <td>{{number_format($list2['monto_original'], 2, '.', ',')}}</td>
-                        <td>{{number_format($list2['monto_actual'], 2, '.', ',')}}</td>
-                        <td>{{$list2['estado']}}</td>
+                        <td>{{$list->TipoCartaDesc}}</td>
+                        <td>{{$list->CodigoCarta}}</td>
+                        <td>{{$list->FechaInicio}}</td>
+                        <td>{{$list->FechaVence}}</td>
+                        <td>{{$list->FechaRenovacion}}</td>
+                        <td>{{number_format($list->MontoOriginal, 2, '.', ',')}}</td>
+                        <td>{{number_format($list->MontoActual, 2, '.', ',')}}</td>
+                        <td>{{$list->Estado}}</td>
                         </tr>
 
 
@@ -182,7 +181,7 @@
                 
                 </table>
 
-            @endforeach   
+              
 
             <table id="customers" style="width: 100%;margin-top: 10px">
                 <thead>
@@ -200,18 +199,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($agrupa_cartas_garantias as $list3)
+                    @foreach($array_garantias as $list)
 
                         <tr>
-                        <td>{{$list3['carta']}}</td>
-                        <td>{{$list3['garantia']}}</td>
-                        <td>{{$list3['documento']}}</td>
-                        <td>{{$list3['emision']}}</td>
-                        <td>{{$list3['moneda']}}</td>
-                        <td>{{number_format($list3['monto'], 2, '.', ',')}}</td>
-                        <td>{{$list3['cobro']}}</td>
-                        <td>{{number_format($list3['disponible'], 2, '.', ',')}}</td>
-                        <td>{{$list3['estado']}}</td>
+                        <td>{{$list->TipoCarta}}</td>
+                        <td>{{$list->TipoPago}}</td>
+                        <td>{{$list->NumeroDocumento}}</td>
+                        <td>{{$list->FechaEmisionGarantia}}</td>
+                        <td>{{$list->Moneda}}</td>
+                        <td>{{number_format($list->Monto, 2, '.', ',')}}</td>
+                        <td>{{$list->FechaCobroGarantia}}</td>
+                        <td>{{$list->Disponible ? number_format($list->Disponible, 2, '.', ','):''}}</td>
+                        <td>{{$list->EstadoGarantia}}</td>
                         </tr>
 
 

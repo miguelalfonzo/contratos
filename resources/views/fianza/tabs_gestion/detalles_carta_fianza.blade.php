@@ -224,7 +224,7 @@
                                       <div class="input-group-prepend ">
                                         <div class="input-group-text " style="height:31px"><i class="fa fa-money"></i></div>
                                       </div>
-                                    <input type="text" class="form-control has-feedback-left form-control-sm"   id="mcf_monto" name="mcf_monto"  oninput='limitDecimalPlaces(event, 2)'  onkeypress='return isNumberKey(event)' autocomplete="off" maxlength="100" value="">
+                                    <input data-gestion="" type="text" class="form-control has-feedback-left form-control-sm"   id="mcf_monto" name="mcf_monto"  oninput='limitDecimalPlaces(event, 2)'  onkeypress='return isNumberKey(event)' autocomplete="off" maxlength="100" value="">
                                     </div>
 
                                   </div>

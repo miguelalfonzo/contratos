@@ -234,7 +234,7 @@ class Maestro extends Model
         $garantia_cheque     = $request->parametro_gc;
         $dias_cobro_cheque   = $request->parametro_dias_cc;
         $id_usuario          = Auth::user()->id;
-        $fecha_modificacion  = Carbon::now()->format('Y-m-d H:m:s');
+        $fecha_modificacion  = Carbon::now()->format('Y-m-d H:i:s');
 
         $rpta  = DB::update('UPDATE parametros SET FielCumplimiento=?,AdelantoDirecto=?,AdelantoMateriales=?,GarantiaCheque=?,DiasCobroCheque=?,IdUsuarioModificacion=?,FechaModificacion=?', array($fiel_cumplimiento,$adelanto_directo,$adelanto_materiales,$garantia_cheque,$dias_cobro_cheque,$id_usuario,$fecha_modificacion));
 

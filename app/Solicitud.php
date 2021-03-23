@@ -137,7 +137,7 @@ class Solicitud extends Model
 
       $id_obra    = $request->rechaza_solicitud_id;
       $comentario = $request->rechaza_solicitud_form_coment;
-      $fecha      = Carbon::now()->format('Y-m-d H:m:s');
+      $fecha      = Carbon::now()->format('Y-m-d H:i:s');
       $user       = Auth::user()->id;
       
      $rpta = DB::insert("INSERT INTO solicitudes_rechazadas(IdObra,Comentario,FechaCreacion,IdUsuarioCreacion) VALUES(?,?,?,?)",array($id_obra,$comentario,$fecha,$user));
@@ -155,7 +155,7 @@ class Solicitud extends Model
       
       $estado         ="GEN";
 
-      $solicitud_fecha = Carbon::parse($request->solicitud_fecha)->format('Y-m-d H:m:s');
+      $solicitud_fecha = Carbon::parse($request->solicitud_fecha)->format('Y-m-d H:i:s');
 
 
       $cumplimiento   = $request->solicitud_cumplimiento;
@@ -220,11 +220,15 @@ class Solicitud extends Model
               $moneda  = $request->solicitud_moneda;
               $estado  = "PRO";
               $user    = Auth::user()->id;
-              $hoy     = Carbon::now()->format('Y-m-d H:m:s');
+              $hoy     = Carbon::now()->format('Y-m-d H:i:s');
+              
+              
+              
+              //$hoy     = "now()";
               $cliente     = $request->solicitud_id_cliente;
               $contratante = $request->solicitud_id_beneficiario;
               $financiera  = $request->solicitud_id_financia;
-              $solicitud_fecha = Carbon::parse($request->solicitud_fecha)->format('Y-m-d H:m:s');
+              $solicitud_fecha = Carbon::parse($request->solicitud_fecha)->format('Y-m-d H:i:s');
 
               $row.="('".$list['CODIGO']."','".$solicitud_fecha."','".$moneda."','".$list['MONTO']."','".$estado."',$nextId,$user,'".$hoy."',$cliente,$contratante,$financiera,0),";
 

@@ -65,8 +65,8 @@ class Fianza extends Model
 
        $request = new \Illuminate\Http\Request();
 
-       $request->codigoSolicitud = $IdSolicitud ;
-       
+       $request->IdSolicitud = $IdSolicitud ;
+
        $request->TipoFianza = $carta;
 
        return self::get_list_garantias_relacionadas($request);
@@ -77,10 +77,10 @@ class Fianza extends Model
 
     protected static function get_list_garantias_relacionadas($request){
 
-        $solicitud   = $request->codigoSolicitud;
+        $IdSolicitud   = $request->IdSolicitud;
         $tipo_carta  = $request->TipoFianza;
 
-        $list  = DB::select('call Get_Garantias_Renovacion_List (?,?)',array($solicitud,$tipo_carta));
+        $list  = DB::select('call Get_Garantias_Renovacion_List (?,?)',array($IdSolicitud,$tipo_carta));
 
         return $list;
     
@@ -110,17 +110,19 @@ class Fianza extends Model
 
     protected static function save_carta_fianza($request){
 
+      
+
         $moneda  		 = $request->mcf_moneda;
         $estado  		 = $request->mcf_estado;
         $monto   		 = $request->mcf_monto;
-        $fecha_creacion  = Carbon::parse($request->mfc_fecha)->format('Y-m-d H:m:s');
-        $fecha_inicio 	 = (!empty($request->mfc_fecha_inicio))?Carbon::parse($request->mfc_fecha_inicio)->format('Y-m-d H:m:s'):null;
+        $fecha_creacion  = Carbon::parse($request->mfc_fecha)->format('Y-m-d H:i:s');
+        $fecha_inicio 	 = (!empty($request->mfc_fecha_inicio))?Carbon::parse($request->mfc_fecha_inicio)->format('Y-m-d H:i:s'):null;
 
 
         $dias  				= $request->mfc_dias;
 
 
-        $fecha_vencimiento  =  (!empty($request->mfc_vencimiento))?Carbon::createFromFormat('d/m/Y', $request->mfc_vencimiento)->format('Y-m-d H:m:s'):null;
+        $fecha_vencimiento  =  (!empty($request->mfc_vencimiento))?Carbon::createFromFormat('d/m/Y', $request->mfc_vencimiento)->format('Y-m-d H:i:s'):null;
         
         $id_carta           = $request->id_mcf_hidden;
 
@@ -141,17 +143,24 @@ class Fianza extends Model
 
             $numero_carta = $numero_carta_json[0]["NumeroCarta"];
 
-            self::update_garantia($request,$numero_carta);
-            
+            //self::update_garantia($request);
+            //ya no actualizara ultima garantia
             $new_estado = $estado;
+
 
         }else{
 
             $numero_carta = self::genera_numero_carta();
 
-             self::inserta_garantia($request,$numero_carta);
+            $new_estado = ($estado == 'PRO')?'VIG':$estado;
 
-             $new_estado = ($estado == 'PRO')?'VIG':$estado;
+            if($new_estado!='ANL'){
+              
+              self::inserta_garantia($request,$numero_carta);
+            }
+             
+
+             
 
            
         }
@@ -181,7 +190,7 @@ class Fianza extends Model
    }
 
 
-   protected static function update_garantia($request,$num_carta){
+   protected static function update_garantia($request){
 
     $monto_fianza   = $request->mdg_monto_fianza;
     $tipo_garantia  = $request->mdg_tipo_garantia;
@@ -192,9 +201,9 @@ class Fianza extends Model
     $banco       = $request->mdg_banco;
     $porcentaje  = $request->mdg_porcentaje;
     $moneda      = $request->mdg_moneda;
-    $fecha_emision       = Carbon::parse($request->mdg_fecha_emision)->format('Y-m-d H:m:s');
+    $fecha_emision       = Carbon::parse($request->mdg_fecha_emision)->format('Y-m-d H:i:s');
 
-    $fecha_vencimiento   = Carbon::createFromFormat('d/m/Y', $request->mdg_vencimiento)->format('Y-m-d H:m:s');
+    $fecha_vencimiento   = Carbon::createFromFormat('d/m/Y', $request->mdg_vencimiento)->format('Y-m-d H:i:s');
 
     $estado          = $request->mdg_estado;
     $observaciones   = $request->mdg_obs;
@@ -212,6 +221,9 @@ class Fianza extends Model
       $disponible = round($monto_garantia, 2) - $pre_calculo;
 
     }
+
+    $num_carta = $request->mdg_id_registro_garantia; //el numero de carta se cambio por el id de la ultimna garantia
+
 
     $rpta = DB::update("call Carta_Fianza_Garantia_Update (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",array($monto_fianza,$tipo_garantia,$monto_garantia,$numero_doc_garantia,$banco,$porcentaje,$moneda,$fecha_emision,$fecha_vencimiento,$estado,$observaciones,$id_user,$num_carta,$disponible));
     
@@ -240,9 +252,9 @@ class Fianza extends Model
         $moneda          = $request->mdg_moneda;
         $monto           = $request->mdg_monto_garantia;
 
-        $fecha_emision       = Carbon::parse($request->mdg_fecha_emision)->format('Y-m-d H:m:s');
+        $fecha_emision       = Carbon::parse($request->mdg_fecha_emision)->format('Y-m-d H:i:s');
 
-        $fecha_vencimiento   = Carbon::createFromFormat('d/m/Y', $request->mdg_vencimiento)->format('Y-m-d H:m:s');
+        $fecha_vencimiento   = Carbon::createFromFormat('d/m/Y', $request->mdg_vencimiento)->format('Y-m-d H:i:s');
         
         $estado          = $request->mdg_estado;
         $observaciones   = $request->mdg_obs;
@@ -458,12 +470,12 @@ class Fianza extends Model
 
         //$estado          = $request->mdr_estado;
         $estado          = "VIG";
-        $fecha           = Carbon::parse($request->mdr_fecha)->format('Y-m-d H:m:s');
-        $fecha_incio     = Carbon::parse($request->mdr_fecha_inicio)->format('Y-m-d H:m:s');
+        $fecha           = Carbon::parse($request->mdr_fecha)->format('Y-m-d H:i:s');
+        $fecha_incio     = Carbon::parse($request->mdr_fecha_inicio)->format('Y-m-d H:i:s');
 
         $dias = $request->mdr_dias;
 
-        $fecha_vencimiento   = Carbon::createFromFormat('d/m/Y', $request->mdr_vencimiento)->format('Y-m-d H:m:s');
+        $fecha_vencimiento   = Carbon::createFromFormat('d/m/Y', $request->mdr_vencimiento)->format('Y-m-d H:i:s');
         
         $renovacion      = $request->mdr_renovacion;
         
@@ -475,15 +487,17 @@ class Fianza extends Model
 
         $file_documento   = self::get_documento_electronico($IdCartaFianza);
 
-        $new_num_carta    = self::genera_numero_carta();
+        //$new_num_carta    = self::genera_numero_carta(); //el numerocarta sera el mismo que el anterior
+
+        $new_num_carta    = $request->mdr_numero_carta;
 
         $rpta  = DB::insert('call Carta_Fianza_Insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($tipo_fianza,$fecha,$fecha_incio,$fecha_vencimiento,$moneda,$monto,$estado,$dias,$id_solicitud,$cliente,$financiera,$benficiario,$id_user,$numero_carta_fianza,$comentario,$file_avance_obra,$file_documento,$new_num_carta,$IdCartaFianza));
 
-        $new_request = self::setea_nuevo_request_garantia($IdCartaFianza,$monto);
+        //$new_request = self::setea_nuevo_request_garantia($IdCartaFianza,$monto);
 
-        self::inserta_garantia($new_request,$new_num_carta);
+        //self::inserta_garantia($new_request,$new_num_carta);
 
-
+        //al renovar la carta ya no se renueva garantia en automatico
         return $rpta;
    }
 
@@ -491,41 +505,110 @@ class Fianza extends Model
 
 
 
-     protected static function save_renovacion_garantia($request){
+    //  protected static function save_renovacion_garantia($request){
 
         
-      $id_carta_fianza_garantia = $request->ren_car_gar_idgarantia;
-      $fecha_garantia      = Carbon::parse($request->ren_car_gar_fecha)->format('Y-m-d H:m:s');
-      $monto_fianza        = $request->ren_car_gar_monto_fianza;
-      $fecha_emision       = Carbon::parse($request->ren_car_gar_emision)->format('Y-m-d H:m:s');
-      $tipo_garantia       = $request->ren_car_gar_tipo_pago;
-      $numero_documento    = $request->ren_car_gar_numero;
-      $porcentaje          = $request->ren_car_gar_porcentaje; 
-      $moneda              = $request->ren_car_gar_moneda;
-      $fecha_vencimiento   = Carbon::parse($request->ren_car_gar_vencimiento)->format('Y-m-d H:m:s');
-      $banco               = $request->ren_car_gar_bancos ;
-      $monto_garantia      = $request->ren_car_gar_monto;
-      $fecha_cobro         = Carbon::parse($request->ren_car_gar_cobro)->format('Y-m-d');
-      $estado_garantia     = $request->ren_car_gar_estados_gar;
-      $disponible          = $request->ren_car_gar_disponible;
+    //   $id_carta_fianza_garantia = $request->ren_car_gar_idgarantia;
+    //   $fecha_garantia      = Carbon::parse($request->ren_car_gar_fecha)->format('Y-m-d H:m:s');
+    //   $monto_fianza        = $request->ren_car_gar_monto_fianza;
+    //   $fecha_emision       = Carbon::parse($request->ren_car_gar_emision)->format('Y-m-d H:m:s');
+    //   $tipo_garantia       = $request->ren_car_gar_tipo_pago;
+    //   $numero_documento    = $request->ren_car_gar_numero;
+    //   $porcentaje          = $request->ren_car_gar_porcentaje; 
+    //   $moneda              = $request->ren_car_gar_moneda;
+    //   $fecha_vencimiento   = Carbon::parse($request->ren_car_gar_vencimiento)->format('Y-m-d H:m:s');
+    //   $banco               = $request->ren_car_gar_bancos ;
+    //   $monto_garantia      = $request->ren_car_gar_monto;
+    //   $fecha_cobro         = Carbon::parse($request->ren_car_gar_cobro)->format('Y-m-d');
+    //   $estado_garantia     = $request->ren_car_gar_estados_gar;
+    //   $disponible          = $request->ren_car_gar_disponible;
       
-      $liberar             = $request->ren_car_gar_liberar;
+    //   $liberar             = $request->ren_car_gar_liberar;
       
-      $observacion         = $request->ren_car_gar_obs;
-      $id_user             = Auth::user()->id;
+    //   $observacion         = $request->ren_car_gar_obs;
+    //   $id_user             = Auth::user()->id;
       
 
-      // if(!empty($liberar)){
+    //   // if(!empty($liberar)){
 
-      //   $monto_garantia = round($monto_garantia-$liberar,2);
+    //   //   $monto_garantia = round($monto_garantia-$liberar,2);
 
-      // }
+    //   // }
 
       
-      $rpta = DB::update('call Renovar_Garantia(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($id_carta_fianza_garantia,$fecha_garantia,$monto_fianza,$fecha_emision,$tipo_garantia,$numero_documento,$porcentaje,$moneda,$fecha_vencimiento,$banco,$monto_garantia,$fecha_cobro,$estado_garantia,$disponible,$observacion,$id_user));
+    //   $rpta = DB::update('call Renovar_Garantia(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($id_carta_fianza_garantia,$fecha_garantia,$monto_fianza,$fecha_emision,$tipo_garantia,$numero_documento,$porcentaje,$moneda,$fecha_vencimiento,$banco,$monto_garantia,$fecha_cobro,$estado_garantia,$disponible,$observacion,$id_user));
        
-       return $rpta ;
+    //    return $rpta ;
+    // }
+
+
+    protected static function save_renovacion_garantia($request){
+
+        $codigo_solicitud = $request->ren_car_gar_codigo_sol;
+        $tipo_carta = $request->ren_car_gar_tipo_carta;
+        $numero_carta = $request->ren_car_gar_num_ca;
+        $fecha = Carbon::now()->format('Y-m-d H:i:s');
+        $monto_fianza = $request->ren_car_gar_monto_fianza;
+        $tipo_garantia = $request->ren_car_gar_tipo_pago;
+        $numero_manual_garantia = $request->ren_car_gar_numero;
+        $banco = $request->ren_car_gar_bancos;
+        $porcentaje = $request->ren_car_gar_porcentaje;
+        $moneda = $request->ren_car_gar_moneda;
+
+        $monto_garantia = $request->ren_car_monto_inicial;//agregado , es el monto inicial
+
+        $monto_requerido = $request->ren_car_gar_monto; // porcentaje*monto_fianza;
+
+        $disponible = $request->ren_car_gar_disponible;
+
+        $emision = (!empty($request->ren_car_gar_emision))?Carbon::parse($request->ren_car_gar_emision)->format('Y-m-d'):null;
+
+        $vencimiento = (!empty($request->ren_car_gar_vencimiento))?Carbon::parse($request->ren_car_gar_vencimiento)->format('Y-m-d'):null;
+
+
+        $cobro = (!empty($request->ren_car_gar_cobro))?Carbon::parse($request->ren_car_gar_cobro)->format('Y-m-d'):null;
+      
+
+        $estado = $request->ren_car_gar_estados_gar;
+
+        $observacion = $request->ren_car_gar_obs;
+
+        if($estado=='LIP'){
+
+          $monto_garantia_final  = $monto_requerido ;
+
+        }else if($estado=='LIT'){
+
+          $monto_garantia_final = 0;
+
+          $disponible = null;
+
+        }else{
+
+          $monto_garantia_final  = $monto_garantia;
+
+        }
+        
+        $id_user = Auth::user()->id;
+
+        $rpta = DB::insert("INSERT INTO carta_fianza_garantia(CodigoSolicitud,TipoCarta,NumeroCarta,Fecha,MontoCarta,TipoGarantia,NumeroDocumento,CodigoBanco,Porcentaje,Moneda,Monto,Disponible,FechaEmision,FechaVencimiento,FechaCobro,Estado,Observaciones,IdUsuarioCreacion,FechaSistemaCreacion) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now()) ",array($codigo_solicitud,$tipo_carta,$numero_carta,$fecha,$monto_fianza,$tipo_garantia,$numero_manual_garantia,$banco,$porcentaje,$moneda,$monto_garantia_final,$disponible,$emision,$vencimiento,$cobro,$estado,$observacion,$id_user));
+
+
+        return $rpta ;
+
+      
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     protected static function cerrar_carta_fianza($request){
@@ -549,27 +632,41 @@ class Fianza extends Model
 
      $tipo_fianza       = $carta_anterior_json[0]["TipoCarta"] ;
      $fecha             = $carta_anterior_json[0]["FechaCreacion"];
-     $fecha_incio       = $carta_anterior_json[0]["FechaInicio"];
-     $fecha_vencimiento = $carta_anterior_json[0]["FechaVence"];
+     //$fecha_incio       = $carta_anterior_json[0]["FechaInicio"];
+     //$fecha_vencimiento = $carta_anterior_json[0]["FechaVence"];
+
+
+     $fecha_incio       = null;
+     $fecha_vencimiento = null;
+
+
      $moneda            = $carta_anterior_json[0]["CodigoMoneda"];
-     $dias              = $carta_anterior_json[0]["Dias"];
+     //$dias              = $carta_anterior_json[0]["Dias"];
+
+     $dias              = null;
+
      $id_solicitud      = $carta_anterior_json[0]["IdSolicitud"];
      $cliente           = $carta_anterior_json[0]["IdCliente"];
      $financiera        = $carta_anterior_json[0]["IdFinanciera"];
      $benficiario       = $carta_anterior_json[0]["IdBeneficiario"];
-     $numero_carta_fianza   = $carta_anterior_json[0]["CodigoCarta"];
+
+     $numero_carta_fianza   = $carta_anterior_json[0]["CodigoCarta"].'-'.$estado;
+
+
      $file_avance_obra      = $carta_anterior_json[0]["AvanceObra"];
      $file_documento        = $carta_anterior_json[0]["DocumentoElectronico"];
      
      self::actualiza_estado_carta($id_carta_fianza);
 
-     $new_num_carta    = self::genera_numero_carta();
+     //$new_num_carta    = self::genera_numero_carta();
+
+     $new_num_carta    = $carta_anterior_json[0]["NumeroCarta"];
 
       $rpta  = DB::insert('call Carta_Fianza_Insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($tipo_fianza,$fecha,$fecha_incio,$fecha_vencimiento,$moneda,$monto,$estado,$dias,$id_solicitud,$cliente,$financiera,$benficiario,$id_user,$numero_carta_fianza,$comentario,$file_avance_obra,$file_documento,$new_num_carta,$id_carta_fianza));
 
-      $new_request = self::setea_nuevo_request_garantia($id_carta_fianza,$monto);
+      //$new_request = self::setea_nuevo_request_garantia($id_carta_fianza,$monto);
 
-      self::inserta_garantia($new_request,$new_num_carta);
+      //self::inserta_garantia($new_request,$new_num_carta);
 
 
       return $rpta;

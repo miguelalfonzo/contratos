@@ -6,6 +6,9 @@
                   
                   <div class="form-group row resize-margin-top-12">
 
+                                  <input type="hidden" name="hidden_id_garantia_last" id="hidden_id_garantia_last" value="0">
+
+                                  
                                   <label class="control-label col-sm-2 margin-top-10">Tipo Garantía</label>
                                   <div class="col-sm-4 margin-top-10">
 

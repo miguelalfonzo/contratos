@@ -465,15 +465,35 @@ class FianzaController extends Controller
 
     protected function cerrar_carta_fianza(Request $request){
 
-        $rpta = Fianza::cerrar_carta_fianza($request);
+        DB::beginTransaction();
 
-        if($rpta == 1){
+        try {
 
-            return $this->setRpta("ok","Se cerró la carta fianza");
+           $rpta = Fianza::cerrar_carta_fianza($request);
+            
+                if($rpta == 1){
 
+                    DB::commit();
+
+                    return $this->setRpta("ok","Se cerró la carta fianza");
+
+                }
+          
+                DB::rollback();
+
+                return $this->setRpta("error","Ocurrió un error");
+           
+
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+
+            return $this->setRpta("error",$e->getMessage());
         }
 
-        return $this->setRpta("error","Ocurrió un error");
+
+
+        
 
     }   
 

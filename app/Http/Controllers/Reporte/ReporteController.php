@@ -31,190 +31,31 @@ class ReporteController extends Controller
 		}
 		
 
-		$obras = DB::select("SELECT IdObra,IdCliente FROM obra WHERE CodigoObra=?",array($codigo_obra));
-		
-		
-		$cliente_cabecera = '';
-
-		$array_final = array();
+		$obra = Obra::where('CodigoObra',$codigo_obra)->first();
 
 
-		//fianzas
+		$obra_name = $codigo_obra.' - '.$obra->Descripcion;
 
+		$cliente = Cliente::where('IdCliente',$obra->IdCliente)->first();
 
-		$adelanto_materiales = array();
+		$cliente_name = $cliente->Identificacion.' - '.$cliente->Nombre;
 
-		$adelanto_directo = array();
+		$financiera = Cliente::where('IdCliente',$obra->IdFinanciera)->first();
 
-		$fiel_cumplimiento = array();
+		$financiera_name = $financiera->Identificacion.' - '.$financiera->Nombre;
 
-		//garantias
+		$array_cartas = Reporte::get_list_fianzas_relacionadas($obra->IdObra);
 
-
-		$garantias = array();
-
-
-
-		foreach($obras as $list){
-
-			$cliente_cab =Cliente::where('IdCliente',$list->IdCliente)->first();
-
-			$query = Reporte::get_list_fianzas_relacionadas($list->IdObra);
-
-			
-			$obra = Obra::where('IdObra',$list->IdObra)->first();
-			
-			$financiera = Cliente::where('IdCliente',$obra->IdFinanciera)->first();
-
-
-			foreach ($query as $list2) {
-				
-				if(!is_null($list2->NumeroCarta)){
-
-			 		if($list2->TipoCarta=='AM'){
-
-			 			$adelanto_materiales[]=array("tipo"=>"ADELANTO MATERIALES",
-			 								   "codigo_carta"=>$list2->CodigoCarta,
-			 									"inicio"=>$list2->FechaInicio,
-			 									"vence"=>$list2->FechaVence,
-			 									"renovada"=>$list2->FechaRenovacion,
-			 									"monto_original"=>$list2->MontoOriginal,
-			 									"monto_actual"=>$list2->MontoActual,
-			 									"estado"=>$list2->Estado
-			 								);
-	
-			 		}
-
-			 		if($list2->TipoCarta=='AD'){
-
-			 			$adelanto_directo[]=array("tipo"=>"ADELANTO DIRECTO",
-			 								   "codigo_carta"=>$list2->CodigoCarta,
-			 									"inicio"=>$list2->FechaInicio,
-			 									"vence"=>$list2->FechaVence,
-			 									"renovada"=>$list2->FechaRenovacion,
-			 									"monto_original"=>$list2->MontoOriginal,
-			 									"monto_actual"=>$list2->MontoActual,
-			 									"estado"=>$list2->Estado
-			 								);
-
-			 			
-			 		}
-
-			 		if($list2->TipoCarta=='FC'){
-
-			 			$fiel_cumplimiento[]=array("tipo"=>"FIEL CUMPLIMIENTO",
-			 								   "codigo_carta"=>$list2->CodigoCarta,
-			 									"inicio"=>$list2->FechaInicio,
-			 									"vence"=>$list2->FechaVence,
-			 									"renovada"=>$list2->FechaRenovacion,
-			 									"monto_original"=>$list2->MontoOriginal,
-			 									"monto_actual"=>$list2->MontoActual,
-			 									"estado"=>$list2->Estado
-			 								);
-
-			 			
-
-			 		}
-
-
-			 		$garantias[]= array("carta"=>$list2->TipoCarta,
-			 								   "garantia"=>$list2->TipoPago,
-			 									"emision"=>$list2->FechaEmisionGarantia,
-			 									"documento"=>$list2->NumeroDocumento,
-			 									"moneda"=>$list2->Moneda,
-			 									"monto"=>$list2->Monto,
-			 									"cobro"=>$list2->FechaCobroGarantia,
-			 									"disponible"=>$list2->Disponible,
-			 									"estado"=>$list2->EstadoGarantia
-			 								);
-
-
-				 }
-
-			}
-
-
-			$agrupa_cartas = array_merge($adelanto_materiales,$adelanto_directo,$fiel_cumplimiento);
-			
-
-			$array_final[] = array("Obra"=>$obra->CodigoObra.' - '.$obra->Descripcion,
-									"Financiera"=>$financiera->Identificacion.' - '.$financiera->Nombre,
-									"cartas"=> $agrupa_cartas
-									);
-
-
-			//dd($array_final);
-			$cliente_cabecera = $cliente_cab->Nombre;
-			
-		}	
-		
+		$array_garantias = Reporte::get_list_garantias_relacionadas($obra->IdObra);
 
 		
-		//ordenando todas las garantias
-		$adelanto_materiales_garantia = array();
-		$adelanto_directo_garantia = array();
-		$fiel_cumplimiento_garantia = array();
-
-		
-		foreach($garantias as $values){
-
-			if($values["garantia"]=="CHEQUE DIFERIDO"){
-
-				if($values["carta"]=="AM"){
-
-					$adelanto_materiales_garantia[]=$values;
-				}
-				if($values["carta"]=="AD"){
-
-					$adelanto_directo_garantia[]=$values;
-				}
-
-				if($values["carta"]=="FC"){
-					$fiel_cumplimiento_garantia[]=$values;
-				}
-			}
-
-			if($values["garantia"]=="CHEQUE"){
-
-				if($values["carta"]=="AM"){
-
-					$adelanto_materiales_garantia[]=$values;
-				}
-				if($values["carta"]=="AD"){
-					
-					$adelanto_directo_garantia[]=$values;
-				}
-
-				if($values["carta"]=="FC"){
-					$fiel_cumplimiento_garantia[]=$values;
-				}
-			}
-
-			if($values["garantia"]=="DEPOSITO"){
-
-				if($values["carta"]=="AM"){
-
-					$adelanto_materiales_garantia[]=$values;
-				}
-				if($values["carta"]=="AD"){
-					
-					$adelanto_directo_garantia[]=$values;
-				}
-
-				if($values["carta"]=="FC"){
-					$fiel_cumplimiento_garantia[]=$values;
-				}
-			}
-
-		}
-
-		$agrupa_cartas_garantias = array_merge($adelanto_materiales_garantia,$adelanto_directo_garantia,$fiel_cumplimiento_garantia);
-
 
 		$pdf = \App::make('dompdf.wrapper');
-    
+    	
+    	
+
         $pdf->setPaper('A4');
-        $pdf->loadView('reports.reporte_historial',compact('array_final','cliente_cabecera','agrupa_cartas_garantias'));
+        $pdf->loadView('reports.reporte_historial',compact('array_cartas','array_garantias','obra_name','cliente_name','financiera_name'));
    
          return $pdf->stream();
 

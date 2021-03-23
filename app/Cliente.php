@@ -365,8 +365,8 @@ protected static function get_combo_empresas_financieras($query){
       $nombres   = $request->nombres;
       $apepat    = $request->apepat;
       $apemat    = $request->apemat;
-      $fe_inicio = Carbon::parse($request->fe_inicio)->format('Y-m-d H:m:s');
-      $fe_fin    = Carbon::parse($request->fe_fin)->format('Y-m-d H:m:s');
+      $fe_inicio = Carbon::parse($request->fe_inicio)->format('Y-m-d H:i:s');
+      $fe_fin    = Carbon::parse($request->fe_fin)->format('Y-m-d H:i:s');
       $cargo     = $request->cargo;
 
       $id_cliente = $request->id_cliente;

@@ -11,7 +11,11 @@
                                <label class="control-label col-md-2 col-sm-2 margin-top-10">Cliente</label>
 
                                 <div class="col-md-4 col-sm-4 margin-top-10">
-                                
+                                  
+
+                                  <input type="hidden" name="mdr_numero_carta" id="mdr_numero_carta">
+
+
                                   <input type="hidden" name="mdr_hidden_cliente" id="mdr_hidden_cliente">
 
                                   <input type="hidden" name="mdr_hidden_beneficiario" id="mdr_hidden_beneficiario">

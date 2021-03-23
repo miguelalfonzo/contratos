@@ -22,6 +22,16 @@ class Reporte extends Model
     
     }
 
+    protected static function get_list_garantias_relacionadas($obra){
+
+
+    	$list  = DB::select('call Reporte_Historial_Obra2 (?)', array($obra));
+
+    	return $list;
+      
+    
+    }
+
 
 
 

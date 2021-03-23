@@ -159,12 +159,12 @@ class Obra extends Model
       $hidden_obra_idfinanciero  = $request->hidden_obra_idfinanciero;
       $obra_descripcion          = $request->obra_descripcion;
 
-      $obra_ingreso  = Carbon::parse($request->obra_ingreso)->format('Y-m-d H:m:s');
+      $obra_ingreso  = Carbon::parse($request->obra_ingreso)->format('Y-m-d H:i:s');
       $obra_moneda   = $request->obra_moneda;
       $obra_monto    = $request->obra_monto;
-      $obra_inicio   = Carbon::parse($request->obra_inicio)->format('Y-m-d H:m:s');
+      $obra_inicio   = Carbon::parse($request->obra_inicio)->format('Y-m-d H:i:s');
       $obra_dias     = $request->obra_dias;
-      $obra_fin      = Carbon::createFromFormat('d/m/Y', $request->obra_fin)->format('Y-m-d H:m:s');
+      $obra_fin      = Carbon::createFromFormat('d/m/Y', $request->obra_fin)->format('Y-m-d H:i:s');
       $obra_condicion = $request->obra_condicion;
       $user_creacion  = Auth::user()->id;
 
