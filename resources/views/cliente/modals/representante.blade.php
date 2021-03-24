@@ -18,7 +18,7 @@
 
                           <div class="col-md-9 col-sm-7">
                             
-                            <h6 class="modal-title text-success" ><span class="badge badge-primary"><i class="fa fa-user icon-right"></i>Representante Legal</span></h6>
+                            <h6 class="modal-title text-success" ><span class="badge badge-primary"><i class="fa fa-user icon-right"></i>Representante Legal - <span id="lbl_cabecera_representante"></span></span></h6>
 
                           </div>
                           

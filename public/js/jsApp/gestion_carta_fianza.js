@@ -255,9 +255,7 @@ function load_list_fianzas(documento,cliente,obra,fianza_vencimiento) {
         }, {
             data: 'NombreCliente'
         }, {
-            data: 'CodigoObra'
-        }, {
-            data: 'NombreObra'
+            data: 'fullnameobra'
         }, {
             data: 'MontoMoneda'
         }, {

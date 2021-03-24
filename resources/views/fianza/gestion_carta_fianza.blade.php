@@ -5,6 +5,14 @@
 <link href="{{asset('vendors/steps/css/normalize.css')}}" rel="stylesheet">
 <link href="{{asset('vendors/steps/css/main.css')}}" rel="stylesheet">
 <link href="{{asset('vendors/steps/css/jquery.steps.css')}}" rel="stylesheet">
+
+<!-- <style type="text/css">
+  th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+ 
+</style> -->
 @endsection
 
 @section('content')
@@ -87,12 +95,12 @@
 
                                 <thead>
                                     <tr class="headings">
-                                        <th style="width: 10%">N° Solicitud</th>
+                                        <th style="width: 5%">N° Solicitud</th>
                                         <th style="width: 5%">File</th>
-                                        <th style="width: 25%">Tipo Documento</th>
-                                        <th style="width: 10%">Cliente</th>
-                                        <th style="width: 5%">Obra</th>
-                                        <th style="width: 25%">Descripción</th>    
+                                        <th style="width: 10%">Tipo Documento</th>
+                                        <th style="width: 25%">Cliente</th>
+                                        <th style="width: 25%">Obra</th>
+                                            
                                           
                                         <th style="width: 5%">Monto</th>  
                                         <th style="width: 5%">Estado</th>  

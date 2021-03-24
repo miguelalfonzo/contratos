@@ -109,13 +109,15 @@ $("#filtro_cliente").on('change', function() {
 
 function set_botones_tabla_cliente(data) {
 
+    const full_name_entidad = data.Nombre;
+
     const btn_edit = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize"  href="../public/cliente/' + data.IdCliente + '" title="Editar"><span style="font-size:80%;" class="text-success glyphicon glyphicon-edit"></span></a>';
 
-    const btn_representantes = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_representantes(\'' + data.IdCliente + '\')" style="cursor:pointer" title="Representantes"><span style="font-size:80%;" class="text-success glyphicon glyphicon-user"></span></a>';
+    const btn_representantes = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_representantes(\'' + full_name_entidad + '\',\'' + data.IdCliente + '\')" style="cursor:pointer" title="Representantes"><span style="font-size:80%;" class="text-success glyphicon glyphicon-user"></span></a>';
 
-    const btn_accionistas = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_accionistas(\'' + data.IdCliente + '\')" style="cursor:pointer" title="Accionistas"><i style="font-size:80%;" class="text-success fa fa-users"></i></a>';
+    const btn_accionistas = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_accionistas(\'' + full_name_entidad + '\',\'' + data.IdCliente + '\')" style="cursor:pointer" title="Accionistas"><i style="font-size:80%;" class="text-success fa fa-users"></i></a>';
 
-    const btn_documentos = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_documentos(\'' + data.IdCliente + '\')" style="cursor:pointer" title="Documentos"><span style="font-size:80%;" class="text-success glyphicon glyphicon-book"></span></a>';
+    const btn_documentos = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" onclick="prepare_modal_documentos(\'' + full_name_entidad + '\',\'' + data.IdCliente + '\')" style="cursor:pointer" title="Documentos"><span style="font-size:80%;" class="text-success glyphicon glyphicon-book"></span></a>';
 
     let btn_eliminar = '';
 
@@ -130,7 +132,7 @@ function set_botones_tabla_cliente(data) {
         '<span style="font-size:80%;" class="text-danger glyphicon glyphicon-remove"></span></a> ';
     
 
-        btn_multi_report='<div class="btn-group"><button type="button" class="btn btn-info dropdown-toggle btn-sm resize-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-print"></i></button><div class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -185px, 0px);"><a class="dropdown-item" href="" onclick="reporte_pdf_estado_cuenta(\'' + data.IdCliente + '\')">Estado Cuenta</a><a class="dropdown-item" href="#">Estado Cuenta - Garantías</a></div></div>';
+        btn_multi_report='<div class="btn-group"><button type="button" class="btn btn-info dropdown-toggle btn-sm resize-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-print"></i></button><div class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -185px, 0px);"><a class="dropdown-item" href="" onclick="reporte_pdf_estado_cuenta(\'' + data.IdCliente + '\')">Estado Cuenta</a><a href="" onclick="reporte_pdf_estado_cuenta_garantia(\'' + data.IdCliente + '\')" class="dropdown-item" href="#">Estado Cuenta - Garantías</a></div></div>';
 
     }
 
@@ -138,7 +140,7 @@ function set_botones_tabla_cliente(data) {
     if (data.IdTipoCliente == '05') {
 
         btn_clientes_asociados = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize" title="Ver empresas"' +
-        'onclick="prepare_ver_empresas(\'' + data.IdConsorcio + '\',\'' + data.IdCliente + '\')" style="cursor:pointer">' +
+        'onclick="prepare_ver_empresas(\'' + full_name_entidad + '\',\'' + data.IdConsorcio + '\',\'' + data.IdCliente + '\')" style="cursor:pointer">' +
         '<span style="font-size:80%;" class="text-primary glyphicon glyphicon-home"></span></a> ';
 
 
@@ -161,14 +163,25 @@ function reporte_pdf_estado_cuenta(codigo_cliente){
     return false;
 }
 
+function reporte_pdf_estado_cuenta_garantia(codigo_cliente){
+
+    const url= server+'reporte_estado_cuenta_garantia/'+codigo_cliente;
+    
+    window.open(url, '_blank');
+    
+    return false;
+}
 
 
 //funciones empresas - consorcio
 
 
-function prepare_ver_empresas(cliente_id_consorcio, id_cliente) {
+function prepare_ver_empresas(clienteName,cliente_id_consorcio, id_cliente) {
 
     $("#modal-ver-empresas").modal("show");
+
+    $("#lbl_cabecera_empresas_asoc").text(clienteName);
+
 
     if (cliente_id_consorcio == "null") {
 
@@ -392,10 +405,13 @@ function guardar_asociados(asociados, cliente_id_consorcio, id_cliente) {
 //funciones documentos
 
 
-function prepare_modal_documentos(idCliente) {
+function prepare_modal_documentos(clienteName,idCliente) {
 
 
     $("#modal-edit-documentos").modal("show");
+
+    
+    $("#lbl_cabecera_documentos_clientes").text(clienteName);
 
     list_cliente_documento(idCliente);
 }
@@ -677,11 +693,14 @@ function prepare_delete_file(IdClienteDocumento, file) {
 
 //funciones accionistas
 
-function prepare_modal_accionistas(idCliente) {
+function prepare_modal_accionistas(clienteName,idCliente) {
 
     $("#modal-edit-accionista").modal("show");
 
     $("#id_cliente_mod_accionista").val(idCliente);
+
+    
+    $("#lbl_cabecera_accionista").text(clienteName);
 
     list_cliente_accionista(idCliente);
 }
@@ -961,11 +980,14 @@ function save_accionista() {
 
 //funciones representantes
 
-function prepare_modal_representantes(idCliente) {
+function prepare_modal_representantes(clienteName,idCliente) {
 
     $("#modal-edit-representante").modal("show");
 
     $("#id_cliente_hidden").val(idCliente);
+
+    
+    $("#lbl_cabecera_representante").text(clienteName);
 
     list_cliente_representante(idCliente);
 

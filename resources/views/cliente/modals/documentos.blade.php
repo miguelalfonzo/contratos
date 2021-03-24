@@ -7,7 +7,7 @@
                    
                   <div class="modal-header">
 
-                          <h6 class="modal-title text-success" ><span class="badge badge-primary"><i class="fa fa-user icon-right"></i>Documentos Clientes</span></h6>
+                          <h6 class="modal-title text-success" ><span class="badge badge-primary"><i class="fa fa-user icon-right"></i>Documentos Clientes - <span id="lbl_cabecera_documentos_clientes"></span></span></h6>
 
                           <button type="button" class="close mr-2" data-dismiss="modal"><span aria-hidden="true">×</span>
                           </button>

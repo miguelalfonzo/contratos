@@ -6,11 +6,11 @@
       font-family: sans-serif;
     }
     @page {
-      margin: 80px 50px 70px 50px;
+      margin: 110px 50px 70px 50px;
     }
     header { position: fixed;   
       left: 0px;
-      top: -80px;
+      top: -110px;
       right: 0px;
       height: 250px; 
       
@@ -94,7 +94,10 @@
                         </th>
                        
                        
-                    </tr>                                                                       
+                    </tr>
+
+
+                    <tr><td colspan="2"><small>Fecha Impresión : {{date('d/m/Y')}}</small></td></tr>                                                                     
             </table>
 
 
@@ -123,13 +126,13 @@
       <div id="content">
 
         
-        <table id="customers" style="width: 100%;font-size: 9px;margin-top: 10px">
+        <!-- <table id="customers" style="width: 100%;font-size: 9px;margin-top: 10px">
                 <thead >
                    
                     <tr>
                         <th>Financiera</th>
                         <th>Obra</th>
-                        <th>Cliente</th>
+                        <th>Cliente/Consorcio</th>
                         <th>Carta</th>
                         <th>Número</th>
                         <th>Vence</th>
@@ -139,7 +142,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($obras as $list)
+
+                    
+                    @foreach($cartas as $list)
 
                        
                        
@@ -154,14 +159,112 @@
                         <td>{{number_format($list->MontoActual, 2, '.', ',')}}</td>
                         </tr>
 
+                       
 
                     @endforeach
                 </tbody>
                 
-                </table>
-        
+                </table> -->
           
 
+         
+          
+
+
+        <table id="customers" style="width: 100%;font-size: 9.5px;margin-top: 10px">
+                <thead >
+                   
+                    <tr>
+                        <th>Cliente/Consorcio</th>
+                        <th>Tipo Fianza</th>
+                        <th>Número</th>
+                        <th>Vence</th>
+                        <th>Original</th>
+                        <th>Actual</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <?php
+
+                      $tot_original = 0;
+
+                      $tot_actual = 0;
+
+                    ?>
+                    @foreach($final as $list)
+
+                       
+                        <tr><td colspan="6"></td></tr>
+                        <tr style="color:red">
+
+                          <td>{{$list['financiera']}}
+                          <td></td>
+                          <td></td> 
+                          <td></td>
+                          <td >{{$list['totalizado_financieras_original']}}</td> 
+                          <td >{{$list['totalizado_financieras_actual']}}</td>
+                        
+                        </tr>
+
+                        <?php
+
+                          $tot_original=$tot_original+$list['totalizado_financieras_original'];
+                          $tot_actual=$tot_actual+$list['totalizado_financieras_actual'];
+
+                        ?>
+
+
+                        <tr><td colspan="6"></td></tr>
+                        @foreach($list['detalle'] as $key)
+
+                          <tr style="color:blue">
+
+                            <td>{{$key['obra']}}</td>
+                            <td></td>
+                            <td></td> 
+                            <td></td> 
+                            <td> {{$key['suma_original']}}</td>
+                            <td> {{$key['suma_actual']}}</td>
+                        
+                          </tr>
+
+                          @foreach($key['sub_detalle'] as $last)
+
+                              <tr style="color:green">
+
+                                <td>{{$last->fullNameCliente}} </td>
+                                <td>{{$last->DescripcionTipoCarta}} </td>
+                                <td>{{$last->CodigoCarta}} </td>
+                                <td>{{$last->FechaVence}} </td>
+                                <td>{{$last->MontoOriginal}} </td>
+                                <td>{{$last->MontoActual}} </td>
+                             </tr>
+
+                          @endforeach
+
+                        @endforeach
+                       
+
+                    @endforeach
+
+                    <tr><td colspan="6"></td></tr>
+                    <tr><td colspan="6"></td></tr>
+                    <tr><td colspan="6"></td></tr>
+                    <tr><td colspan="6"></td></tr>
+                    <tr><td colspan="6"></td></tr>
+                    
+                    <tr>
+                      <td colspan="4"></td> 
+
+
+                        <td><?php echo number_format($tot_original, 2, '.', ',') ;?></td>
+                        <td><?php echo number_format($tot_actual, 2, '.', ',') ;?></td>
+                    </tr>
+                </tbody>
+                
+                </table>
          
 
       </div>

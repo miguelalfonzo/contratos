@@ -18,7 +18,7 @@
 
                           <div class="col-md-9 col-sm-7">
                             
-                            <h6 class="modal-title text-success" ><span class="badge badge-primary"><i class="fa fa-user icon-right"></i>Accionistas</span></h6>
+                            <h6 class="modal-title text-success" ><span class="badge badge-primary"><i class="fa fa-user icon-right"></i>Accionistas - <span id="lbl_cabecera_accionista"></span></span></h6>
 
                           </div>
                           

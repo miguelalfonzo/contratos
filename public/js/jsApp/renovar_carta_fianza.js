@@ -803,6 +803,16 @@ function set_inputs_datos_renovacion(IdCartaFianzaGarantia){
             $('#ren_car_gar_estados_gar').trigger("chosen:updated");
 
 
+            // if(response[0].Estado =='LIT'){
+
+            //     $("#ren_car_gar_monto_fianza").attr('readonly',true);
+            //     $("#ren_car_gar_porcentaje").attr('readonly',true);
+
+            // }else{
+
+            //     $("#ren_car_gar_monto_fianza").attr('readonly',false);
+            //     $("#ren_car_gar_porcentaje").attr('readonly',false);
+            // }
 
             $("#ren_car_gar_disponible").val(response[0]["Disponible"]);
             $("#ren_car_gar_liberar").val("");
@@ -887,18 +897,30 @@ function valida_inputs_renovar_garantia(){
         return 'Ingrese una fecha de vencimiento';
     }
 
-    if($("#ren_car_gar_monto").val().trim()=="" || $("#ren_car_gar_monto").val()==0){
+    if($("#ren_car_gar_monto").val().trim()==""  ){
 
         return 'Ingrese un monto para la garantía';
+
+    }else {
+
+        
+        if($("#ren_car_gar_estados_gar").val()!="LIT"){
+
+            if($("#ren_car_gar_monto").val()==0){
+
+                return 'Ingrese un monto para la garantía';
+            }
+        }
+
     }
 
 
 
-    if($("#ren_car_gar_estados_gar").val()=="LIP"){
+    if($("#ren_car_gar_estados_gar").val()=="LIP" || $("#ren_car_gar_estados_gar").val()=="LIT"){
 
         if($("#ren_car_gar_liberar").val().trim()==""){
 
-            return 'Debe existir un monto para la liberación parcial';
+            return 'Debe existir un monto para la liberación';
 
         }
     }
@@ -955,28 +977,28 @@ function bloquea_inputs_renovar_garantia(){
 function desbloquea_inputs_renovar_garantia(){
 
     $("#ren_car_gar_estados_gar").prop("disabled", false);
-   $('#ren_car_gar_estados_gar').trigger("chosen:updated");
-   $("#ren_car_gar_monto_fianza").attr('readonly',false);
-   $("#ren_car_gar_emision").attr('readonly',false);
+    $('#ren_car_gar_estados_gar').trigger("chosen:updated");
+    $("#ren_car_gar_monto_fianza").attr('readonly',false);
+    $("#ren_car_gar_emision").attr('readonly',false);
 
 
-   $("#ren_car_gar_tipo_pago").prop("disabled", false);
-   $('#ren_car_gar_tipo_pago').trigger("chosen:updated");
-   $("#ren_car_gar_numero").attr('readonly',false);
-   $("#ren_car_gar_porcentaje").attr('readonly',false);
+    $("#ren_car_gar_tipo_pago").prop("disabled", false);
+    $('#ren_car_gar_tipo_pago').trigger("chosen:updated");
+    $("#ren_car_gar_numero").attr('readonly',false);
+    $("#ren_car_gar_porcentaje").attr('readonly',false);
 
 
 
 
-   $("#ren_car_gar_moneda").prop("disabled", false);
-   $('#ren_car_gar_moneda').trigger("chosen:updated");
-   $("#ren_car_gar_vencimiento").attr('readonly',false);
-   $("#ren_car_gar_bancos").prop("disabled", false);
-   $('#ren_car_gar_bancos').trigger("chosen:updated");
+    $("#ren_car_gar_moneda").prop("disabled", false);
+    $('#ren_car_gar_moneda').trigger("chosen:updated");
+    $("#ren_car_gar_vencimiento").attr('readonly',false);
+    $("#ren_car_gar_bancos").prop("disabled", false);
+    $('#ren_car_gar_bancos').trigger("chosen:updated");
 
 
-   $("#ren_car_gar_cobro").attr('readonly',false);
-   $("#ren_car_gar_obs").attr('readonly',false);
+    $("#ren_car_gar_cobro").attr('readonly',false);
+    $("#ren_car_gar_obs").attr('readonly',false);
 
 
 }
@@ -1056,11 +1078,16 @@ $("#form_renovar_garantia").submit(function(event) {
 
 function recalcula_montos_renovar_garantia(){
 
+    if($("#ren_car_gar_estados_gar").val() != 'LIT'){
 
-    const monto_fianza = $("#ren_car_gar_monto_fianza").val();
-    const porcentaje   = $("#ren_car_gar_porcentaje").val();
-    const valor_final = parseFloat(monto_fianza*porcentaje/100).toFixed(2);
-    $("#ren_car_gar_monto").val(valor_final);
+        const monto_fianza = $("#ren_car_gar_monto_fianza").val();
+        const porcentaje   = $("#ren_car_gar_porcentaje").val();
+        const valor_final = parseFloat(monto_fianza*porcentaje/100).toFixed(2);
+        $("#ren_car_gar_monto").val(valor_final);
+
+    }
+
+    
 
     //si el monto oculto y el nuevo requerido son iguales no hay diferencia (no hay disponible)
     
@@ -1079,9 +1106,13 @@ function recalcula_montos_renovar_garantia(){
 
     //en caso ya este el combo en liberacion parcial se limpia el monto liberado 
 
-    if($("#ren_car_gar_estados_gar").val() == 'LIP'){
+    if($("#ren_car_gar_estados_gar").val() == 'LIP' || $("#ren_car_gar_estados_gar").val() == 'LIT'){
 
-        $("#ren_car_gar_liberar").val('');
+        $("#ren_car_gar_disponible").val('');
+
+        const liberable = parseFloat($("#ren_car_gar_monto").attr('data-monto')) - parseFloat($("#ren_car_gar_monto").val());
+
+        $("#ren_car_gar_liberar").val(liberable.toFixed(2));
         
     }
 
@@ -1160,11 +1191,32 @@ $('#ren_car_gar_estados_gar').on('change', function() {
 
     const value = $(this).val();
 
-    
+    //$("#ren_car_gar_monto_fianza").attr('readonly',false);
+    //$("#ren_car_gar_porcentaje").attr('readonly',false);
+
+
+    const old_disponible =$("#ren_car_gar_disponible").attr("data-disponible");
+    const old_monto =$("#ren_car_gar_monto").attr("data-monto");
+
+
+    const old_mofianza =$("#ren_car_gar_monto_fianza").attr("data-mofianza");
+    const old_porcentaje =$("#ren_car_gar_porcentaje").attr("data-porcentaje");
+
+
+    $("#ren_car_gar_disponible").val(old_disponible);
+    $("#ren_car_gar_monto").val(old_monto);
+    $("#ren_car_gar_monto_fianza").val(old_mofianza);
+    $("#ren_car_gar_porcentaje").val(old_porcentaje);
+
+
+    $("#ren_car_gar_liberar").val("");
+    $("#ren_car_gar_obs").val("");
 
     if(value=='LIP'){
 
 
+
+        //logica
         const disponible = $("#ren_car_gar_disponible").val();
 
         $("#ren_car_gar_liberar").val(disponible);
@@ -1180,24 +1232,39 @@ $('#ren_car_gar_estados_gar').on('change', function() {
         $("#ren_car_gar_obs").val("Se liberó parcialmente");
 
 
+    }else if(value=='LIT'){
+
+        $("#ren_car_gar_monto").val(0);
+        
+
+        //$("#ren_car_gar_monto_fianza").attr('readonly',true);
+        //$("#ren_car_gar_porcentaje").attr('readonly',true);
+
+        const liberable = $("#ren_car_gar_monto").attr('data-monto');
+
+        $("#ren_car_gar_liberar").val(parseFloat(liberable).toFixed(2));
+        $("#ren_car_gar_disponible").val('');
+
+        $("#ren_car_gar_obs").val("Se liberó totalmente");
+
     }else {
 
-        const old_disponible =$("#ren_car_gar_disponible").attr("data-disponible");
-        const old_monto =$("#ren_car_gar_monto").attr("data-monto");
+        // const old_disponible =$("#ren_car_gar_disponible").attr("data-disponible");
+        // const old_monto =$("#ren_car_gar_monto").attr("data-monto");
 
 
-        const old_mofianza =$("#ren_car_gar_monto_fianza").attr("data-mofianza");
-        const old_porcentaje =$("#ren_car_gar_porcentaje").attr("data-porcentaje");
+        // const old_mofianza =$("#ren_car_gar_monto_fianza").attr("data-mofianza");
+        // const old_porcentaje =$("#ren_car_gar_porcentaje").attr("data-porcentaje");
 
 
-        $("#ren_car_gar_disponible").val(old_disponible);
-        $("#ren_car_gar_monto").val(old_monto);
-        $("#ren_car_gar_monto_fianza").val(old_mofianza);
-        $("#ren_car_gar_porcentaje").val(old_porcentaje);
+        // $("#ren_car_gar_disponible").val(old_disponible);
+        // $("#ren_car_gar_monto").val(old_monto);
+        // $("#ren_car_gar_monto_fianza").val(old_mofianza);
+        // $("#ren_car_gar_porcentaje").val(old_porcentaje);
 
 
-        $("#ren_car_gar_liberar").val("");
-        $("#ren_car_gar_obs").val("");
+        // $("#ren_car_gar_liberar").val("");
+        // $("#ren_car_gar_obs").val("");
     }
 
 

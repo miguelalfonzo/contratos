@@ -179,9 +179,11 @@ Route::post('/cerrar_carta_fianza', 'Obra\FianzaController@cerrar_carta_fianza')
 // reportes
 
 Route::get('/reporte_historial/{CodigoObra}','Reporte\ReporteController@reporte_historial');
-Route::get('/reporte_cumpleanos_rep/{IdEmpresa}','Reporte\ReporteController@reporte_cumpleanos_representantes');
+
 
 Route::get('/reporte_estado_cuenta/{IdCliente}','Reporte\ReporteController@reporte_estado_cuenta');
+
+Route::get('/reporte_estado_cuenta_garantia/{IdCliente}','Reporte\ReporteController@reporte_estado_cuenta_garantia');
 
 //busqueda ws ruc -dni
 
