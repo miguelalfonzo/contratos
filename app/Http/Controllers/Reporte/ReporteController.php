@@ -110,23 +110,46 @@ class ReporteController extends Controller
 
 		$array_asoc = array();
 
+		$array_porc = array();
 		
 
 		foreach ($query_1 as $value) {
 			
 			$id_cliente_cons = $value->IdCliente;
 
-			$vector = $value->clientes_asociados;
+			$clientes_asoc = $value->clientes_asociados;
 
-			$sin_corchetes = str_replace("]","",str_replace("[","",$vector));
+			$clientes = str_replace("]","",str_replace("[","",$clientes_asoc));
 
-			if(in_array($IdCliente,explode(",", $sin_corchetes))){
+			$array_clientes  = explode(",", $clientes);
+
+			
+
+			$porcentajes_asoc = $value->porcentajes_asociados;
+
+			$porcentajes = str_replace("]","",str_replace("[","",$porcentajes_asoc));
+			
+			$array_porcentajes = explode(",", $porcentajes);
+
+			
+			
+
+			if(in_array($IdCliente,$array_clientes)){
 
 				$array_asoc[] = $id_cliente_cons;
+
+				$key = array_search($IdCliente,$array_clientes);
+				
+				//buscamos el porcentaje en el arreglo respectivamente
+
+				$array_porc[$id_cliente_cons] = $array_porcentajes[$key];
+
 			}
 			
 
 		}
+
+		
 
 		if(count($array_asoc)==0){
 
@@ -135,24 +158,30 @@ class ReporteController extends Controller
 
 			$clientes_string = $IdCliente;
 
+			$array_porc[$IdCliente] = '100';
+
 		}else{
 			//esta incluido en al menos 1 consorcio
 			$clientes_string = implode(",", $array_asoc);
+
+			//se mostraran porcentajes
 		}
 
 		
-		
-		
 
+		
 		$cartas = DB::select("SELECT o.IdObra,
 		 o.CodigoObra,
 		 o.Descripcion,
 		 cfd.TipoCarta,
-
+		 cfd.IdCliente,
 		 (SELECT Descripcion FROM tabla_maestra WHERE IdTabla=85 AND valor=cfd.TipoCarta) AS DescripcionTipoCarta,
 		 cfd.CodigoMoneda,
 		 cfd.Monto AS MontoActual,
-		 IFNULL((SELECT Monto FROM carta_fianza_detalle where IdCartaFianzaDetalle=cfd.CartaAnterior),cfd.Monto) AS MontoOriginal,
+
+		 (SELECT Monto FROM carta_fianza_detalle WHERE TipoCarta=cfd.TipoCarta AND NumeroCarta=cfd.NumeroCarta ORDER BY FechaCreacionSistema ASC LIMIT 1) AS MontoOriginal,
+
+		 
 		 cfd.EstadoCF,
 		 (SELECT nombre FROM cliente WHERE IdCliente = cfd.IdCliente) AS fullNameCliente,
 		  (SELECT nombre FROM cliente WHERE IdCliente = cfd.IdFinanciera) AS fullNameFinanciera,
@@ -163,11 +192,16 @@ class ReporteController extends Controller
 FROM carta_fianza_detalle cfd 
 INNER JOIN carta_fianza cf ON cf.IdCartaFianza = cfd.IdSolicitud
 INNER JOIN  obra o ON o.IdObra = cf.IdObra
-WHERE o.IdCliente IN($clientes_string)  order BY cfd.IdFinanciera DESC , o.CodigoObra desc ,cfd.TipoCarta asc,cfd.FechaCreacionSistema desc;
+WHERE o.IdCliente IN($clientes_string) AND cfd.EstadoCF IN('VIG') order BY cfd.IdFinanciera DESC , o.CodigoObra desc ,cfd.TipoCarta asc,cfd.FechaCreacionSistema desc;
 ");
 
 		//AND cfd.EstadoCF NOT IN('PRO') condicion para discriminar cartas en proceso
 		
+		//solo se mostraran las cartas vigentes y el monto original es el primero de todas las cartas
+
+		// se quitara el if null 
+
+		//IFNULL((SELECT Monto FROM carta_fianza_detalle where IdCartaFianzaDetalle=cfd.CartaAnterior),cfd.Monto) AS MontoOriginal
 
 		if(count($cartas)==0){
 
@@ -207,18 +241,18 @@ WHERE o.IdCliente IN($clientes_string)  order BY cfd.IdFinanciera DESC , o.Codig
 					FROM carta_fianza_detalle cfd 
 					INNER JOIN carta_fianza cf ON cf.IdCartaFianza = cfd.IdSolicitud
 					INNER JOIN  obra o ON o.IdObra = cf.IdObra
-					WHERE o.IdCliente IN($clientes_string) AND  cfd.IdFinanciera =? AND o.CodigoObra=?;",array($fu,$ou));
+					WHERE o.IdCliente IN($clientes_string) AND cfd.EstadoCF IN('VIG') AND  cfd.IdFinanciera =? AND o.CodigoObra=?;",array($fu,$ou));
 
 				$count = json_decode(json_encode($count), true);
 
 				if($count[0]['num_row']>0){
 
 					$query = DB::select("SELECT sum(cfd.Monto) as Totalizado_Actual,
-					sum(IFNULL((SELECT Monto FROM carta_fianza_detalle where IdCartaFianzaDetalle=cfd.CartaAnterior),cfd.Monto)) as Totalizado_Original
+					sum((SELECT Monto FROM carta_fianza_detalle WHERE TipoCarta=cfd.TipoCarta AND NumeroCarta=cfd.NumeroCarta ORDER BY FechaCreacionSistema ASC LIMIT 1)) as Totalizado_Original
 					FROM carta_fianza_detalle cfd 
 					INNER JOIN carta_fianza cf ON cf.IdCartaFianza = cfd.IdSolicitud
 					INNER JOIN  obra o ON o.IdObra = cf.IdObra
-					WHERE o.IdCliente IN($clientes_string) AND  cfd.IdFinanciera =? AND o.CodigoObra=?;",array($fu,$ou));
+					WHERE o.IdCliente IN($clientes_string) AND cfd.EstadoCF IN('VIG') AND  cfd.IdFinanciera =? AND o.CodigoObra=?;",array($fu,$ou));
 
 					$query = json_decode(json_encode($query), true); 
 
@@ -233,14 +267,15 @@ WHERE o.IdCliente IN($clientes_string)  order BY cfd.IdFinanciera DESC , o.Codig
 
 		 			(SELECT Descripcion FROM tabla_maestra WHERE IdTabla=85 AND valor=cfd.TipoCarta) AS DescripcionTipoCarta,
 		 			cfd.Monto AS MontoActual,
-		 			IFNULL((SELECT Monto FROM carta_fianza_detalle where IdCartaFianzaDetalle=cfd.CartaAnterior),cfd.Monto) AS MontoOriginal,
+		 			(SELECT Monto FROM carta_fianza_detalle WHERE TipoCarta=cfd.TipoCarta AND NumeroCarta=cfd.NumeroCarta ORDER BY FechaCreacionSistema ASC LIMIT 1) AS MontoOriginal,
 		 			(SELECT nombre FROM cliente WHERE IdCliente = cfd.IdCliente) AS fullNameCliente,
 		   			cfd.CodigoCarta,
+		   			cfd.IdCliente,
 		   			DATE_FORMAT(cfd.FechaVence, '%d/%m/%Y') as FechaVence
 					FROM carta_fianza_detalle cfd 
 					INNER JOIN carta_fianza cf ON cf.IdCartaFianza = cfd.IdSolicitud
 					INNER JOIN  obra o ON o.IdObra = cf.IdObra
-					WHERE o.IdCliente IN($clientes_string)   AND  cfd.IdFinanciera =? AND o.CodigoObra=? order BY cfd.TipoCarta asc,cfd.FechaCreacionSistema desc;",array($fu,$ou));
+					WHERE o.IdCliente IN($clientes_string)  AND cfd.EstadoCF IN('VIG')  AND  cfd.IdFinanciera =? AND o.CodigoObra=? order BY cfd.TipoCarta asc,cfd.FechaCreacionSistema desc;",array($fu,$ou));
 
 				
 
@@ -256,11 +291,11 @@ WHERE o.IdCliente IN($clientes_string)  order BY cfd.IdFinanciera DESC , o.Codig
 			//totalizado para financieras 
 
 			 $sql_financieras = DB::select("SELECT sum(cfd.Monto) as Totalizado_Actual,
-			 	sum(IFNULL((SELECT Monto FROM carta_fianza_detalle where IdCartaFianzaDetalle=cfd.CartaAnterior),cfd.Monto)) as Totalizado_Original
+			 	sum((SELECT Monto FROM carta_fianza_detalle WHERE TipoCarta=cfd.TipoCarta AND NumeroCarta=cfd.NumeroCarta ORDER BY FechaCreacionSistema ASC LIMIT 1)) as Totalizado_Original
 					FROM carta_fianza_detalle cfd 
 		 			INNER JOIN carta_fianza cf ON cf.IdCartaFianza = cfd.IdSolicitud
 		 			INNER JOIN  obra o ON o.IdObra = cf.IdObra
-		 			WHERE o.IdCliente IN($clientes_string) AND  cfd.IdFinanciera =? ;",array($fu));
+		 			WHERE o.IdCliente IN($clientes_string) AND cfd.EstadoCF IN('VIG') AND  cfd.IdFinanciera =? ;",array($fu));
 
 		 	$sql_financieras = json_decode(json_encode($sql_financieras), true); 
 
@@ -281,7 +316,7 @@ WHERE o.IdCliente IN($clientes_string)  order BY cfd.IdFinanciera DESC , o.Codig
 		$pdf = \App::make('dompdf.wrapper');
     
         $pdf->setPaper('A4');
-        $pdf->loadView('reports.reporte_estado_cuenta',compact('cartas','empresa','identificacion','final'));
+        $pdf->loadView('reports.reporte_estado_cuenta',compact('cartas','empresa','identificacion','final','array_porc'));
    
          return $pdf->stream();
 

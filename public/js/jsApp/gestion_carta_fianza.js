@@ -246,9 +246,7 @@ function load_list_fianzas(documento,cliente,obra,fianza_vencimiento) {
                 "previous": "Anterior"
             }
         },
-        columns: [{
-            data: 'CodigoSolicitud'
-        }, {
+        columns: [ {
             data: 'FileName'
         }, {
             data: 'Carta'
@@ -1074,6 +1072,22 @@ $('#mdg_tipo_garantia').on('change', function() {
         $('#mdg_vencimiento').val(fecha_fin);
 
     }
+
+    //al ser deposito el estado cobrado cia se activará
+
+    if(tipo_garantia == "DE"){
+
+        $('#mdg_estado option[value="COB"]').attr("disabled", false);
+        $('#mdg_estado').trigger("chosen:updated");
+
+    }else{
+
+        $('#mdg_estado option[value="COB"]').attr("disabled", true);
+        $('#mdg_estado').trigger("chosen:updated");
+    }
+    
+
+
 
 })
 

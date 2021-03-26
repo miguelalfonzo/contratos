@@ -16,7 +16,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/sql', function () {
 
-	return Hash::make('12345678');
+	 return floatval('12.3');
 
 });
 

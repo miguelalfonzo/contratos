@@ -278,6 +278,24 @@ function set_table_alertas_garantias(tipo){
             data: 'Estado'
         },{
             data: 'DiasRestantes'
+        }, {
+            data: null,
+            "render": function(data, type, full, meta) {
+
+                const id_cliente = data.IdCliente;
+                const id_obra = data.IdObra;
+                const carta = data.TipoCarta;
+                const fianza = 'TO';
+
+
+                const url ="?cliente="+id_cliente+"&obra="+id_obra+"&carta="+carta+"&fianza="+fianza;
+
+                const btn_ver = '<a data-toggle="tooltip" data-placement="bottom" class="btn btn-default btn_resize"  target="_blank" href="../public/gestion_carta_fianza' + url + '" title="Ver"><span style="font-size:80%;" class="text-primary glyphicon glyphicon-arrow-right"></span></a>';
+
+
+                return '<div class="btn-group"> ' + btn_ver + '</div>';
+
+            }
         }],
 
         rowCallback: function(row, data) {
@@ -296,6 +314,12 @@ function set_table_alertas_garantias(tipo){
 
             }
                 
+        },
+        "drawCallback": function(settings) {
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+
         }
 
     });

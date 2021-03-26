@@ -280,7 +280,7 @@
                           <label>
                         <input class="js-switch" type="checkbox" id="switch_cumplimiento" name="switch_cumplimiento">&nbsp;&nbsp;
                          </label>
-                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_cumplimiento" name="solicitud_cumplimiento" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)' value="" readonly autocomplete="off" data-valor="{{ $obra[0]['FielCumplimiento'] ?? ''}}"><small class="mt-2 ml-1">%</small>
+                         <input maxlength="12" style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_cumplimiento" name="solicitud_cumplimiento" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)' value="" readonly autocomplete="off" data-valor="{{ $obra[0]['FielCumplimiento'] ?? ''}}"><small class="mt-2 ml-1">%</small>
 
 
 
@@ -304,7 +304,7 @@
                         <input class="js-switch" type="checkbox" id="switch_directo" name="switch_directo" >&nbsp;&nbsp;
                       </label>
                       
-                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2 "  placeholder="" id="solicitud_directo" name="solicitud_directo" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly autocomplete="off" data-valor="{{$obra[0]['AdelantoDirecto'] ?? ''}}"><small class="mt-2 ml-1">%</small>
+                         <input maxlength="12" type="text" class="form-control has-feedback-left form-control-sm ml-2 "  placeholder="" id="solicitud_directo" name="solicitud_directo" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly autocomplete="off" data-valor="{{$obra[0]['AdelantoDirecto'] ?? ''}}"><small class="mt-2 ml-1">%</small>
                         
                         
                         </div>
@@ -326,7 +326,7 @@
                           <input class="js-switch" type="checkbox" id="switch_materiales" name="switch_materiales" >&nbsp;&nbsp;
                           </label>
 
-                         <input style="" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_materiales" name="solicitud_materiales" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly="" autocomplete="off" data-valor="{{$obra[0]['AdelantoMateriales'] ?? '' }}"> <small class="mt-2 ml-1">%</small>
+                         <input maxlength="12" type="text" class="form-control has-feedback-left form-control-sm ml-2"  placeholder="" id="solicitud_materiales" name="solicitud_materiales" oninput='limitDecimalPlaces(event, 2)' onkeyup='recalcula_fianza()' onkeypress='return isNumberKey(event)'  value="" readonly="" autocomplete="off" data-valor="{{$obra[0]['AdelantoMateriales'] ?? '' }}"> <small class="mt-2 ml-1">%</small>
 
 
                          

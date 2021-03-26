@@ -45,7 +45,10 @@
       text-align: right;
       padding-left: 10px;
     }
+    .color-porcentaje{
 
+      color:black;
+    }
     .page{
 
         font-size: 12px;
@@ -193,25 +196,36 @@
                       $tot_actual = 0;
 
                     ?>
+
+                    
+                    
+
                     @foreach($final as $list)
+
+                        <?php
+
+                          $tot_finan_original=0;
+                          $tot_finan_actual =0;
+
+                      ?>
 
                        
                         <tr><td colspan="6"></td></tr>
                         <tr style="color:red">
 
-                          <td>{{$list['financiera']}}
+                          <td>{{$list['financiera']}}</td>
                           <td></td>
                           <td></td> 
                           <td></td>
-                          <td >{{$list['totalizado_financieras_original']}}</td> 
-                          <td >{{$list['totalizado_financieras_actual']}}</td>
+                          <td ><!-- {{$list['totalizado_financieras_original']}} --></td> 
+                          <td ><!-- {{$list['totalizado_financieras_actual']}} --></td>
                         
                         </tr>
 
                         <?php
 
-                          $tot_original=$tot_original+$list['totalizado_financieras_original'];
-                          $tot_actual=$tot_actual+$list['totalizado_financieras_actual'];
+                          //$tot_original=$tot_original+$list['totalizado_financieras_original'];
+                          //$tot_actual=$tot_actual+$list['totalizado_financieras_actual'];
 
                         ?>
 
@@ -225,30 +239,87 @@
                             <td></td>
                             <td></td> 
                             <td></td> 
-                            <td> {{$key['suma_original']}}</td>
-                            <td> {{$key['suma_actual']}}</td>
+                            <td> <!-- {{$key['suma_original']}} --></td>
+                            <td> <!-- {{$key['suma_actual']}} --></td>
                         
                           </tr>
 
-                          @foreach($key['sub_detalle'] as $last)
 
+                          <?php
+                              $sub_suma_cartas_original=0;
+                              $sub_suma_cartas_actual =0;
+                          ?>
+
+
+                          @foreach($key['sub_detalle'] as $last)
+                              <?php
+
+                                $original_calculado=round($last->MontoOriginal*$array_porc[$last->IdCliente]/100,2);
+
+                                $actual_calculado=round($last->MontoActual*$array_porc[$last->IdCliente]/100,2);
+                              ?>
                               <tr style="color:green">
+
+                                
+
 
                                 <td>{{$last->fullNameCliente}} </td>
                                 <td>{{$last->DescripcionTipoCarta}} </td>
                                 <td>{{$last->CodigoCarta}} </td>
                                 <td>{{$last->FechaVence}} </td>
-                                <td>{{$last->MontoOriginal}} </td>
-                                <td>{{$last->MontoActual}} </td>
+                                <!-- <td>{{$last->MontoOriginal}} <span class="color-porcentaje"> {{$array_porc[$last->IdCliente]}}%</span></td>
+                                <td>{{$last->MontoActual}} <span class="color-porcentaje">{{$array_porc[$last->IdCliente]}}%</span> </td> -->
+                                <td>{{number_format($original_calculado, 2, '.', ',')}}
+                                  <small class="color-porcentaje"> {{$array_porc[$last->IdCliente]}}%
+                                  </small>
+                                </td>
+                                <td>{{number_format($actual_calculado, 2, '.', ',')}} 
+                                  <small class="color-porcentaje">{{$array_porc[$last->IdCliente]}}%
+                                  </small> 
+                                </td>
                              </tr>
+
+                             <?php
+                              $sub_suma_cartas_original=$sub_suma_cartas_original+ $original_calculado;
+
+                              $sub_suma_cartas_actual=$sub_suma_cartas_actual+ $actual_calculado;
+
+                              //totalizado x financiera
+
+                                 $tot_finan_original=$tot_finan_original+$original_calculado;
+                                 $tot_finan_actual = $tot_finan_actual+ $actual_calculado;
+
+                              //totalizado final de todo
+
+                                 $tot_original=$tot_original+$original_calculado;
+                                $tot_actual=$tot_actual+$actual_calculado;
+
+                             ?>
 
                           @endforeach
 
+
+                        <tr style="color:blue">
+                          <td colspan="1"></td>
+                          <td colspan="3">{{$key['obra']}}</td>
+                          <td>{{number_format($sub_suma_cartas_original, 2, '.', ',')}}</td>
+                          <td>{{number_format($sub_suma_cartas_actual, 2, '.', ',')}}</td>
+                        </tr>
                         @endforeach
                        
 
-                    @endforeach
+                      <tr style="color:red">
+                        
 
+                       <td colspan="1"></td>
+                       <td colspan="3">{{$list['financiera']}}</td>
+                       <td>{{number_format($tot_finan_original, 2, '.', ',')}}</td>
+                       <td>{{number_format($tot_finan_actual, 2, '.', ',')}}</td>
+
+                    </tr>
+
+                    @endforeach
+                    
                     <tr><td colspan="6"></td></tr>
                     <tr><td colspan="6"></td></tr>
                     <tr><td colspan="6"></td></tr>
@@ -259,8 +330,8 @@
                       <td colspan="4"></td> 
 
 
-                        <td><?php echo number_format($tot_original, 2, '.', ',') ;?></td>
-                        <td><?php echo number_format($tot_actual, 2, '.', ',') ;?></td>
+                        <td><strong>{{number_format($tot_original, 2, '.', ',')}}</strong></td>
+                        <td><strong>{{number_format($tot_actual, 2, '.', ',')}}</strong></td>
                     </tr>
                 </tbody>
                 

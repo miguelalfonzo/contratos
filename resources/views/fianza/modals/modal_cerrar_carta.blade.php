@@ -139,7 +139,7 @@
                                           <div class="col-md-10 col-sm-10 margin-top-10">
                                 
                                   
-                                           <textarea class="form-control" id="cerrar_cf_comentario" name="cerrar_cf_comentario"></textarea>
+                                           <textarea maxlength="255" class="form-control" id="cerrar_cf_comentario" name="cerrar_cf_comentario"></textarea>
           
                                           </div>
 

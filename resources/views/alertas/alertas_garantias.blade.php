@@ -7,7 +7,7 @@
                    
                   <div class="modal-header">
 
-                          <h6 class="modal-title text-success" ><span class="badge badge-primary"><i class="fa fa-user icon-right"></i><span id="span_alerta_garantia_label"></span></span></h6>
+                          <h6 class="modal-title text-success" ><span class="badge badge-warning"><i class="fa fa-ban icon-right"></i><span id="span_alerta_garantia_label"></span></span></h6>
                           
                           <button type="button" class="close mr-2" data-dismiss="modal"><span aria-hidden="true">×</span>
                           </button>
@@ -53,7 +53,8 @@
                       <th>Fecha Vencimiento</th>
                       <th>Fecha Cobro</th>
                       <th>Estado</th>
-                      <th>Dias</th>                                       
+                      <th>Dias</th> 
+                      <th><i class="fa fa-eye"></i></th>                                       
                    </tr>
                   </thead>
                   

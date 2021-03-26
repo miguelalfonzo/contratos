@@ -117,7 +117,7 @@
                                 
                                   <div class=" mb-2 mr-sm-2 ">
                                     
-                                    <input type="text" data-mofianza="" class="font-size-12  form-control has-feedback-left form-control-sm"  id="ren_car_gar_monto_fianza" name="ren_car_gar_monto_fianza" autocomplete="off" onkeyup="recalcula_montos_renovar_garantia()" oninput='limitDecimalPlaces(event, 2)' onkeypress='return isNumberKey(event)'>
+                                    <input maxlength="12" type="text" data-mofianza="" class="font-size-12  form-control has-feedback-left form-control-sm"  id="ren_car_gar_monto_fianza" name="ren_car_gar_monto_fianza" autocomplete="off" onkeyup="recalcula_montos_renovar_garantia()" oninput='limitDecimalPlaces(event, 2)' onkeypress='return isNumberKey(event)'>
                                   </div>
 
 
@@ -172,14 +172,14 @@
 
                           <!--   ------------- -->
 
-                                <label class="control-label col-md-1 col-sm-2 ">Numero</label>
+                                <label class="control-label col-md-1 col-sm-2 ">Número</label>
 
                                 <div class="col-md-3 col-sm-4 ">
 
                                 
                                   <div class=" mb-2 mr-sm-2 ">
                                     
-                                    <input type="text" class="font-size-12  form-control has-feedback-left form-control-sm"  placeholder="" id="ren_car_gar_numero" name="ren_car_gar_numero"  autocomplete="off" maxlength="100" >
+                                    <input type="text" class="font-size-12  form-control has-feedback-left form-control-sm"  placeholder="" id="ren_car_gar_numero" name="ren_car_gar_numero"  autocomplete="off" maxlength="20" >
                                   </div>
 
 
@@ -293,7 +293,7 @@
                                 
                                   <div class=" mb-2 mr-sm-2 ">
                                     
-                                    <input type="text" data-monto="" class="font-size-12 form-control has-feedback-left form-control-sm"   id="ren_car_gar_monto" name="ren_car_gar_monto"  autocomplete="off" oninput='limitDecimalPlaces(event, 2)' onkeypress='return isNumberKey(event)' readonly="">
+                                    <input maxlength="12" type="text" data-monto="" class="font-size-12 form-control has-feedback-left form-control-sm"   id="ren_car_gar_monto" name="ren_car_gar_monto"  autocomplete="off" oninput='limitDecimalPlaces(event, 2)' onkeypress='return isNumberKey(event)' readonly="">
                                   </div>
 
 
@@ -374,7 +374,7 @@
                                 
                                   <div class=" mb-2 mr-sm-2 ">
                                     
-                                    <input type="text" data-disponible=""class="disable-buton font-size-12 form-control has-feedback-left form-control-sm"   id="ren_car_gar_disponible" name="ren_car_gar_disponible"  autocomplete="off" oninput='limitDecimalPlaces(event, 2)' onkeypress='return isNumberKey(event)' readonly="">
+                                    <input maxlength="12" type="text" data-disponible=""class="disable-buton font-size-12 form-control has-feedback-left form-control-sm"   id="ren_car_gar_disponible" name="ren_car_gar_disponible"  autocomplete="off" oninput='limitDecimalPlaces(event, 2)' onkeypress='return isNumberKey(event)' readonly="">
                                   </div>
 
 
@@ -394,7 +394,7 @@
                                 
                                   <div class=" mb-2 mr-sm-2 ">
                                     
-                                    <input type="text" class="disable-buton font-size-12 form-control has-feedback-left form-control-sm"   id="ren_car_gar_liberar" name="ren_car_gar_liberar"  autocomplete="off" oninput='limitDecimalPlaces(event, 2)' onkeypress='return isNumberKey(event)' readonly>
+                                    <input maxlength="12" type="text" class="disable-buton font-size-12 form-control has-feedback-left form-control-sm"   id="ren_car_gar_liberar" name="ren_car_gar_liberar"  autocomplete="off" oninput='limitDecimalPlaces(event, 2)' onkeypress='return isNumberKey(event)' readonly>
                                   </div>
 
 

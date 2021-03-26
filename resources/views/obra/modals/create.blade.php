@@ -181,7 +181,7 @@
                         
                        <!-- <textarea  class="text-left form-control has-feedback-left form-control-sm"  placeholder="" id="obra_descripcion"  name="obra_descripcion" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" style="height:100px;resize: none;padding-left: 5px !important;">{{$obra[0]['DescripcionLarga'] ?? ''}}
                           </textarea> -->
-                          <textarea class="resizable_textarea form-control" id="obra_descripcion"  name="obra_descripcion" autocomplete="off" placeholder="" style="margin-top: 0px; margin-bottom: 0px; height: 89px;">{{$obra[0]['DescripcionLarga'] ?? ''}}</textarea>
+                          <textarea maxlength="255" class="resizable_textarea form-control" id="obra_descripcion"  name="obra_descripcion" autocomplete="off" placeholder="" style="margin-top: 0px; margin-bottom: 0px; height: 89px;">{{$obra[0]['DescripcionLarga'] ?? ''}}</textarea>
 
 
                       </div>
@@ -242,7 +242,7 @@
                             <div class="input-group-prepend ">
                               <div class="input-group-text " style="height:31px"><i class="fa fa-money"></i></div>
                             </div>
-                            <input style=""type="text" class="validanumeros form-control has-feedback-left form-control-sm"  placeholder=""id="obra_monto" name="obra_monto" autocomplete="off" maxlength="100"  value="{{$obra[0]['Monto'] ?? ''}}" >
+                            <input style=""type="text" class="validanumeros form-control has-feedback-left form-control-sm"  placeholder=""id="obra_monto" name="obra_monto" autocomplete="off" maxlength="12"  value="{{$obra[0]['Monto'] ?? ''}}" >
                           </div>
                         </div>
                         

@@ -95,8 +95,8 @@
 
                                 <thead>
                                     <tr class="headings">
-                                        <th style="width: 5%">N° Solicitud</th>
-                                        <th style="width: 5%">File</th>
+                                       
+                                        <th style="width: 5%">#Fianza</th>
                                         <th style="width: 10%">Tipo Documento</th>
                                         <th style="width: 25%">Cliente</th>
                                         <th style="width: 25%">Obra</th>

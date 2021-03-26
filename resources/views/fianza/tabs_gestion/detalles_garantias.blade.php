@@ -30,7 +30,7 @@
                                       <div class="input-group-prepend ">
                                         <div class="input-group-text " style="height:31px">#</i></div>
                                       </div>
-                                    <input type="text" class=" form-control has-feedback-left form-control-sm"   id="mdg_n_tipo_garantia" name="mdg_n_tipo_garantia"  autocomplete="off" maxlength="100" value="" >
+                                    <input type="text" class=" form-control has-feedback-left form-control-sm"   id="mdg_n_tipo_garantia" name="mdg_n_tipo_garantia"  autocomplete="off" maxlength="20" value="" >
                                     </div>
 
                                   </div>
@@ -43,7 +43,7 @@
                                       <div class="input-group-prepend ">
                                         <div class="input-group-text " style="height:31px"><i class="fa fa-calculator"></i></div>
                                       </div>
-                                    <input type="text" class="disable-buton form-control has-feedback-left form-control-sm"   id="mdg_monto_fianza" name="mdg_monto_fianza"  autocomplete="off" maxlength="100" value="" readonly>
+                                    <input type="text" class="disable-buton form-control has-feedback-left form-control-sm"   id="mdg_monto_fianza" name="mdg_monto_fianza"  autocomplete="off" maxlength="12" value="" readonly>
                                     </div>
 
                                   </div>
@@ -100,7 +100,7 @@
                                       <div class="input-group-prepend ">
                                         <div class="input-group-text " style="height:31px">#</div>
                                       </div>
-                                    <input type="text" class="disable-buton form-control has-feedback-left form-control-sm"   id="mdg_monto_garantia" name="mdg_monto_garantia"  autocomplete="off" maxlength="100" value="" readonly>
+                                    <input type="text" class="disable-buton form-control has-feedback-left form-control-sm"   id="mdg_monto_garantia" name="mdg_monto_garantia"  autocomplete="off" maxlength="12" value="" readonly>
                                     </div>
 
                                   </div>                             
@@ -142,7 +142,7 @@
                                 <label class="control-label  col-sm-2 margin-top-10">Observación</label>
                                 <div class="col-xl-6 col-sm-10 margin-top-10">
 
-                                   <textarea  class="form-control has-feedback-left form-control-sm"   id="mdg_obs"  name="mdg_obs" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" style="height:100px;resize: none;">
+                                   <textarea  maxlength="255" class="form-control has-feedback-left form-control-sm"   id="mdg_obs"  name="mdg_obs" onkeypress="return validateAlfaNumerico(event);" autocomplete="off" style="height:100px;resize: none;">
                                   </textarea>
 
 

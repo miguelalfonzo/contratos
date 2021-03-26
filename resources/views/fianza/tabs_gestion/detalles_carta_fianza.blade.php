@@ -224,7 +224,7 @@
                                       <div class="input-group-prepend ">
                                         <div class="input-group-text " style="height:31px"><i class="fa fa-money"></i></div>
                                       </div>
-                                    <input data-gestion="" type="text" class="form-control has-feedback-left form-control-sm"   id="mcf_monto" name="mcf_monto"  oninput='limitDecimalPlaces(event, 2)'  onkeypress='return isNumberKey(event)' autocomplete="off" maxlength="100" value="">
+                                    <input data-gestion="" type="text" class="form-control has-feedback-left form-control-sm"   id="mcf_monto" name="mcf_monto"  oninput='limitDecimalPlaces(event, 2)'  onkeypress='return isNumberKey(event)' autocomplete="off" maxlength="12" value="">
                                     </div>
 
                                   </div>
@@ -247,7 +247,7 @@
 
                                 <label class="control-label col-xl-3 col-sm-2 margin-top-10">N° de Carta F.</label>
                                 <div class="col-xl-3 col-sm-4 margin-top-10">
-                                  <input type="text" class=" form-control has-feedback-left form-control-sm"  placeholder="" id="mfc_carta_manual" name="mfc_carta_manual"  autocomplete="off" maxlength="100" value="" >
+                                  <input type="text" class=" form-control has-feedback-left form-control-sm"  placeholder="" id="mfc_carta_manual" name="mfc_carta_manual"  autocomplete="off" maxlength="20" value="" >
                                 </div>
 
                                   
@@ -265,7 +265,7 @@
 
                                 <label class="control-label col-xl-3 col-sm-2 margin-top-10">Dias</label>
                                 <div class="col-xl-3 col-sm-4 margin-top-10">
-                                  <input type="text" class="numerosenteros form-control has-feedback-left form-control-sm"   id="mfc_dias" name="mfc_dias"  autocomplete="off" maxlength="15" value="">
+                                  <input type="text" class="numerosenteros form-control has-feedback-left form-control-sm"   id="mfc_dias" name="mfc_dias"  autocomplete="off" maxlength="3" value="">
                                 </div>
                                 <!----------------->
 

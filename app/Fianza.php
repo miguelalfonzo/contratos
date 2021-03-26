@@ -498,10 +498,70 @@ class Fianza extends Model
         //self::inserta_garantia($new_request,$new_num_carta);
 
         //al renovar la carta ya no se renueva garantia en automatico
+
+        //si hubo reduccion de monto se creara la garantia requerida
+
+        $monto_old = DB::select("SELECT Monto FROM carta_fianza_detalle where IdCartaFianzaDetalle=?",array($IdCartaFianza));
+
+        $monto_old_json = json_decode(json_encode($monto_old), true); 
+
+
+        if(floatval($monto)<floatval($monto_old_json[0]['Monto'])){
+
+           self::inserta_garantia_garantia($request,$IdCartaFianza,$monto); 
+        }
+        
+
+
         return $rpta;
    }
 
+   protected static function inserta_garantia_garantia($request,$IdCartaFianza,$monto_reducido){
 
+        $carta = $request->mdr_numero_carta;
+
+        $query  = DB::select('call Carta_Fianza_Garantia_GetItem (?)',array($carta));
+
+
+        $codigo_solicitud = $query[0]->CodigoSolicitud;
+        $tipo_carta = $query[0]->TipoCarta;
+        $numero_carta = $query[0]->NumeroCarta;
+        //$fecha = $query[0]->Fecha;
+        $monto_carta = $monto_reducido;
+        $tipo_garantia = $query[0]->TipoGarantia;
+        $numero_documento = $query[0]->NumeroDocumento;
+        $codigo_banco = $query[0]->CodigoBanco;
+        $porcentaje = $query[0]->Porcentaje;
+        $moneda = $query[0]->Moneda;
+
+        //la primera garantia
+        $monto_old_garantia = DB::select('SELECT Monto FROM carta_fianza_garantia WHERE NumeroCarta=? order by FechaSistemaCreacion asc LIMIT 1;',array($carta));
+
+        $monto_old_garantia_json = json_decode(json_encode($monto_old_garantia), true); 
+
+        $monto_garantia = $monto_old_garantia_json[0]["Monto"];
+
+        $disponible = round($monto_garantia-($monto_reducido*$porcentaje/100),2);
+
+        $fecha_emision = $query[0]->FechaEmision;
+
+        $fecha_vencimiento = $query[0]->FechaVencimientoParse;
+
+        //$estado = $query[0]->Estado;
+
+        //actualizamos el estado de la carta anterior
+
+        DB::update('UPDATE carta_fianza_garantia SET Estado="REN"  WHERE NumeroCarta=? order by FechaSistemaCreacion desc LIMIT 1;',array($carta));
+
+
+        $estado = 'PND';
+        $observaciones = 'garantía actual';
+        $id_user = Auth::user()->id;
+
+
+        DB::statement('call Carta_Fianza_Garantia_Insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($codigo_solicitud,$tipo_carta,$numero_carta,$monto_carta,$tipo_garantia,$numero_documento,$codigo_banco,$porcentaje,$moneda,$monto_garantia,$fecha_emision,$fecha_vencimiento,$estado,$observaciones,$id_user,$disponible));
+
+   }
 
 
 
