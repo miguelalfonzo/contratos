@@ -536,6 +536,8 @@ function get_detalle_carta_fianza_garantia(numCarta,gestionada) {
 
                 if(gestionada == 1){
 
+                    console.log('gestionada y con garantia');
+
                     $("#hidden_id_garantia_last").val(response[0].IdCartaFianzaGarantia);
                     $("#mdg_porcentaje").val(response[0].Porcentaje);
                     // se desahilitara
@@ -607,6 +609,8 @@ function get_detalle_carta_fianza_garantia(numCarta,gestionada) {
 
                 }else{
 
+
+                    console.log('sin gestionar pero con garantia');
 
                     //tiene numero de carta pero no fue gestionada entonces podra habilitarse la edicion
                     $("#hidden_id_garantia_last").val(response[0].IdCartaFianzaGarantia);
@@ -719,8 +723,8 @@ function get_detalle_carta_fianza_garantia(numCarta,gestionada) {
                 $("#mdg_obs").attr("readonly",false);
 
                 //habilitamos
-                    $('#mdg_estado').prop("disabled",false);
-                    $('#mdg_estado').trigger("chosen:updated");
+                    //$('#mdg_estado').prop("disabled",false);
+                    //$('#mdg_estado').trigger("chosen:updated");
 
                     $("#mdg_tipo_garantia option[value='CD']").prop("selected", true);
                     //habilitamos
@@ -758,7 +762,7 @@ function get_detalle_carta_fianza_garantia(numCarta,gestionada) {
 
                         
                     }
-
+                    $('#mdg_estado').prop("disabled",false);
                     $('#mdg_estado').trigger("chosen:updated");
 
             }
@@ -894,7 +898,8 @@ function get_detalle_carta_fianza(idCartaFianza) {
 
                 //response[0].NumeroCarta != null
 
-                if (response[0].NumeroCarta != null) {
+                console.log(response[0].NumeroCarta.length)
+                if (response[0].NumeroCarta.length != 0  ) {
                     //si tiene numero de carta
 
                     const gestionada = carta_gestionada;
@@ -902,7 +907,7 @@ function get_detalle_carta_fianza(idCartaFianza) {
                     get_detalle_carta_fianza_garantia(response[0].NumeroCarta,gestionada);
 
                 } else {
-
+                    console.log('sin gestionar y sin garantia')
                     //sin gestionar y no tiene garantia
                     $("#mdg_porcentaje").val(response[0].GarantiaCheque);
                     //habilitamos
