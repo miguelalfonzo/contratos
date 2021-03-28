@@ -135,13 +135,26 @@ class Fianza extends Model
 
         $carta_manual      = $request->mfc_carta_manual;
 
-        $num_carta_sql = DB::select("SELECT NumeroCarta FROM carta_fianza_detalle where IdCartaFianzaDetalle=?" ,array($id_carta));
+        $num_carta_sql = DB::select("SELECT NumeroCarta,FlagGestionCarta FROM carta_fianza_detalle where IdCartaFianzaDetalle=?" ,array($id_carta));
 
         $numero_carta_json = json_decode(json_encode($num_carta_sql), true); 
+
+        $carta_gestionada = $numero_carta_json[0]["FlagGestionCarta"];
+
 
         if(!empty($numero_carta_json[0]["NumeroCarta"])){
 
             $numero_carta = $numero_carta_json[0]["NumeroCarta"];
+
+        }else{
+
+            $numero_carta = self::genera_numero_carta();
+ 
+        }
+
+        if($carta_gestionada == 1){
+
+            //$numero_carta = $numero_carta_json[0]["NumeroCarta"];
 
             //self::update_garantia($request);
             //ya no actualizara ultima garantia
@@ -150,9 +163,10 @@ class Fianza extends Model
 
         }else{
 
-            $numero_carta = self::genera_numero_carta();
+            //$numero_carta = self::genera_numero_carta();
 
             $new_estado = ($estado == 'PRO')?'VIG':$estado;
+
 
             if($new_estado!='ANL'){
               
@@ -649,6 +663,12 @@ class Fianza extends Model
 
         }
         
+
+        //actualizamos el estado de la carta anterior
+
+        DB::update('UPDATE carta_fianza_garantia SET Estado="REN"  WHERE NumeroCarta=? order by FechaSistemaCreacion desc LIMIT 1;',array($numero_carta));
+
+
         $id_user = Auth::user()->id;
 
         $rpta = DB::insert("INSERT INTO carta_fianza_garantia(CodigoSolicitud,TipoCarta,NumeroCarta,Fecha,MontoCarta,TipoGarantia,NumeroDocumento,CodigoBanco,Porcentaje,Moneda,Monto,Disponible,FechaEmision,FechaVencimiento,FechaCobro,Estado,Observaciones,IdUsuarioCreacion,FechaSistemaCreacion) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now()) ",array($codigo_solicitud,$tipo_carta,$numero_carta,$fecha,$monto_fianza,$tipo_garantia,$numero_manual_garantia,$banco,$porcentaje,$moneda,$monto_garantia_final,$disponible,$emision,$vencimiento,$cobro,$estado,$observacion,$id_user));

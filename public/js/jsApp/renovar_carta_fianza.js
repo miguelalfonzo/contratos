@@ -477,7 +477,7 @@ function valida_inputs_renovar_carta() {
 
     }
 
-    if ($('#mdr_monto').val().trim() == "" || $('#mdr_monto').val() == 0) {
+    if ($('#mdr_monto').val().trim() == "") {
 
         return 'Ingrese un monto para la renovación';
 

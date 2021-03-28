@@ -185,6 +185,8 @@ class Solicitud extends Model
           
         if(!is_null($next_id)){
 
+          
+
           $rpta = self::set_sql_detalle_garantias($garantias,$next_id,$request);
 
         }else{
@@ -202,13 +204,82 @@ class Solicitud extends Model
 
       }else{
 
-        $rpta = self::set_sql_detalle_garantias($garantias,$id_solicitud,$request);
+        $rpta = self::set_sql_detalle_garantias_renovar($garantias,$id_solicitud,$request);
       }
 
       return $rpta ;
    }
 
- 
+     protected static function set_sql_detalle_garantias_renovar($garantias,$id_solicitud,$request){
+
+      //esta funcion solo es para crear fianzas que ya existieron , es una renovacion
+
+      $row =' ';
+
+      foreach ($garantias as $list) {
+          
+          if(!empty($list['MONTO'])){
+
+              $moneda  = $request->solicitud_moneda;
+              $estado  = "PRO";
+              $user    = Auth::user()->id;
+              $hoy     = Carbon::now()->format('Y-m-d H:i:s');
+              
+              $query_count = DB::select("SELECT count(*) as total FROM carta_fianza_detalle WHERE IdSolicitud=? AND TipoCarta=?",array($id_solicitud,$list['CODIGO']));
+
+              $query_count_json = json_decode(json_encode($query_count), true);
+
+              if($query_count_json[0]['total']>0){
+
+                  //obtenemos la ultima
+
+                  $query_last = DB::select("SELECT  NumeroCarta,IdCartaFianzaDetalle FROM carta_fianza_detalle WHERE IdSolicitud=? AND TipoCarta=? ORDER BY FechaCreacionSistema DESC LIMIT 1",array($id_solicitud,$list['CODIGO']));
+
+                  $query_last_json = json_decode(json_encode($query_last), true);
+
+                  $numero_carta = $query_last_json[0]["NumeroCarta"];
+                  $flag_gestion = 0;
+                  $carta_anterior = $query_last_json[0]["IdCartaFianzaDetalle"];
+                  //$estado  = "VIG";
+
+
+              }else{
+
+                $numero_carta = NULL;
+                $flag_gestion = 0;
+                $carta_anterior = NULL;
+                //$estado  = "PRO";
+              }
+              
+              
+              $cliente     = $request->solicitud_id_cliente;
+              $contratante = $request->solicitud_id_beneficiario;
+              $financiera  = $request->solicitud_id_financia;
+              $solicitud_fecha = Carbon::parse($request->solicitud_fecha)->format('Y-m-d H:i:s');
+
+              $row.="('".$list['CODIGO']."','".$solicitud_fecha."','".$moneda."','".$list['MONTO']."','".$estado."',$id_solicitud,$user,'".$hoy."',$cliente,$contratante,$financiera,'".$flag_gestion."','".$numero_carta."','".$carta_anterior."'),";
+
+          }
+          
+
+      }
+
+      $row = rtrim($row, ',');
+
+      $subquery ="INSERT INTO carta_fianza_detalle(TipoCarta,FechaCreacion,CodigoMoneda,Monto,EstadoCF,IdSolicitud,IdUsuarioCreacion,FechaCreacionSistema,IdCliente,IdBeneficiario,IdFinanciera,FlagGestionCarta,NumeroCarta,CartaAnterior) VALUES ".$row;
+
+      $rpta = DB::insert('call Solicitud_Detalle_InsertMasivo (?)', array($subquery));
+
+      return $rpta;
+   }
+
+  
+  //
+
+
+
+
+
    protected static function set_sql_detalle_garantias($garantias,$nextId,$request){
 
       $row =' ';

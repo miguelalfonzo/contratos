@@ -7,12 +7,12 @@ $(document).ready(function() {
 
 function valida_parametros_get(){
 
- const cliente = obten_parametro_get_url('cliente');
- const obra = obten_parametro_get_url('obra');
- const carta = obten_parametro_get_url('carta');
- const fianza = obten_parametro_get_url('fianza');
+   const cliente = obten_parametro_get_url('cliente');
+   const obra = obten_parametro_get_url('obra');
+   const carta = obten_parametro_get_url('carta');
+   const fianza = obten_parametro_get_url('fianza');
 
- if(cliente!=""&&obra!=""&&carta!=""&&fianza!=""){
+   if(cliente!=""&&obra!=""&&carta!=""&&fianza!=""){
 
         //mostrara listado al cargar pagina
         load_list_fianzas(carta,cliente,obra,fianza);
@@ -290,13 +290,13 @@ function load_list_fianzas(documento,cliente,obra,fianza_vencimiento) {
 
 $(".filter-label-vencimiento").on('click', function() {
 
-   const fianza_vencimiento = $(this).attr('data-tipo');
+ const fianza_vencimiento = $(this).attr('data-tipo');
 
-   load_list_fianzas('',0,0,fianza_vencimiento);
+ load_list_fianzas('',0,0,fianza_vencimiento);
 
-   let label_vencimiento = '' ;
+ let label_vencimiento = '' ;
 
-   if( fianza_vencimiento == 'VH'){
+ if( fianza_vencimiento == 'VH'){
 
     label_vencimiento = 'Vencen Hoy';
 
@@ -508,7 +508,7 @@ function prepare_modal_gestionar(idCartaFianza) {
 
 
 
-function get_detalle_carta_fianza_garantia(numCarta) {
+function get_detalle_carta_fianza_garantia(numCarta,gestionada) {
 
 
     $.ajax({
@@ -532,93 +532,234 @@ function get_detalle_carta_fianza_garantia(numCarta) {
 
             if (response.length > 0) {
 
-                //se agregaran lineas para deshabilitar algunos inputs
+                //se agregaran lineas para deshabilitar algunos inputssi ya fue gestionada
 
+                if(gestionada == 1){
+
+                    $("#hidden_id_garantia_last").val(response[0].IdCartaFianzaGarantia);
+                    $("#mdg_porcentaje").val(response[0].Porcentaje);
+                    // se desahilitara
+                    $("#mdg_porcentaje").attr("readonly",true);
+                    $("#mdg_monto_fianza").val(response[0].MontoCarta);
+                    $("#mdg_monto_garantia").val(response[0].Monto);
+
+                    $("#mdg_n_tipo_garantia").val(response[0].NumeroDocumento);
+                    // se desahilitara
+                    $("#mdg_n_tipo_garantia").attr("readonly",true);
+
+                    $("#mdg_fecha_emision").val(response[0].FechaEmision);
+                    // se desahilitara
+                    $("#mdg_fecha_emision").attr("readonly",true);
+                    $("#mdg_vencimiento").val(response[0].FechaVencimiento);
+
+                    $("#mdg_obs").val(response[0].Observaciones);
+                    // se desahilitara
+                    $("#mdg_obs").attr("readonly",true);
+                    //
+                    $("#mdg_tipo_garantia option[value=" + response[0].TipoGarantia + "]").prop("selected", true);
+
+                    //se deshabilitara el tipo de pago garantia
+
+                    $('#mdg_tipo_garantia').prop("disabled",true);
+                    //
+                    $('#mdg_tipo_garantia').trigger("chosen:updated");
+
+
+                    $("#mdg_moneda option[value=" + response[0].Moneda + "]").prop("selected", true);
+
+                    //se desjanilitara
+                    $('#mdg_moneda').prop("disabled",true);
+                    $('#mdg_moneda').trigger("chosen:updated");
+
+                    $("#mdg_banco option[value=" + response[0].CodigoBanco + "]").prop("selected", true);
+                    //se desjanilitara
+                    $('#mdg_banco').prop("disabled",true);
+                    $('#mdg_banco').trigger("chosen:updated");
+
+
+
+                    let sub_arreglo = ["PRO","PND","LIT","LIP","COB","REN","POS"];
+
+
+                    for(let j=0;j<sub_arreglo.length;j++){
+
+                        $('#mdg_estado option[value="'+sub_arreglo[j]+'"]').attr("disabled", false); 
+
+                    }
+
+                    const estado_seleccionado_garantia = response[0].Estado;
+
+
+                    $("#mdg_estado option[value=" + response[0].Estado + "]").prop("selected", true);
                 
+                    for(let i=0;i<sub_arreglo.length;i++){
 
-                $("#hidden_id_garantia_last").val(response[0].IdCartaFianzaGarantia);
-                $("#mdg_porcentaje").val(response[0].Porcentaje);
-                // se desahilitara
-                $("#mdg_porcentaje").attr("readonly",true);
-                $("#mdg_monto_fianza").val(response[0].MontoCarta);
-                $("#mdg_monto_garantia").val(response[0].Monto);
-
-                $("#mdg_n_tipo_garantia").val(response[0].NumeroDocumento);
-                // se desahilitara
-                $("#mdg_n_tipo_garantia").attr("readonly",true);
-
-                $("#mdg_fecha_emision").val(response[0].FechaEmision);
-                // se desahilitara
-                $("#mdg_fecha_emision").attr("readonly",true);
-                $("#mdg_vencimiento").val(response[0].FechaVencimiento);
-
-                $("#mdg_obs").val(response[0].Observaciones);
-                 // se desahilitara
-                 $("#mdg_obs").attr("readonly",true);
-                //
-                $("#mdg_tipo_garantia option[value=" + response[0].TipoGarantia + "]").prop("selected", true);
-
-                //se deshabilitara el tipo de pago garantia
-
-                $('#mdg_tipo_garantia').prop("disabled",true);
-                //
-                $('#mdg_tipo_garantia').trigger("chosen:updated");
-
-
-                $("#mdg_moneda option[value=" + response[0].Moneda + "]").prop("selected", true);
-
-                //se desjanilitara
-                $('#mdg_moneda').prop("disabled",true);
-                $('#mdg_moneda').trigger("chosen:updated");
-
-                $("#mdg_banco option[value=" + response[0].CodigoBanco + "]").prop("selected", true);
-                //se desjanilitara
-                $('#mdg_banco').prop("disabled",true);
-                $('#mdg_banco').trigger("chosen:updated");
-
-
-
-                let sub_arreglo = ["PRO","PND","LIT","LIP","COB","REN","POS"];
-
-
-                for(let j=0;j<sub_arreglo.length;j++){
-
-                    $('#mdg_estado option[value="'+sub_arreglo[j]+'"]').attr("disabled", false); 
-
-                }
-
-                const estado_seleccionado_garantia = response[0].Estado;
-
-
-                $("#mdg_estado option[value=" + response[0].Estado + "]").prop("selected", true);
-                
-                for(let i=0;i<sub_arreglo.length;i++){
-
-                    if(sub_arreglo[i]!=estado_seleccionado_garantia){
+                        if(sub_arreglo[i]!=estado_seleccionado_garantia){
 
                         $('#mdg_estado option[value="'+sub_arreglo[i]+'"]').attr("disabled", true); 
-                    }
+                        }
                     
 
+                    }
+                    //se deshabilitar
+                    $('#mdg_estado').prop("disabled",true);
+                    $('#mdg_estado').trigger("chosen:updated");
+
+                }else{
+
+
+                    //tiene numero de carta pero no fue gestionada entonces podra habilitarse la edicion
+                    $("#hidden_id_garantia_last").val(response[0].IdCartaFianzaGarantia);
+                    $("#mdg_porcentaje").val(response[0].Porcentaje);
+                    // se hailitara
+                    $("#mdg_porcentaje").attr("readonly",false);
+                    $("#mdg_monto_fianza").val(response[0].MontoCarta);
+                    $("#mdg_monto_garantia").val(response[0].Monto);
+
+                    $("#mdg_n_tipo_garantia").val(response[0].NumeroDocumento);
+                    // se hailitara
+                    $("#mdg_n_tipo_garantia").attr("readonly",false);
+
+                    $("#mdg_fecha_emision").val(response[0].FechaEmision);
+                    // se hailitara
+                    $("#mdg_fecha_emision").attr("readonly",false);
+                    $("#mdg_vencimiento").val(response[0].FechaVencimiento);
+
+                    $("#mdg_obs").val(response[0].Observaciones);
+                    // se hailitara
+                    $("#mdg_obs").attr("readonly",false);
+                    //
+                    $("#mdg_tipo_garantia option[value=" + response[0].TipoGarantia + "]").prop("selected", true);
+
+                    // se hailitara
+
+                    $('#mdg_tipo_garantia').prop("disabled",false);
+                    //
+                    $('#mdg_tipo_garantia').trigger("chosen:updated");
+
+
+                    $("#mdg_moneda option[value=" + response[0].Moneda + "]").prop("selected", true);
+
+                    // se hailitara
+                    $('#mdg_moneda').prop("disabled",false);
+                    $('#mdg_moneda').trigger("chosen:updated");
+
+                    $("#mdg_banco option[value=" + response[0].CodigoBanco + "]").prop("selected", true);
+                    // se hailitara
+                    $('#mdg_banco').prop("disabled",false);
+                    $('#mdg_banco').trigger("chosen:updated");
+
+
+
+                    let sub_arreglo = ["PRO","PND","LIT","LIP","COB","REN","POS"];
+
+
+                    for(let j=0;j<sub_arreglo.length;j++){
+
+                        $('#mdg_estado option[value="'+sub_arreglo[j]+'"]').attr("disabled", false); 
+
+                    }
+
+                    const estado_seleccionado_garantia = response[0].Estado;
+
+
+                    $("#mdg_estado option[value=" + response[0].Estado + "]").prop("selected", true);
+                
+                    // for(let i=0;i<sub_arreglo.length;i++){
+
+                    //     if(sub_arreglo[i]!=estado_seleccionado_garantia){
+
+                    //         $('#mdg_estado option[value="'+sub_arreglo[i]+'"]').attr("disabled", true); 
+                    //     }
+                    
+
+                    // }
+                    // //se habilitar
+                    $('#mdg_estado').prop("disabled",false);
+                    $('#mdg_estado').trigger("chosen:updated");
+
                 }
-                //se deshabilitar
-                $('#mdg_estado').prop("disabled",true);
-                $('#mdg_estado').trigger("chosen:updated");
+
+                
 
 
 
 
             } else {
 
+                //si no encuentra garantia 0 resultados
+                console.log('sin datos garantia')
+                let porcentaje_aux = $("#mcf_monto").attr("data-porcentaje");
+                let monto_fianza_aux = $("#mcf_monto").val();
+
+                let monto_gar_aux = parseFloat(porcentaje_aux*monto_fianza_aux/100).toFixed(2);
+
+
                 $("#hidden_id_garantia_last").val(0);
 
-                $("#mdg_porcentaje").val("");
-                $("#mdg_monto_fianza").val("");
-                $("#mdg_monto_garantia").val("");
+                $("#mdg_porcentaje").val(porcentaje_aux);
+                $("#mdg_porcentaje").attr("readonly",false);
+
+                $("#mdg_monto_fianza").val(monto_fianza_aux);
+                
+
+                $("#mdg_monto_garantia").val(monto_gar_aux);
+                
+
                 $("#mdg_n_tipo_garantia").val("");
+                $("#mdg_n_tipo_garantia").attr("readonly",false);
+
                 $("#mdg_fecha_emision").val("");
+                $("#mdg_fecha_emision").attr("readonly",false);
+
                 $("#mdg_vencimiento").val("");
+                
+
                 $("#mdg_obs").val("");
+                $("#mdg_obs").attr("readonly",false);
+
+                //habilitamos
+                    $('#mdg_estado').prop("disabled",false);
+                    $('#mdg_estado').trigger("chosen:updated");
+
+                    $("#mdg_tipo_garantia option[value='CD']").prop("selected", true);
+                    //habilitamos
+                    $('#mdg_tipo_garantia').prop("disabled",false);
+                    $('#mdg_tipo_garantia').trigger("chosen:updated");
+
+                    $("#mdg_banco option[value='01']").prop("selected", true);
+                    //habilitamos
+                    $('#mdg_banco').prop("disabled",false);
+                    $('#mdg_banco').trigger("chosen:updated");
+
+                    $("#mdg_moneda option[value='SOL']").prop("selected", true);
+                    //habilitamos
+                    $('#mdg_moneda').prop("disabled",false);
+                    $('#mdg_moneda').trigger("chosen:updated");
+
+                    let est_garantias = ["PRO","PND","LIT","LIP","COB","REN","POS"];
+
+
+                    for(let j=0;j<est_garantias.length;j++){
+
+                        $('#mdg_estado option[value="'+est_garantias[j]+'"]').attr("disabled", false); 
+                        
+                    }
+
+                    $("#mdg_estado option[value='PND']").prop("selected", true);
+
+
+                    for(let i=0;i<est_garantias.length;i++){
+
+                        if(est_garantias[i]!='PND'){
+
+                            $('#mdg_estado option[value="'+est_garantias[i]+'"]').attr("disabled", true);
+                        }
+
+                        
+                    }
+
+                    $('#mdg_estado').trigger("chosen:updated");
 
             }
 
@@ -720,6 +861,9 @@ function get_detalle_carta_fianza(idCartaFianza) {
                     $("#mcf_monto").attr("data-gestion",0);
                 }
 
+                $("#mcf_monto").attr("data-porcentaje",response[0].GarantiaCheque);
+
+
                 let sub_arreglo = ["PRO","VIG","VEN","ANL","REN","CER"];
 
 
@@ -737,20 +881,25 @@ function get_detalle_carta_fianza(idCartaFianza) {
 
                     for(let i=0;i<sub_arreglo.length;i++){
 
-                     if(sub_arreglo[i] != estado_seleccionado_carta){
+                       if(sub_arreglo[i] != estado_seleccionado_carta){
 
-                        $('#mcf_estado option[value="'+sub_arreglo[i]+'"]').attr("disabled", true);
+                            $('#mcf_estado option[value="'+sub_arreglo[i]+'"]').attr("disabled", true);
+                        }
+
                     }
 
                 }
 
-            }
+                $('#mcf_estado').trigger("chosen:updated");
 
-            $('#mcf_estado').trigger("chosen:updated");
+                //response[0].NumeroCarta != null
 
-            if (response[0].NumeroCarta != null) {
-                    //si ya fue gestionada y existe garantia
-                    get_detalle_carta_fianza_garantia(response[0].NumeroCarta);
+                if (response[0].NumeroCarta != null) {
+                    //si tiene numero de carta
+
+                    const gestionada = carta_gestionada;
+
+                    get_detalle_carta_fianza_garantia(response[0].NumeroCarta,gestionada);
 
                 } else {
 
