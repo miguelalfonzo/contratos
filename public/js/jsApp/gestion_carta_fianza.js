@@ -898,8 +898,10 @@ function get_detalle_carta_fianza(idCartaFianza) {
 
                 //response[0].NumeroCarta != null
 
-                console.log(response[0].NumeroCarta.length)
-                if (response[0].NumeroCarta.length != 0  ) {
+                //console.log(response[0].NumeroCarta.length)
+                
+
+                if (response[0].NumeroCarta != null ) {
                     //si tiene numero de carta
 
                     const gestionada = carta_gestionada;

@@ -242,12 +242,13 @@ class Solicitud extends Model
                   $carta_anterior = $query_last_json[0]["IdCartaFianzaDetalle"];
                   //$estado  = "VIG";
 
+                  
 
               }else{
 
-                $numero_carta = NULL;
+                $numero_carta = 'NULL';
                 $flag_gestion = 0;
-                $carta_anterior = NULL;
+                $carta_anterior = 'NULL';
                 //$estado  = "PRO";
               }
               
@@ -257,7 +258,7 @@ class Solicitud extends Model
               $financiera  = $request->solicitud_id_financia;
               $solicitud_fecha = Carbon::parse($request->solicitud_fecha)->format('Y-m-d H:i:s');
 
-              $row.="('".$list['CODIGO']."','".$solicitud_fecha."','".$moneda."','".$list['MONTO']."','".$estado."',$id_solicitud,$user,'".$hoy."',$cliente,$contratante,$financiera,'".$flag_gestion."','".$numero_carta."','".$carta_anterior."'),";
+              $row.="('".$list['CODIGO']."','".$solicitud_fecha."','".$moneda."','".$list['MONTO']."','".$estado."',$id_solicitud,$user,'".$hoy."',$cliente,$contratante,$financiera,'".$flag_gestion."',".$numero_carta.",".$carta_anterior."),";
 
           }
           

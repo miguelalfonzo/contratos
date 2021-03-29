@@ -163,14 +163,18 @@ class Fianza extends Model
 
         }else{
 
+             
             //$numero_carta = self::genera_numero_carta();
 
             $new_estado = ($estado == 'PRO')?'VIG':$estado;
 
 
             if($new_estado!='ANL'){
-              
+
+              self::renueva_antigua_garantia($numero_carta);
+
               self::inserta_garantia($request,$numero_carta);
+
             }
              
 
@@ -188,6 +192,29 @@ class Fianza extends Model
     
     }
 
+
+    protected static function renueva_antigua_garantia($numero_carta){
+
+     
+        $count=DB::select("SELECT count(*) as TOTAL FROM carta_fianza_garantia WHERE NumeroCarta=? ORDER BY FechaSistemaCreacion DESC LIMIT 1",array($numero_carta));
+
+        $rpta_json = json_decode(json_encode($count), true);
+
+        
+
+         if($rpta_json[0]["TOTAL"]>0){
+
+            $id_garantia_fianza = DB::select("SELECT IdCartaFianzaGarantia FROM carta_fianza_garantia WHERE NumeroCarta=? ORDER BY FechaSistemaCreacion DESC LIMIT 1",array($numero_carta));
+
+            $id_garantia_fianza_json = json_decode(json_encode($id_garantia_fianza), true);
+
+
+            DB::update("UPDATE carta_fianza_garantia SET Estado='REN' WHERE IdCartaFianzaGarantia = ?",array($id_garantia_fianza_json[0]['IdCartaFianzaGarantia']));
+
+
+         }
+
+   }
 
 
     protected static function genera_numero_carta(){
